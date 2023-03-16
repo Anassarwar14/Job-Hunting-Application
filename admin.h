@@ -47,8 +47,8 @@ class user
     // static int id_number;
 protected:
     string type;
-    string id;      /////////////////
-    string password;/////////////////
+    string id;     
+    string password;
     string email;
     string city;
     string re_check_email;//for admin to check validity of account
@@ -61,7 +61,6 @@ protected:
 public:
     user()
     {
-
         type = "user";
     }
     void display_details(string type)
@@ -103,8 +102,12 @@ public:
             cin >> first_name;
             cout << "Last name: ";
             cin >> last_name;
-            cout << "Age: ";
-            cin >> age;
+            do {
+                cout << "Age: ";
+                cin >> age;
+                if (age > 80) { cout << "Invalid Age! Re-enter" << endl; }
+            }while (age > 80);
+            
             cout << "Minimum Education: ";
             cin >> latest_education;
             cout << "City: ";
@@ -116,8 +119,11 @@ public:
             cin >> city;
         }
 
-        cout << "Enter email: ";
-        cin >> email;
+        do {
+            cout << "Enter email: ";
+            cin >> email;
+            if (email.find("@") == string::npos || email.find(".") == string::npos) { cout << "Invalid Email! Re-enter" << endl;}
+        } while (email.find("@") == string::npos || email.find(".") == string::npos);
         cout << "Re-Enter email: ";
         cin >> re_check_email;
         cout << "Enter Phone number (numbers only): ";
@@ -132,7 +138,7 @@ public:
         do
         {
             cout << "\nChoose from following: " << endl;
-            cout << "1.Computer Science/IT\n2.Medical\n3.Engineering" << endl;
+            cout << "1.Computer Science\\IT\n2.Medical\n3.Engineering" << endl;
             cin >> choice;
             check1 = 0;
             switch (choice)
@@ -143,7 +149,7 @@ public:
                 {
 
                     check2 = 0;
-                    cout << "\nComputer Science Fields:" << endl;
+                    cout << "\nComputer Science field list:" << endl;
                     depart = "Comuter Science";
                     cout << "Please select an option:" << endl;
                     cout << "1. Software Developer" << endl;
@@ -231,7 +237,7 @@ public:
                         if (check[0] != 1)
                         {
                             skill[i][0] = "Java";
-                            cout << "Enter expertise in Java in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[0] = 1;
@@ -248,7 +254,7 @@ public:
                         {
                             skill[i][0] = "Python";
 
-                            cout << "Enter expertise in Python in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[1] = 1;
@@ -263,7 +269,7 @@ public:
                         {
                             skill[i][0] = "JavaScript";
 
-                            cout << "Enter expertise in JavaScript in format (89% )" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++; check[2] = 1;
                         }
@@ -278,7 +284,7 @@ public:
                         {
                             skill[i][0] = "C++";
 
-                            cout << "Enter expertise in C++ in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[3] = 1;
@@ -293,7 +299,7 @@ public:
                         {
                             skill[i][0] = "C#";
 
-                            cout << "Enter expertise in C# in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[4] = 1;
@@ -309,7 +315,7 @@ public:
                         {
                             skill[i][0] = "PHP";
 
-                            cout << "Enter expertise in PHP in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[5] = 1;
@@ -325,7 +331,7 @@ public:
                         {
                             skill[i][0] = "Swift";
 
-                            cout << "Enter expertise in Swift in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[6] = 1;
@@ -341,7 +347,7 @@ public:
                         {
                             skill[i][0] = "Objective-C";
 
-                            cout << "Enter expertise in Objective-C in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[7] = 1;
@@ -356,7 +362,7 @@ public:
                         {
                             skill[i][0] = "Kotlin";
 
-                            cout << "Enter expertise in kotlin in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[8] = 1;
@@ -371,7 +377,7 @@ public:
                         {
                             skill[i][0] = "Ruby";
 
-                            cout << "Enter expertise in Ruby in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[9] = 1;
@@ -387,7 +393,7 @@ public:
                         {
                             skill[i][0] = "Soft Skills";
 
-                            cout << "Enter expertise in Soft Skills in format (89%)" << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[10] = 1;
@@ -469,7 +475,7 @@ public:
                 } while (check2 == 1);
                 do
                 {
-                    cout << "\nChoose a medical skill from the following:" << endl;
+                    cout << "\nChoose your medical skill from the following:" << endl;
                     cout << "1. Anatomy and Physiology" << endl;
                     cout << "2. Diagnostic Imaging" << endl;
                     cout << "3. Immunology" << endl;
@@ -489,7 +495,7 @@ public:
                         if (check[0] = 1)
                         {
                             skill[i][0] = "Anatomy and Physiology";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[0] = 1;
@@ -503,7 +509,7 @@ public:
                         if (check[1] != 1)
                         {
                             skill[i][0] = "Diagnostic Imaging";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[1] = 1;
@@ -517,7 +523,7 @@ public:
                         if (check[2] != 1)
                         {
                             skill[i][0] = "Immunology";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[2] = 1;
@@ -531,7 +537,7 @@ public:
                         if (check[3] != 1)
                         {
                             skill[i][0] = "Medical Laboratory Technology";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[3] = 1;
@@ -545,7 +551,7 @@ public:
                         if (check[4] != 1)
                         {
                             skill[i][0] = "Medical Coding and Billing";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[4] = 1;
@@ -559,7 +565,7 @@ public:
                         if (check[5] != 1)
                         {
                             skill[i][0] = "Medical Terminology";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[5] = 1;
@@ -573,7 +579,7 @@ public:
                         if (check[6] != 1)
                         {
                             skill[i][0] = "Patient Care";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[6] = 1;
@@ -587,7 +593,7 @@ public:
                         if (check[7] != 1)
                         {
                             skill[i][0] = "Pharmacology";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[7] = 1;
@@ -601,7 +607,7 @@ public:
                         if (check[8] != 1)
                         {
                             skill[i][0] = "Surgical Technology";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[8] = 1;
@@ -615,7 +621,7 @@ public:
                         if (check[9] != 1)
                         {
                             skill[i][0] = "Vital Signs";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[9] = 1;
@@ -629,7 +635,7 @@ public:
                         if (check[10] != 1)
                         {
                             skill[i][0] = "Soft skill";
-                            cout << "Enter expertise in " << endl;
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[10] = 1;
@@ -950,7 +956,7 @@ public:
             cin >> password;
 
             if (!regex_match(password, pattern)) {
-                std::cout << "Password does not match the required format please enter password again" << endl;
+                cout << "Password does not match the required format please enter password again" << endl;
                 check = 1;
 
             }
@@ -1120,8 +1126,8 @@ public:
     }
     void display_employer_min_wageAND_name()
     {
-        cout << "Company offers min wage =" << min_wage << endl;
-        cout << "companys name =" << company_name << endl;
+        //cout << "Company offers min wage =" << min_wage << endl;
+        cout << "Company name: " << company_name << endl;
         cout << "-------------------------------------------------" << endl;
     }
 };
