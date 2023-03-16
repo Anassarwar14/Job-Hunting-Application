@@ -44,7 +44,7 @@ class user
     int i = 0;
     string first_name;
     string last_name;
-    // static int id_number;
+
 protected:
     string type;
     string id;     
@@ -59,6 +59,7 @@ protected:
     string sub_depart;//e.g datascientist
 
 public:
+    static int id_number;
     user()
     {
         type = "user";
@@ -97,7 +98,7 @@ public:
     {
         if (type == "user")
         {
-
+            id = id_number;
             cout << "First name: ";
             cin >> first_name;
             cout << "Last name: ";
@@ -885,12 +886,10 @@ public:
 
 
         } while (check1 == 1);
-        if (type == "user")
-        {
-            display_details(type);
+        
 
             verification_request_user(a);//
-        }
+       
 
 
     }
@@ -941,7 +940,7 @@ public:
     void set_user_id_and_password()
     {
         id = first_name + "_" + id_num;
-        cout << "Your id is " << id << " \nPlease remember this username as it will be used to login into your account" << endl;
+        cout << "Generated Username: " << id << "\t[Please remember this username to login into your account]" << endl;
         set_password();
     }
     void set_password()
@@ -952,11 +951,11 @@ public:
         do
         {
             check = 0;
-            cout << "Set Password [Password should contain at least 8 characters and consists of letters and digits only]: " << endl;
+            cout << "Set Password: \t[at least 8 characters & of letters|digits only]: " << endl;
             cin >> password;
 
             if (!regex_match(password, pattern)) {
-                cout << "Password does not match the required format please enter password again" << endl;
+                cout << "Password does not match the required format! Please enter password again!" << endl;
                 check = 1;
 
             }
@@ -970,7 +969,7 @@ public:
 
     }
 };//
-//int user::id_number = 0;
+int user::id_number = 0;
 
 bool isEmailValid(string email) {
     const regex pattern("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
@@ -1067,7 +1066,8 @@ public:
             user_check = true;
             user.setter_valid_account(user_check);
             user.set_user_id_and_password();
-            id_number++;
+            user.display_details("user");
+            user::id_number++;
 
             users.push_back(user);
         }
@@ -1136,7 +1136,7 @@ void user::verification_request_user(admin& a)
 {
 
     a.admin_check_user(*this);
-
+  
 
 }
 void admin::admin_check_employer(employer employer)
