@@ -11,11 +11,6 @@ class admin;
 class employer;
 
 
-//extern vector <user> users;
-//extern vector <employer> employers;
-
-
-
 int id_number = 0;
 #pragma once
 //#include<iostream>
@@ -43,6 +38,27 @@ void string_setter_to_A(string str[15][2])
         }
     }
 }
+void SetColor(int ForgC)
+{
+    WORD wColor;
+
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+    //We use csbi for the wAttributes word.
+    if (GetConsoleScreenBufferInfo(hStdOut, &csbi))
+    {
+        //Mask out all but the background attribute, and add in the forgournd     color
+        wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
+        SetConsoleTextAttribute(hStdOut, wColor);
+    }
+    return;
+}
+
+
+
+
+
 class user
 {
     string latest_education;
@@ -118,8 +134,8 @@ public:
             do {
                 cout << "Age: ";
                 cin >> age;
-                if (age > 80) { cout << "Invalid Age! Re-enter" << endl; }
-            }while (age > 80);
+                if (age > 80 || age < 10) { cout << "Invalid Age! Re-enter" << endl; }
+            }while (age > 80 || age < 10);
             
             cout << "Minimum Education: ";
             cin >> latest_education;
@@ -141,7 +157,7 @@ public:
         cin >> re_check_email;
         cout << "Enter Phone number (numbers only): ";
         cin >> phone_number;
-
+        system("cls");
 
         //seting_depart_Sub_depart_skills();
 
@@ -149,10 +165,15 @@ public:
         string_setter_to_A(skill);
         array_to_null(check);
         do
-        {
-            cout << "\nChoose your Domain: " << endl;
+        {   
+            SetColor(1);
+            cout << "-->Enter Academic Details<--\n" << endl;
+            SetColor(4);
+            cout << "Choose Domain: \n" << endl;
+            SetColor(0);
             cout << "1.Computer Science\\IT\n2.Medical\n3.Engineering" << endl;
             cin >> choice;
+
             check1 = 0;
             switch (choice)
             {
@@ -160,11 +181,13 @@ public:
             case 1:
                 do
                 {
-
+            
                     check2 = 0;
+                    SetColor(4);
                     cout << "\nComputer Science fields list:" << endl;
                     depart = "Comuter Science";
                     cout << "Please select an option:" << endl;
+                    SetColor(0);
                     cout << "1. Software Developer" << endl;
                     cout << "2. Web Developer" << endl;
                     cout << "3. Systems Administrator" << endl;
@@ -177,6 +200,7 @@ public:
                     cout << "10. IT Project Manager" << endl;
 
                     cin >> subdepart;
+                    system("cls");
 
                     switch (subdepart) {
                     case 1:
@@ -228,8 +252,9 @@ public:
                 do
                 {
                     check2 = 0;
-
+                    SetColor(4);
                     cout << "\nPlease select a programming language:" << endl;
+                    SetColor(0);
                     cout << "1. Java" << endl;
                     cout << "2. Python" << endl;
                     cout << "3. JavaScript" << endl;
@@ -434,8 +459,10 @@ public:
                 do
                 {
                     check2 = 0;
-
-                    cout << "\nChoose a medical field from the following:\n";
+                    SetColor(4);
+                    cout << "\nMedical fields list:" << endl;
+                    cout << "Please select an option:" << endl;
+                    SetColor(0);
                     cout << "1. Cardiology" << endl;
                     cout << "2. Dermatology" << endl;
                     cout << "3. Gastroenterology" << endl;
@@ -449,6 +476,7 @@ public:
 
                     cout << "\nEnter your choice (1-10): ";
                     cin >> choice;
+                    system("cls");
 
                     switch (choice) {
                     case 1:
@@ -488,7 +516,9 @@ public:
                 } while (check2 == 1);
                 do
                 {
-                    cout << "\nChoose your medical skill from the following:" << endl;
+                    SetColor(4);
+                    cout << "Choose your medical skill from the following:\n" << endl;
+                    SetColor(0);
                     cout << "1. Anatomy and Physiology" << endl;
                     cout << "2. Diagnostic Imaging" << endl;
                     cout << "3. Immunology" << endl;
@@ -675,9 +705,10 @@ public:
             case 3:
                 do
                 {
-
-
-                    cout << "\nSelect a field of engineering:" << endl;
+                    SetColor(4);
+                    cout << "\nEngineering fields list:" << endl;
+                    cout << "Please select an option:" << endl;
+                    SetColor(0);
                     cout << "1. Civil Engineering" << endl;
                     cout << "2. Mechanical Engineering" << endl;
                     cout << "3. Electrical Engineering" << endl;
@@ -690,6 +721,7 @@ public:
                     cout << "10. Nuclear Engineering" << endl;
                     cout << "\nEnter your choice: ";
                     cin >> choice;
+                    system("cls");
 
                     switch (choice) {
                     case 1:
@@ -731,7 +763,9 @@ public:
                 } while (check2 == 1);
                 do
                 {
+                    SetColor(4);
                     cout << "\nChoose an engineering skill from the following:" << endl;
+                    SetColor(0);
                     cout << "1. Computer Programming" << endl;
                     cout << "2. Data Science and Analytics" << endl;
                     cout << "3. Civil Engineering" << endl;
@@ -750,7 +784,7 @@ public:
                     case 1:
                         if (check[0] != 1) {
                             skill[i][0] = "Computer Programming";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[0] = 1;
@@ -763,7 +797,7 @@ public:
                     case 2:
                         if (check[1] != 1) {
                             skill[i][0] = "Data Science and Analytics";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[1] = 1;
@@ -776,7 +810,7 @@ public:
                     case 3:
                         if (check[2] != 1) {
                             skill[i][0] = "Civil Engineering";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[2] = 1;
@@ -789,7 +823,7 @@ public:
                     case 4:
                         if (check[3] != 1) {
                             skill[i][0] = "Environmental Engineering";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[3] = 1;
@@ -802,7 +836,7 @@ public:
                     case 5:
                         if (check[4] != 1) {
                             skill[i][0] = "Materials Science";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[4] = 1;
@@ -815,7 +849,7 @@ public:
                     case 6:
                         if (check[5] != 1) {
                             skill[i][0] = "Robotics";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[5] = 1;
@@ -826,7 +860,7 @@ public:
                     case 7:
                         if (check[6] != 1) {
                             skill[i][0] = "Software Engineering";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[6] = 1;
@@ -839,7 +873,7 @@ public:
                     case 8:
                         if (check[7] != 1) {
                             skill[i][0] = "Structural Engineering";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[7] = 1;
@@ -852,7 +886,7 @@ public:
                     case 9:
                         if (check[8] != 1) {
                             skill[i][0] = "Systems Engineering";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[8] = 1;
@@ -865,7 +899,7 @@ public:
                     case 10:
                         if (check[9] != 1) {
                             skill[i][0] = "Telecommunications";
-                            cout << "Enter your expertise level: ";
+                            cout << "Rate yourself in percentage (e.g 89%): ";
                             cin >> skill[i][1];
                             i++;
                             check[9] = 1;
@@ -966,22 +1000,23 @@ public:
     {
         return city;
     }
-/*bool username_verify(string uname) {
-        for (auto& user : users) { 
+bool username_verify(string uname, vector<user> u) {
+        
+        for (auto& user : u) { 
             if (user.id == uname) {
                 return true;
             }
         }
 
         return false;
-    }*/
-    void set_user_id_and_password()
+    }
+    void set_user_id_and_password(vector<user> u)
     {
         do {
             cout << "Set Username: "<< "\t[Please remember this username to login into your account]" << endl;
             cin >> id;
-            if (1/*username_verify(id) == true*/) { cout << "Username already taken! Re-enter!" << endl; }
-        } while (/*username_verify(id)*/0);
+            if (username_verify(id, u) == true) { cout << "Username already taken! Re-enter!" << endl;}
+        } while (username_verify(id, u));
         set_password();
     }
     void set_password()
@@ -1106,7 +1141,7 @@ public:
         {
             cout << "Account was successfully created!" << endl;
             user.setter_valid_account(true);
-            user.set_user_id_and_password();
+            user.set_user_id_and_password(users);
             user.display_details("user");
             users.push_back(user); // already being pushed in main()
         }

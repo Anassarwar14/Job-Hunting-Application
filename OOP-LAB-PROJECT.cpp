@@ -1,11 +1,21 @@
 #include<iostream>
 #include<string>
+#include <conio.h>
+#include <Windows.h>
+#include <iomanip>
 #include<vector>
 //#include"user_emp.h"
 #include"admin.h"
 
 
 //vector <user> users;//used to access the user objects which would be returned from the admin
+
+void gotoxy(short x, short y) {
+	COORD pos = { x, y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
+
+
 
 string subdepartment_CS()
 {
@@ -79,12 +89,56 @@ string subdepartment_CS()
 	} while (check2 == 1);
 	return sub_depart;
 }
+void frame() {
+	system("cls");
+	int i, j, k;
+
+	SetColor(8);
+	for (i = 0; i < 25; i++) {
+		for (j = 5; j < 90; j++) {
+			gotoxy(j, i);
+			cout << " ";
+
+			if (j == 5 || j == 90 - 1) {
+					gotoxy(j, i);
+					cout << "!";
+			}
+
+			
+			if (i == 0 || i == 25 - 1) {
+				gotoxy(j, i);
+				cout << "~";
+			}
+		}
+	}
+	gotoxy(15, 3);
+	SetColor(0);//default color
+}
+
+void intro() {
+	int getch();
+
+	system("Color E7");
+	frame();
+	gotoxy(32, 6);
+	SetColor(13);
+	cout << "+++++WELCOME TO JOBAL+++++";
+	SetColor(6);
+	cout << "\n\n\n\n\t\t\t   Ready to hunt for high paying Jobs ? \n\n\t\t\t\tYou are at the right place!" << endl;
+	SetColor(3);
+	cout << "\n\n\n\t\t\t\tPress any key to continue";
+
+	getch();
+	system("cls");
+	//frame();
+}
+
 
 int main()
 {
 	vector <user> users;//used to access the user objects which would be returned from the admin
 	vector <employer> employers;
-	int choice, check1 = 0, i = 0, check2 = 0, search1, search2, search3, count = 0, userSize = 0, empSize = 0;
+	int choice, check1 = 0, i = 0, check2 = 0, search1, search2, search3, count = 0, userSize = 0, empSize = 0, incUsername = 0, getch();
 	admin a;
 	user u;
 	employer e;
@@ -93,19 +147,23 @@ int main()
 	
 
 
-
-	cout << "\t\t\t\t+++++WELCOME TO JOBAL+++++\n\n\t\t\tSearching for High paying reliable Jobs?\n\t\t\t\tYou are at the right place!" << endl;
+	intro();
 
 	do
-	{
-		cout << "\nEnter from the choice of action:\n1: Sign up as a User\n2: Sign up as an Employer\n3. Login as a User\n4. Login as an Employee \n\nPress 5 to exit" << endl;
+	{	
+		system("Color F0");
+		frame();
+		
+		cout << "Enter from the choice of action:\n\t\t1: Sign up as a User\n\t\t2: Sign up as an Employer\n\t\t3. Login as a User\n\t\t4. Login as an Employee \n\n\t\tPress 5 to exit\t\t";
 		cin >> choice;
-
+		system("cls");
 		switch (choice)
 		{
 
 		case 1:
-			cout << "-->Enter User details<--" << endl;
+			SetColor(1);
+			cout << "-->Enter User details<--\n" << endl;
+			SetColor(0);
 			u.setType("user");
 			u.user_setter(a, u.get_type());
 			a.admin_check_user(u);
@@ -115,6 +173,7 @@ int main()
 				users.push_back(u);
 
 			}
+			getch();
 			break;
 
 		case 2:
@@ -132,41 +191,43 @@ int main()
 			break;
 
 		case 3:
-			cout << "Enter Username: ";
-			cin >> user_name;
-			users = a.get_users();//////////////
+			do {
+			frame();
+			cout << "-----LOGIN-----\n\n\t\t";
+
+			users = a.get_users();
 			userSize = users.size();
 			employers = a.get_employers();
 			empSize = employers.size();
-			if (users.size() == 0)//////////////////
-			{
-				cout << "NO account of user exist" << endl;
-			}
-			else
-			{
+	
+			
+				cout << "Enter Username: ";
+				cin >> user_name;
+				incUsername = 0;
 				for (i = 0; i < userSize; i++)
 				{
-					u = users[i];
-					//cout << u.get_username() << endl;
 					if (users[i].get_username() == user_name)//check
 					{
 						count = 0;
 						do
 						{
+							gotoxy(16, 7);
 							cout << "Enter password: ";
 							cin >> password;
 							if (users[i].get_password() == password)
 							{
+								system("cls");
+								SetColor(15);
 								cout << "Hello " << users[i].get_first_name() << "! hope you are doing well" << endl;
 								do
 								{
 									check1 = 0;
-									cout << "enter 1 if you want to search for a job\n 2.see personal details" << endl;
+									cout << "1. Search for a job\n2. View Personal Info\n 3. Modify details" << endl;
 									cin >> search1;
 									switch (search1)
 									{
 									case 1:
-										cout << "enter 1 if related to computer science/IT\n2 if related to medical field\n enter 3 if from engineering" << endl;
+										cout << "1. Computer science/IT\n2. Medical\n3. Engineering" << endl;
 										cin >> search2;
 										switch (search2)
 										{
@@ -175,7 +236,7 @@ int main()
 											do
 											{
 												check2 = 0;
-												cout << "press:\n1.search by sub_department \n 2.Search by skills\n3.search by sub department and skills\n4.Show results" << endl;
+												cout << "p:\n1.Sub_Department \n 2.Search by skills\n3.search by sub department and skills\n4.Show results" << endl;
 												cin >> search3;
 												switch (search3)
 												{
@@ -185,6 +246,7 @@ int main()
 													{
 														if (employers[i].get_department() == department && employers[i].get_sub_depart() == sub_department)
 														{
+															//employers[i].displayJobs
 															employers[i].display_details(employers[i].get_type());
 															employers[i].display_employer_min_wageAND_name();
 															employers[i].display_id();
@@ -232,28 +294,34 @@ int main()
 							}
 							else
 							{
-
-								cout << "Incorrect Password!!" << endl;
-								cout << "Attempt: " << count+1 << "/3" << endl;
+								gotoxy(10, 16);
+								SetColor(4);
+								cout << "Incorrect Password!!\tAttempt: " << count + 1 << "/3" << endl;
+								SetColor(0);
 								count++;
 							}
 						} while (count < 3);
 
-
 					}
+					else { gotoxy(9, 18); SetColor(4);  cout << "Incorrect Username! Press any key to continue"; SetColor(0); incUsername = 1; getch(); }
 				}
-			}
+			}while (incUsername == 1);
+			
 			break;
-
 		case 5:
 			check1 = 1;
 			break;
 		default:
-			cout << "Invalid entry! Please enter again" << endl;
+			frame();
+			SetColor(4);
+			cout << "Invalid entry! Press any key to continue" << endl;
+			getch();
 			break;
 
 		}
 	} while (check1 == 0);
 
-
 }
+
+
+
