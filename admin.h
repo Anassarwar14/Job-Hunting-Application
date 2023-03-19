@@ -83,14 +83,14 @@ protected:
 
 public:
     static int id_number;
-    user()
+    user()//////////////////////////this will be called in employer class also!!!!!!!//but then employer cnstcr called so its fine
     {
         type = "user";
 
     }
     void display_details(string type)
     {
-        cout << type << " Details are as follows: " << endl;
+        cout << type << " details are as follows: " << endl;
         cout << "----------------------------------------" << endl;
         if (type == "user")
         {
@@ -118,8 +118,65 @@ public:
         }
 
     }
+    void modifyDetails(string type) {
+        int option;
 
-    void setType(string t) { type = t; }
+        if (type == "user") {
+            do {
+                system("cls");
+                cout << "Modify:\n1.First Name\n2.Last Name\n3.Age\n4.Email\n5.Phone Number\n6.Education"
+                     << "\n7.Academic Details\n\nPress 8 to return to main menu" << endl;
+                cin >> option;
+
+                switch (option) {
+                case 1:
+                    cout << "Set First Name: "; cin >> first_name; cout << "First Name Set to " << first_name << endl; Sleep(650);
+                    break;
+                case 2:
+                    cout << "Set Last Name: "; cin >> last_name; cout << "Last Name Set to " << last_name << endl; Sleep(650);
+                    break;
+                case 3:
+                    cout << "Set Age: "; cin >> age; cout << "Age Set to " << age << endl; Sleep(650);
+                    break;
+                case 4:
+                    cout << "Set Email: "; cin >> email; cout << "Email set to " << email << endl; Sleep(650);
+                    break;
+                case 5:
+                    cout << "Set Phone Number: "; cin >> phone_number; cout << "Phone Number set to " << phone_number << endl; Sleep(650);
+                    break;
+                case 6:
+                    cout << "Set Education: "; cin >> latest_education; cout << "Latest Education set to " << latest_education << endl; Sleep(650);
+                    break;
+                case 7:
+                    break;
+
+                case 8:
+                    break;
+                default:
+                    cout << "Invalid choice! Enter from 1 to 7" << endl; Sleep(500);
+                    break;
+                }
+            } while (option != 8);
+
+        }
+       /* else {
+            cout << ""
+        }*/
+
+        system("cls");
+    }
+
+
+
+    
+
+   /*Here, we are creating a regex object named pattern with a regular expression string as an argument. The regular expression string matches an email address that has the following format:
+   A username part consisting of one or more of the following characters: letters (a-z, A-Z), digits (0-9), and the following special characters: period (.), underscore (_), percent sign (%), plus sign (+), and hyphen (-).
+   An '@' symbol.
+   A domain name part consisting of one or more letters (a-z, A-Z), digits (0-9), hyphens (-), and periods (.) separated by hyphens (-).
+   A period (.) character.
+   A top-level domain (TLD) part consisting of two or more letters (a-z, A-Z).
+   The const keyword means that the pattern object is a constant and cannot be modified after it is initialized.*/
 
 
     void user_setter(admin& a, string type)
@@ -127,6 +184,7 @@ public:
         if (type == "user")
         {
             //id = id_number;
+           
             cout << "First name: ";
             cin >> first_name;
             cout << "Last name: ";
@@ -460,6 +518,7 @@ public:
                 {
                     check2 = 0;
                     SetColor(4);
+                    depart = "Medical";
                     cout << "\nMedical fields list:" << endl;
                     cout << "Please select an option:" << endl;
                     SetColor(0);
@@ -706,6 +765,7 @@ public:
                 do
                 {
                     SetColor(4);
+                    depart = "Engineering";
                     cout << "\nEngineering fields list:" << endl;
                     cout << "Please select an option:" << endl;
                     SetColor(0);
@@ -936,11 +996,46 @@ public:
 
     }
 
+    
+
+   
+
+    void verification_request_user(admin& a);
+    
+
+    //getters
+    string get_type()
+    {
+        return type;
+    }
+    string get_first_name()
+    {
+        return first_name;
+    }
+    string get_last_name()
+    {
+        return last_name;
+    }
     int get_age()
     {
         return age;
     }
-
+    string get_email()
+    {
+        return email;
+    }
+    string get_re_entered_email()
+    {
+        return re_check_email;
+    }
+    string get_phone_number()
+    {
+        return phone_number;
+    }
+    string get_city()
+    {
+        return city;
+    }
     string get_username()
     {
         return id;
@@ -961,46 +1056,25 @@ public:
     {
         cout << "id:" << id << endl;
     }
-
-    void verification_request_user(admin& a);
-
-    void setter_valid_account(bool a)
-    {
-        valid = a;
-    }
-    string get_type()
-    {
-        return type;
-    }
-    string get_first_name()
-    {
-        return first_name;
-    }
-    string get_last_name()
-    {
-        return last_name;
-    }
     bool get_validity()
     {
         return valid;
     }
-    string get_email()
+
+    //setters
+    void set_first_name(string fname) { first_name = fname; }
+    void set_last_name(string lname) { last_name = lname; }
+    void set_email(string em) { email = em; }
+    void set_phone_number(string ph) { phone_number = ph; }
+    void set_city(string cty) { city = cty; }
+    void setter_valid_account(bool a)
     {
-        return email;
+        valid = a;
     }
-    string get_re_entered_email()
-    {
-        return re_check_email;
-    }
-    string get_phone_number()
-    {
-        return phone_number;
-    }
-    string get_city()
-    {
-        return city;
-    }
-bool username_verify(string uname, vector<user> u) {
+    void setType(string t) { type = t; }
+
+
+    bool username_verify(string uname, vector<user> u) {
         
         for (auto& user : u) { 
             if (user.id == uname) {
@@ -1044,129 +1118,17 @@ bool username_verify(string uname, vector<user> u) {
 
 
     }
-};
 
-int user::id_number = 0;
-
-bool isEmailValid(string email) {
-    const regex pattern("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
-    return regex_match(email, pattern);
-}
-/*Here, we are creating a regex object named pattern with a regular expression string as an argument. The regular expression string matches an email address that has the following format:
-
-A username part consisting of one or more of the following characters: letters (a-z, A-Z), digits (0-9), and the following special characters: period (.), underscore (_), percent sign (%), plus sign (+), and hyphen (-).
-An '@' symbol.
-A domain name part consisting of one or more letters (a-z, A-Z), digits (0-9), hyphens (-), and periods (.) separated by hyphens (-).
-A period (.) character.
-A top-level domain (TLD) part consisting of two or more letters (a-z, A-Z).
-The const keyword means that the pattern object is a constant and cannot be modified after it is initialized.*/
-bool isPhoneNumValid(string str)
-{
-    for (int i = 0; i < str.length(); i++)
-    {
-        if (!isdigit(str[i]))
-        {
-            return false;
-        }
-    }
-    return true;
-}
-bool isNameValid(string str)
-{
-    regex pattern("[A-Za-z]+");
-    int check_vowel = 0, charr_check = 0;
-
-    // Match one or more letters
-
-    for (int i = 0; i < str.length(); i++)
-    {
-        if (isdigit(str[i]))
-        {
-            return false;
-        }
-        if (str[i] == 'a' || str[i] == 'A' || str[i] == 'e' || str[i] == 'E' || str[i] == 'i' || str[i] == 'I' || str[i] == 'o' || str[i] == 'O' || str[i] == 'u' || str[i] == 'U')
-        {
-            check_vowel = 1;
-        }
-        if (!regex_match(str, pattern)) {
-            charr_check = 1;
-        }
-    }
-   
-    if (check_vowel == 0 && charr_check == 1){return false;}
-
-    return true;
-}
-
-class admin
-{
-private:
-   vector <user> users;
-    vector <employer> employers;
-public:
-    void admin_check_employer(employer employer);
-    void admin_check_user(user user)
-    {
-
-        string email, re_entered_email, phone_num, first_name, last_name;
-        int age, re_checked_email;
-        bool check_email, check_age, phone_check, check_fname, check_lname, email_comapre_check;
-        email = user.get_email();
-        re_entered_email = user.get_re_entered_email();
-        phone_num = user.get_phone_number();
-        age = user.get_age();
-        first_name = user.get_first_name();
-        last_name = user.get_last_name();
-        check_email = isEmailValid(email);
-        re_checked_email = email.compare(re_entered_email);
-        if (re_checked_email == 0)
-        {
-            email_comapre_check = true;
-        }
-        else
-        {
-            email_comapre_check = false;
-        }
-        phone_check = isPhoneNumValid(phone_num);
-        if (age <= 15)
-        {
-            check_age = false;
-        }
-        else {
-            check_age = true;
-        }
-        check_fname = isNameValid(first_name);
-        check_lname = isNameValid(last_name);
-        if (check_email == true && email_comapre_check == true && phone_check == true && check_age == true && check_fname == true && check_lname == true)
-        {
-            cout << "Account was successfully created!" << endl;
-            user.setter_valid_account(true);
-            user.set_user_id_and_password(users);
-            user.display_details("user");
-            users.push_back(user); // already being pushed in main()
-        }
-        else
-        {
-            cout << "OoPs! An error occured while creating your account\nUser could not be aunthenticated!" << endl;
-            user.setter_valid_account(false);
-        }
-
-    }
-
-    vector<user> get_users()
-    {
-        return users;
-    }
-    vector<employer> get_employers()
-    {
-        return employers;
-    }
 
 };
+
+//int user::id_number = 0;
+
 
 class employer :public user
 {
 private:
+    vector<user> Employees;
     double min_wage;
     string company_name;
 public:
@@ -1206,6 +1168,240 @@ public:
     }
 };
 //function for user to be verified
+
+
+
+
+
+
+
+
+bool isEmailValid(string email) {
+    const regex pattern("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+    return regex_match(email, pattern);
+}
+bool isPhoneNumValid(string str)
+{
+    for (int i = 0; i < str.length(); i++)
+    {
+        if (!isdigit(str[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+bool isNameValid(string str)
+{
+    regex pattern("[A-Za-z]+");
+    int check_vowel = 0, charr_check = 0;
+
+    // Match one or more letters
+
+    for (int i = 0; i < str.length(); i++)
+    {
+        if (isdigit(str[i]))
+        {
+            return false;
+        }
+        if (str[i] == 'a' || str[i] == 'A' || str[i] == 'e' || str[i] == 'E' || str[i] == 'i' || str[i] == 'I' || str[i] == 'o' || str[i] == 'O' || str[i] == 'u' || str[i] == 'U')
+        {
+            check_vowel = 1;
+        }
+        if (!regex_match(str, pattern)) {
+            charr_check = 1;
+        }
+    }
+
+    if (check_vowel == 0 && charr_check == 1) { return false; }
+
+    return true;
+}
+
+class admin
+{
+private:
+    string email, re_entered_email, phone_num, first_name, last_name;
+    int age, re_checked_email;
+    bool check_email, check_age, phone_check, check_fname, check_lname, email_comapre_check;
+   vector <user> users;
+   vector <employer> employers;
+
+public:
+    void admin_check_employer(employer employer);
+    void admin_check_user(user user)
+    {
+
+        email = user.get_email();
+        re_entered_email = user.get_re_entered_email();
+        phone_num = user.get_phone_number();
+        age = user.get_age();
+        first_name = user.get_first_name();
+        last_name = user.get_last_name();
+        
+        check_fname = isNameValid(first_name);
+        check_lname = isNameValid(last_name);
+        check_email = isEmailValid(email);
+        re_checked_email = email.compare(re_entered_email);
+        phone_check = isPhoneNumValid(phone_num);
+
+        if (re_checked_email == 0)
+        {
+            email_comapre_check = true;
+        }
+        else
+        {
+            email_comapre_check = false;
+        }
+        
+        if (age <= 15)
+        {
+            check_age = false;
+        }
+        else {
+            check_age = true;
+        }
+
+
+        if (check_email && email_comapre_check && phone_check && check_age && check_fname && check_lname)
+        {
+            user.setter_valid_account(true);
+            user.set_user_id_and_password(users);
+            system("cls");
+            SetColor(2);  cout << "Account was successfully created!\n" << endl;  SetColor(0);
+            user.display_details("user");
+            users.push_back(user); // already being pushed in main()
+        }
+        else
+        {
+            cout << "OoPs! An error occured while creating your account\nUser could not be aunthenticated!" << endl;
+            user.setter_valid_account(false);
+        }
+
+    }
+
+
+void JobsSearch() {
+        string department, sub_department;
+        int  check2, search2 , search3;
+        cout << "1. Computer science/IT\n2. Medical\n3. Engineering" << endl;
+        cin >> search2;
+        switch (search2)
+        {
+        case 1:
+            department = "Comuter Science";
+            do
+            {
+                check2 = 0;
+                cout << "\n1.Search by Sub Department \n 2.Search by skills\n4.Show results" << endl;
+                cin >> search3;
+                switch (search3)
+                {
+                case 1:
+             /*       sub_department = subdepartment_CS();
+                    for (i = 0; i < employers.size(); i++)
+                    {
+                        if (employers[i].get_department() == department && employers[i].get_sub_depart() == sub_department)
+                        {
+                            //employers[i].displayJobs
+                            cout << "Enter "
+                            if()
+                            employers[i].display_details(employers[i].get_type());
+                            //employers[i].display_employer_min_wageAND_name();
+                            //employers[i].display_id();
+                        }
+                    }
+             */
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    for (int i = 0; i < employers.size(); i++)
+                    {
+                        if (employers[i].get_department() == department)
+                        {
+                            employers[i].display_details(employers[i].get_type());
+                            employers[i].display_employer_min_wageAND_name();
+                            employers[i].display_id();
+                        }
+                    }
+                    break;
+                default:
+                    check2 = 1;
+                    break;
+                }
+
+            } while (check2 == 1);
+
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+
+        }
+        
+}
+
+
+void login(user u) {
+        int check1, search1, getch();
+
+        system("cls");
+        SetColor(1);
+        cout << "Hello " << u.get_first_name() << "! hope you are doing well\n\n" << endl;
+        do
+        {
+            check1 = 0;
+            cout << "1. Search for a job\n2. View Account Details \n3. Modify Acccount Details\n4. Logout" << endl;
+            cin >> search1;
+
+            switch (search1)
+            {
+            case 1:
+               JobsSearch();
+                break;
+
+            case 2:
+                u.display_details("user");
+                getch();
+                system("cls");
+                break;
+
+            case 3:
+                u.modifyDetails("user");
+                break;
+
+            case 4:
+                SetColor(5); cout << "\n\t\tLogging out.."; Sleep(300); cout << "."; Sleep(500); SetColor(0);
+                check1 = 1;
+                break;
+
+            default:
+                cout << "Wrong Entry!"; Sleep(400);
+                system("cls");
+                break;
+            }
+        } while (check1 == 0);
+
+
+    }
+
+
+    vector<user> get_users()
+    {
+        return users;
+    }
+    vector<employer> get_employers()
+    {
+        return employers;
+    }
+
+};
+
+
 
 void admin::admin_check_employer(employer employer)
 {

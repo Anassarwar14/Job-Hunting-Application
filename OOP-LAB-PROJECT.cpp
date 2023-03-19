@@ -138,7 +138,7 @@ int main()
 {
 	vector <user> users;//used to access the user objects which would be returned from the admin
 	vector <employer> employers;
-	int choice, check1 = 0, i = 0, check2 = 0, search1, search2, search3, count = 0, userSize = 0, empSize = 0, incUsername = 0, getch();
+	int choice, check1 = 0, i = 0, check2 = 0, count = 0, userSize = 0, empSize = 0, incUsername = 0, getch();
 	admin a;
 	user u;
 	employer e;
@@ -161,9 +161,7 @@ int main()
 		{
 
 		case 1:
-			SetColor(1);
-			cout << "-->Enter User details<--\n" << endl;
-			SetColor(0);
+			SetColor(1); cout << "-->Enter User details<--\n" << endl; SetColor(4);
 			u.setType("user");
 			u.user_setter(a, u.get_type());
 			a.admin_check_user(u);
@@ -177,7 +175,7 @@ int main()
 			break;
 
 		case 2:
-			cout << "Enter company details: " << endl;
+			SetColor(1); cout << "-->Enter Company details<--\n" << endl; SetColor(0);
 			e.user_setter(a, e.get_type());
 			e.set_min_wage();
 			e.set_company_name();
@@ -196,15 +194,11 @@ int main()
 			cout << "-----LOGIN-----\n\n\t\t";
 
 			users = a.get_users();
-			userSize = users.size();
-			employers = a.get_employers();
-			empSize = employers.size();
-	
 			
 				cout << "Enter Username: ";
 				cin >> user_name;
 				incUsername = 0;
-				for (i = 0; i < userSize; i++)
+				for (i = 0; i < users.size(); i++)////Use userSize again if error appears
 				{
 					if (users[i].get_username() == user_name)//check
 					{
@@ -214,83 +208,11 @@ int main()
 							gotoxy(16, 7);
 							cout << "Enter password: ";
 							cin >> password;
+
 							if (users[i].get_password() == password)
 							{
-								system("cls");
-								SetColor(15);
-								cout << "Hello " << users[i].get_first_name() << "! hope you are doing well" << endl;
-								do
-								{
-									check1 = 0;
-									cout << "1. Search for a job\n2. View Personal Info\n 3. Modify details" << endl;
-									cin >> search1;
-									switch (search1)
-									{
-									case 1:
-										cout << "1. Computer science/IT\n2. Medical\n3. Engineering" << endl;
-										cin >> search2;
-										switch (search2)
-										{
-										case 1:
-											department = "Comuter Science";
-											do
-											{
-												check2 = 0;
-												cout << "p:\n1.Sub_Department \n 2.Search by skills\n3.search by sub department and skills\n4.Show results" << endl;
-												cin >> search3;
-												switch (search3)
-												{
-												case 1:
-													sub_department = subdepartment_CS();
-													for (i = 0; i < empSize; i++)
-													{
-														if (employers[i].get_department() == department && employers[i].get_sub_depart() == sub_department)
-														{
-															//employers[i].displayJobs
-															employers[i].display_details(employers[i].get_type());
-															employers[i].display_employer_min_wageAND_name();
-															employers[i].display_id();
-														}
-													}
-
-													break;
-												case 2:
-													break;
-												case 3:
-													break;
-												default:
-												case 4:
-													for (int i = 0; i < employers.size(); i++)
-													{
-														if (employers[i].get_department() == department)
-														{
-															employers[i].display_details(employers[i].get_type());
-															employers[i].display_employer_min_wageAND_name();
-															employers[i].display_id();
-														}
-													}
-													break;
-													check2 = 1;
-													break;
-
-												}
-
-											} while (check2 == 1);
-
-											break;
-										case 2:
-											break;
-										case 3:
-											break;
-
-										}
-										break;
-									default:
-										check1 = 1;
-										break;
-									}
-								} while (check1 == 1);
-
+								a.login(users[i]);
+								count = 3;
 							}
 							else
 							{
@@ -308,8 +230,10 @@ int main()
 			}while (incUsername == 1);
 			
 			break;
-		case 5:
-			check1 = 1;
+
+
+		case 4:
+
 			break;
 		default:
 			frame();
@@ -319,7 +243,7 @@ int main()
 			break;
 
 		}
-	} while (check1 == 0);
+	} while (choice != 5);
 
 }
 
