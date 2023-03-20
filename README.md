@@ -1,1 +1,1 @@
-# OOP-Lab-Project
+# JOB HUNTING APPLICATION
