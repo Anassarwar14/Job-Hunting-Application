@@ -116,7 +116,6 @@ void frame() {
 }
 
 void intro() {
-	int getch();
 
 	system("Color E7");
 	frame();
@@ -128,7 +127,7 @@ void intro() {
 	SetColor(3);
 	cout << "\n\n\n\t\t\t\tPress any key to continue";
 
-	getch();
+	_getch();
 	system("cls");
 	//frame();
 }
@@ -197,12 +196,14 @@ int main()
 			
 				cout << "Enter Username: ";
 				cin >> user_name;
-				incUsername = 0;
+
+				incUsername = 1;
 				for (i = 0; i < users.size(); i++)////Use userSize again if error appears
 				{
 					if (users[i].get_username() == user_name)//check
 					{
 						count = 0;
+						incUsername = 0;
 						do
 						{
 							gotoxy(16, 7);
@@ -212,7 +213,7 @@ int main()
 							if (users[i].get_password() == password)
 							{
 								a.login(users[i]);
-								count = 3;
+								break; //count =3;
 							}
 							else
 							{
@@ -223,10 +224,12 @@ int main()
 								count++;
 							}
 						} while (count < 3);
-
+						break;
 					}
-					else { gotoxy(9, 18); SetColor(4);  cout << "Incorrect Username! Press any key to continue"; SetColor(0); incUsername = 1; getch(); }
 				}
+
+				if(incUsername == 1){ gotoxy(9, 18); SetColor(4);  cout << "Incorrect Username! Press any key to continue"; SetColor(0); incUsername = 1; getch(); }
+
 			}while (incUsername == 1);
 			
 			break;
@@ -235,6 +238,10 @@ int main()
 		case 4:
 
 			break;
+
+		case 5://added so it doesnt go to default
+			break;
+
 		default:
 			frame();
 			SetColor(4);
