@@ -164,12 +164,7 @@ int main()
 			u.setType("user");
 			u.user_setter(a, u.get_type());
 			a.admin_check_user(u);
-			
-			if(u.get_validity() == true)
-			{
-				users.push_back(u);
 
-			}
 			getch();
 			break;
 
@@ -192,10 +187,13 @@ int main()
 			frame();
 			cout << "-----LOGIN-----\n\n\t\t";
 
+			a.readallRecord();
 			users = a.get_users();
 			
 				cout << "Enter Username: ";
 				cin >> user_name;
+				
+
 
 				incUsername = 1;
 				for (i = 0; i < users.size(); i++)////Use userSize again if error appears
