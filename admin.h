@@ -3,6 +3,9 @@
 #include<string>
 #include<vector>
 #include<regex>
+#include <sstream>
+#include <fstream>
+
 //#include"admin.h"
 //#include"employeer.h"
 
@@ -1032,8 +1035,22 @@ public:
 
     }
 
+    void writeRecord() {
+        fstream file;
 
-   
+        file.open("user.txt", ios::out | ios::app);
+
+
+        file << id << "," << password << "," << first_name << "," << last_name << "," << age << "," << latest_education << "," << email << "," << phone_number << ","
+             << city << "," << depart << "," << sub_depart << "\n";
+
+        file.close();
+
+
+    }
+    
+
+
 
     //getters
     string get_type()
@@ -1052,6 +1069,7 @@ public:
     {
         return age;
     }
+    string get_education() { return latest_education; }
     string get_email()
     {
         return email;
@@ -1097,8 +1115,18 @@ public:
     void set_first_name(string fname) { first_name = fname; }
     void set_last_name(string lname) { last_name = lname; }
     void set_email(string em) { email = em; }
+    void set_age(int a) { age = a; }
     void set_phone_number(string ph) { phone_number = ph; }
+    void set_education(string e) { latest_education = e; }
     void set_city(string cty) { city = cty; }
+    void set_sub_depart(string s)
+    {
+        sub_depart = s;
+    }
+    void set_department(string d)
+    {
+        depart = d;
+    }
     void setter_valid_account(bool a)
     {
         valid = a;
@@ -1150,6 +1178,7 @@ public:
 
 
     }
+    void set_idPass(string username, string pass) { id = username; password = pass;}//for filing
 
 
 };
@@ -1265,7 +1294,7 @@ bool isNameValid(string str)
 class admin
 {
 private:
-    string email, re_entered_email, phone_num, first_name, last_name;
+    string email, re_entered_email, phone_num, first_name, last_name, education;
     int age, re_checked_email;
     bool check_email, check_age, phone_check, check_fname, check_lname, email_comapre_check;
    vector <user> users;
@@ -1276,12 +1305,15 @@ public:
     void admin_check_user(user user)
     {
 
+        first_name = user.get_first_name();
+        last_name = user.get_last_name();
+        age = user.get_age();
+        education = user.get_education();
         email = user.get_email();
         re_entered_email = user.get_re_entered_email();
         phone_num = user.get_phone_number();
-        age = user.get_age();
-        first_name = user.get_first_name();
-        last_name = user.get_last_name();
+        
+        
         
         check_fname = isNameValid(first_name);
         check_lname = isNameValid(last_name);
@@ -1311,10 +1343,11 @@ public:
         {
             user.setter_valid_account(true);
             user.set_user_id_and_password(users);
+            user.writeRecord();
             system("cls");
             SetColor(2);  cout << "Account was successfully created!\n" << endl;  SetColor(0);
             user.display_details("user");
-            users.push_back(user); // already being pushed in main()
+            users.push_back(user); 
         }
         else
         {
@@ -1433,6 +1466,61 @@ void login(user u) {
 
     }
 
+void readallRecord() {
+    vector<string> row;
+  
+    string line, word, temp;
+
+    int i = 0, n = 0;
+
+    //counting number of records
+    fstream file("user.txt", ios::in);
+
+    while (getline(file, line)) {
+        n++; 
+    }
+
+    file.close();
+
+    users.resize(n);
+
+
+    //reading records
+    file.open("user.txt", ios::in);
+
+    while (getline(file, line)) {
+
+        row.clear();
+
+        istringstream ss(line);
+
+        while (getline(ss, word, ',')) {
+            row.push_back(word);
+
+        }
+
+
+            users[i].set_idPass(row[0], row[1]);
+            users[i].set_first_name(row[2]);
+            users[i].set_last_name(row[3]);
+            users[i].set_age(stoi(row[4]));
+            users[i].set_education(row[5]);
+            users[i].set_email(row[6]);
+            users[i].set_phone_number(row[7]);
+            users[i].set_city(row[8]);
+            users[i].set_department(row[9]);
+            users[i].set_sub_depart(row[10]);
+
+            i++;
+            
+
+    }
+}
+
+
+
+
+
 vector<user> get_users()
 {
     return users;
@@ -1442,7 +1530,6 @@ vector<employer> get_employers()
     return employers;
 }
 
-    
 
 };
 
