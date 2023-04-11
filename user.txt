@@ -1,2 +1,4 @@
-anas,anas12345,anas,sasbd,34,ewrwer,asdj@sadn.dsf,4535345,fdfdsf,Engineering,Aerospace Engineering
-xyz,xyz12345,anasd,asdbasjdb,45,sadas,asdasbdb12nwjq@sad.adf,324324324,asdasdas,Medical,Hematology
+anas,anas12345,anas,sarwar,98,bscs,anas@gmail.com,0300463731,karachi,Computer Science,Web Developer,
+huzefa,huzefa12345,huze,tayyab,99,bscs,huzefa@gmail.com,423432234,karachi,Computer Science,Cybersecurity Analyst,
+ali,ali12345,ali,soban,20,bscs,ali@gmail.com,0293092323,lahore,Medical,Neurology,Patient Care,22,Medical Terminology,44,Pharmacology,33,
+jazzy,jazzy12345,jhanzaib,afridi,29,bscs,jz@gmail.casda,21312312312,multan,Engineering,Nuclear Engineering,Time management,89,Telecommunications,22,

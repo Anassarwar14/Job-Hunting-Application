@@ -54,7 +54,7 @@ void SetColor(int ForgC)
 class user
 {
     string first_name, last_name, latest_education;
-    int age, i = 0, Domain = 0;
+    int age, i = 0, Domain = 0, num_skills = 0;
     
 
 protected:
@@ -881,10 +881,10 @@ public:
                     break;
                 }
             } while (skill_option != 12);
+
+            num_skills = i;
             break;
         }
-
-
 
     }
 
@@ -911,7 +911,7 @@ public:
         cout << "Department: " << depart << endl;
         cout << "Field: " << sub_depart << endl;
         cout << "Skills with expertise: " << endl;
-        for (int j = 0; j < i; j++) {
+        for (int j = 0; j < num_skills; j++) {
             cout << skill[j][0] << " (" << skill[j][1] << "%)" << endl;//would print only the number of skills chosen due to static i
         }
         cout << "--------------------------------------------" << endl;
@@ -976,7 +976,10 @@ public:
                     cout << "Invalid choice! Enter from 1 to 7" << endl; Sleep(500);
                     break;
                 }
+
+                updateRecord();
             } while (option != 8);
+
 
         }
         /* else {
@@ -1042,11 +1045,63 @@ public:
 
 
         file << id << "," << password << "," << first_name << "," << last_name << "," << age << "," << latest_education << "," << email << "," << phone_number << ","
-             << city << "," << depart << "," << sub_depart << "\n";
+            << city << "," << depart << "," << sub_depart << ",";
+                for (int i = 0; i < num_skills; i++) {
+                    file << skill[i][0] << "," << skill[i][1] << ",";
+                }
+                file << "\n";
 
         file.close();
 
 
+    }
+    void updateRecord() {
+        vector<string> lines;
+        string line, word;
+        int pos = 0, n = 0, i = 0;
+
+        fstream file;
+        file.open("user.txt", ios::in);
+
+        while (getline(file, line)) {
+
+            istringstream ss(line);
+
+            getline(ss, word, ',');
+            if (id == word) {
+                pos = n;
+                /*file.seekp(pos2);
+                file.write(" ", line.length()-1);
+                file << "\n";*/
+                n--;
+            }
+            else {
+                lines.push_back(line);
+            }
+
+            n++;
+        }
+
+        file.close();
+
+        
+
+        file.open("user.txt", ios::out);
+
+        i = 0;
+        while (i < n){
+
+            if (i == pos || (i == n-1 && n == pos)) {
+                file << id << "," << password << "," << first_name << "," << last_name << "," << age << "," << latest_education << "," << email << "," << phone_number << ","
+                    << city << "," << depart << "," << sub_depart << ",\n";
+            }
+
+            file << lines[i] << "\n";
+            i++;
+
+        }
+
+        file.close();
     }
     
 
@@ -1132,7 +1187,7 @@ public:
         valid = a;
     }
     void setType(string t) { type = t; }
-
+    void set_skill(string new_skill, string percent, int m) { skill[m][0] = new_skill; skill[m][1] = percent; num_skills = m+1;}
 
     bool username_verify(string uname, vector<user> u) {
         
@@ -1495,10 +1550,10 @@ void readallRecord() {
         istringstream ss(line);
 
         while (getline(ss, word, ',')) {
+
             row.push_back(word);
 
         }
-
 
             users[i].set_idPass(row[0], row[1]);
             users[i].set_first_name(row[2]);
@@ -1510,9 +1565,11 @@ void readallRecord() {
             users[i].set_city(row[8]);
             users[i].set_department(row[9]);
             users[i].set_sub_depart(row[10]);
+            for (int m = 0 , n = 11; n < row.size(); n+=2, m++) {
+                    users[i].set_skill(row[n], row[n+1], m);
+            }
 
-            i++;
-            
+            i++;        
 
     }
 }
