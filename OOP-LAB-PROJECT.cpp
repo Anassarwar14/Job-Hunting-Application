@@ -4,7 +4,6 @@
 #include <Windows.h>
 #include <iomanip>
 #include<vector>
-//#include"user_emp.h"
 #include"admin.h"
 
 
@@ -144,7 +143,8 @@ int main()
 
 	string user_name, password, department, sub_department;
 	
-
+	system("Color F0");
+	Job j;
 
 	intro();
 
@@ -167,7 +167,7 @@ int main()
 
 			getch();
 			break;
-
+			
 		case 2:
 			SetColor(1); cout << "-->Enter Company details<--\n" << endl; SetColor(0);
 			e.user_setter(a, e.get_type());
