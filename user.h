@@ -44,13 +44,16 @@ void SetColor(int ForgC)
     }
     return;
 }
-
+void gotoxy(short x, short y) {
+    COORD pos = { x, y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
 
 
 class user
 {
     string first_name, last_name, latest_education;
-    int age, i = 0, Domain = 0, num_skills = 0;
+    int age, i = 0, num_skills = 0;
 
 
 protected:
@@ -59,6 +62,7 @@ protected:
     string skill[15][2];//skill[][0] contains 'skill' skill[][1] contains 'rating'
     string depart;//e.g:CS,medical etc
     string sub_depart;//e.g datascientist
+    int Domain = 0;
     bool valid;//if 1 then valid else non valid
 
 public:
@@ -331,7 +335,7 @@ public:
                     if (check[0] != 1)
                     {
                         skill[i][0] = "Java";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[0] = 1;
@@ -348,7 +352,7 @@ public:
                     {
                         skill[i][0] = "Python";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[1] = 1;
@@ -363,7 +367,7 @@ public:
                     {
                         skill[i][0] = "JavaScript";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++; check[2] = 1;
                     }
@@ -378,7 +382,7 @@ public:
                     {
                         skill[i][0] = "C++";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[3] = 1;
@@ -393,7 +397,7 @@ public:
                     {
                         skill[i][0] = "C#";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[4] = 1;
@@ -409,7 +413,7 @@ public:
                     {
                         skill[i][0] = "PHP";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[5] = 1;
@@ -425,7 +429,7 @@ public:
                     {
                         skill[i][0] = "Swift";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[6] = 1;
@@ -441,7 +445,7 @@ public:
                     {
                         skill[i][0] = "Objective-C";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[7] = 1;
@@ -456,7 +460,7 @@ public:
                     {
                         skill[i][0] = "Kotlin";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[8] = 1;
@@ -471,7 +475,7 @@ public:
                     {
                         skill[i][0] = "Ruby";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[9] = 1;
@@ -487,7 +491,7 @@ public:
                     {
                         skill[i][0] = "Soft Skills";
 
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[10] = 1;
@@ -538,7 +542,7 @@ public:
                     if (check[0] != 1)
                     {
                         skill[i][0] = "Anatomy and Physiology";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[0] = 1;
@@ -552,7 +556,7 @@ public:
                     if (check[1] != 1)
                     {
                         skill[i][0] = "Diagnostic Imaging";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[1] = 1;
@@ -566,7 +570,7 @@ public:
                     if (check[2] != 1)
                     {
                         skill[i][0] = "Immunology";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[2] = 1;
@@ -580,7 +584,7 @@ public:
                     if (check[3] != 1)
                     {
                         skill[i][0] = "Medical Laboratory Technology";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[3] = 1;
@@ -594,7 +598,7 @@ public:
                     if (check[4] != 1)
                     {
                         skill[i][0] = "Medical Coding and Billing";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[4] = 1;
@@ -608,7 +612,7 @@ public:
                     if (check[5] != 1)
                     {
                         skill[i][0] = "Medical Terminology";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[5] = 1;
@@ -622,7 +626,7 @@ public:
                     if (check[6] != 1)
                     {
                         skill[i][0] = "Patient Care";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[6] = 1;
@@ -636,7 +640,7 @@ public:
                     if (check[7] != 1)
                     {
                         skill[i][0] = "Pharmacology";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[7] = 1;
@@ -650,7 +654,7 @@ public:
                     if (check[8] != 1)
                     {
                         skill[i][0] = "Surgical Technology";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[8] = 1;
@@ -664,7 +668,7 @@ public:
                     if (check[9] != 1)
                     {
                         skill[i][0] = "Vital Signs";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[9] = 1;
@@ -678,7 +682,7 @@ public:
                     if (check[10] != 1)
                     {
                         skill[i][0] = "Soft skill";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[10] = 1;
@@ -729,7 +733,7 @@ public:
                 case 1:
                     if (check[0] != 1) {
                         skill[i][0] = "Pressure Management";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[0] = 1;
@@ -742,7 +746,7 @@ public:
                 case 2:
                     if (check[1] != 1) {
                         skill[i][0] = "Technical Writing";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[1] = 1;
@@ -755,7 +759,7 @@ public:
                 case 3:
                     if (check[2] != 1) {
                         skill[i][0] = "Project Management";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[2] = 1;
@@ -768,7 +772,7 @@ public:
                 case 4:
                     if (check[3] != 1) {
                         skill[i][0] = "Computer Programming";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[3] = 1;
@@ -781,7 +785,7 @@ public:
                 case 5:
                     if (check[4] != 1) {
                         skill[i][0] = "Materials Science";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[4] = 1;
@@ -794,7 +798,7 @@ public:
                 case 6:
                     if (check[5] != 1) {
                         skill[i][0] = "Research & Critical Reasoning";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[5] = 1;
@@ -807,7 +811,7 @@ public:
                 case 7:
                     if (check[6] != 1) {
                         skill[i][0] = "Data Science and Analytics";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[6] = 1;
@@ -820,7 +824,7 @@ public:
                 case 8:
                     if (check[7] != 1) {
                         skill[i][0] = "Leadership";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[7] = 1;
@@ -833,7 +837,7 @@ public:
                 case 9:
                     if (check[8] != 1) {
                         skill[i][0] = "Interpersonal Communication";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[8] = 1;
@@ -846,7 +850,7 @@ public:
                 case 10:
                     if (check[9] != 1) {
                         skill[i][0] = "Telecommunications";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[9] = 1;
@@ -859,7 +863,7 @@ public:
                 case 11:
                     if (check[10] != 1) {
                         skill[i][0] = "Time management";
-                        cout << "Rate yourself in percentage (e.g 89%): ";
+                        cout << "Rate it in percentage (e.g 89%): ";
                         cin >> skill[i][1];
                         i++;
                         check[10] = 1;
@@ -887,12 +891,13 @@ public:
 
 
 
-    void display_details(string type)
+    virtual void display_details(string type)
     {
-        cout << type << " details are as follows: " << endl;
-        cout << "--------------------------------------------" << endl;
+        
         if (type == "user")
         {
+            cout << type << " details are as follows: " << endl;
+            cout << "--------------------------------------------" << endl;
             cout << "->PROFILE<-" << endl;
             cout << "First Name: " << first_name << endl;
             cout << "Last Name: " << last_name << endl;
@@ -906,11 +911,16 @@ public:
 
         cout << "Department: " << depart << endl;
         cout << "Field: " << sub_depart << endl;
-        cout << "Skills with expertise: " << endl;
-        for (int j = 0; j < num_skills; j++) {
-            cout << skill[j][0] << " (" << skill[j][1] << "%)" << endl;//would print only the number of skills chosen due to static i
+
+        if (type == "user") {
+            cout << "Skills with expertise: " << endl;
+            for (int j = 0; j < num_skills; j++) {
+                cout << skill[j][0] << " (" << skill[j][1] << "%)" << endl;//would print only the number of skills chosen due to static i
+            }
+            cout << "--------------------------------------------" << endl;
         }
-        cout << "--------------------------------------------" << endl;
+       
+       
 
 
     }
@@ -945,7 +955,7 @@ public:
                     break;
                 case 7:
                     system("cls");
-                    cout << "Choose from:\n" << "1:Domain\n2:Field\n3:Skills" << endl; cin >> option;
+                    cout << "Choose from:\n" << "1:Domain\n2:Field\n3:Skills\n\n[Note]: Changing the Domain would\n\trequire a change in all three" << endl; cin >> option;
                     switch (option) {
                     case 1:
                         SelectDomain();
@@ -959,7 +969,6 @@ public:
                     case 3:
                         i = 0;
                         string_setter_to_A(skill);
-                        SelectDomain();
                         SelectSkills();
                         break;
                     }
@@ -987,7 +996,7 @@ public:
     }
 
 
-    void user_setter(admin& a, string type)
+    virtual void user_setter(admin& a)
     {
         if (type == "user")
         {
@@ -1004,17 +1013,11 @@ public:
 
             cout << "Minimum Education: ";
             cin >> latest_education;
-            cout << "City: ";
-            cin >> city;
 
         }
-        else {
-            /*     employer * e = dynamic_cast<Employee*>(this);
-                 cout << "Company Name: ";
-                 cin >> e.setName();
-            */
-        }
 
+        cout << "Location(city): ";
+        cin >> city;
         do {
             cout << "Enter email: ";
             cin >> email;
@@ -1032,11 +1035,13 @@ public:
         cout << "-->Enter Academic Details<--\n" << endl;
         SelectDomain();
         SelectField();
-        SelectSkills();
+        if (type == "user") {
+            SelectSkills();
+        }
 
     }
 
-    void writeRecord() {
+    virtual void writeRecord() {
         fstream file;
 
         file.open("user.txt", ios::out | ios::app);
@@ -1068,9 +1073,6 @@ public:
             getline(ss, word, ',');
             if (id == word) {
                 pos = n;
-                /*file.seekp(pos2);
-                file.write(" ", line.length()-1);
-                file << "\n";*/
                 n--;
             }
             else {
@@ -1091,8 +1093,15 @@ public:
 
             if (i == pos || (i == n - 1 && n == pos)) {
                 file << id << "," << password << "," << first_name << "," << last_name << "," << age << "," << latest_education << "," << email << "," << phone_number << ","
-                    << city << "," << depart << "," << sub_depart << ",\n";
+                    << city << "," << depart << "," << sub_depart << ",";
+
+                for (int a = 0; a < num_skills; a += 2) {
+                    file << skill[a][0] << "," << skill[a][1] << ",";
+                }
+                file << "\n";
             }
+
+            
 
             file << lines[i] << "\n";
             i++;
@@ -1179,6 +1188,9 @@ public:
     void set_department(string d)
     {
         depart = d;
+        if (depart == "Computer Science") { Domain = 1; }
+        if (depart == "Medical") { Domain = 2; }
+        if (depart == "Engineering") { Domain = 3; }
     }
     void setter_valid_account(bool a)
     {
@@ -1187,7 +1199,7 @@ public:
     void setType(string t) { type = t; }
     void set_skill(string new_skill, string percent, int m) { skill[m][0] = new_skill; skill[m][1] = percent; num_skills = m + 1; }
 
-    bool username_verify(string uname, vector<user> u) {
+    virtual bool username_verify(string uname, vector<user> u) {
 
         for (auto& user : u) {
             if (user.id == uname) {
@@ -1197,13 +1209,15 @@ public:
 
         return false;
     }
-    void set_user_id_and_password(vector<user> u)
+    virtual void set_user_id_and_password(vector<user> u)
     {
+        bool flag;
         do {
+            flag = 0;
             cout << "Set Username: " << "\t[Please remember this username to login into your account]" << endl;
             cin >> id;
-            if (username_verify(id, u) == true) { cout << "Username already taken! Re-enter!" << endl; }
-        } while (username_verify(id, u));
+            if (username_verify(id, u) == true) { cout << "Username already taken! Re-enter!" << endl; flag = 1; }
+        } while (flag == 1);
         set_password();
     }
     void set_password()
@@ -1241,33 +1255,205 @@ public:
 
 
 
+class Job {
+    vector <user> applicants;
+    vector <user> hired;
+
+public:
+    string Name, Description, Job_skills[5][2], responsibilities[6];
+    user temp; //skill selecter
+    int experience, min_salary, max_salary, hiredEmployees, available_openings, num_applicants, num_skills, num_res;
+    int JobID;
+    static int TotalJobs;
+
+
+    Job(){//needed to make vector in admin
+        TotalJobs++;
+    } 
+    Job(int EmpDomain) {
+        JobID = ++TotalJobs;
+        cout << "\n->Enter Job Details<-\n";
+        cout << "Job Title: ";
+        cin.ignore();
+        getline(cin, Name);
+        cout << "Job Description: ";
+        getline(cin, Description);
+
+        cout << "\nList skills required for the Job: \n"; Sleep(650);
+
+        temp.Domain = EmpDomain;
+        string_setter_to_A(temp.skill);
+        temp.SelectSkills();
+        for (int i = 0; i < 5; i++) {
+            if (temp.skill[i][0] != "A") {
+                Job_skills[i][0] = temp.skill[i][0];
+                Job_skills[i][1] = temp.skill[i][1];
+                num_skills++;
+            }
+        }
+
+        cout << "Job Responsibilites: " << endl;
+        for (int i = 0; i < 6; i++) {
+            cout << "#" << i + 1 << endl;
+            cin.ignore();
+            getline(cin, responsibilities[i]);
+            num_res++;
+            cout << "\nPress S to submit or any key to continue" << endl;
+            char end = _getch();
+            if (end == 'S' || end == 's') { break; }
+        }
+
+
+        cout << "Experience required (in years): ";
+        cin >> experience;
+        cout << "Salary Range(Enter minimum & maximum): ";
+        cin >> min_salary >> max_salary;
+        cout << endl;
+        available_openings = 5 - hiredEmployees;
+    }
+
+
+    void displayJob() {
+        cout << Name << endl << Description << endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
+    }
+
+
+    void JobDatatoFile() {
+        fstream file;
+        file.open("Jobs.txt", ios::out | ios::app);
+
+        file << JobID << "," << Name << "," << Description << "," << experience << ","
+            << min_salary << "," << max_salary << "," << available_openings << ",";
+        for (int j = 0; j < 5; j++) {
+                file << Job_skills[j][0] << "," << Job_skills[j][1] << ",";
+        }
+
+   
+        for (int j = 0; j < 6; j++) {
+                file << responsibilities[j] << ",";
+        }
+
+
+        file << "[";
+        for (int j = 0; j < hiredEmployees; j++) {
+                file << hired[j].get_username() << ",";
+        }
+        file << "]";
+
+        file << "^";
+        for (int j = 0; j < num_applicants; j++) {
+            file << applicants[j].get_username() << ",";
+        }
+        file << "^" << "," << "\n";
+    
+        file.close();
+    }
+
+
+
+    //friend void displayJobs(vector<Job> Jobs);
+    
+   /* void displayJobs(vector<Job> jobs) {
+        for (int i = 0; i < jobs.size(); i++) {
+            cout << jobs[i].Name << "\t\t\t\t\n";
+        }
+
+
+        for (int i = 0; i < jobs.size(); i++) {
+            cout << "Salary: " << jobs[i].min_salary + "-" + jobs[i].max_salary << "\t";
+        }
+        cout << endl;
+
+        for (int i = 0; i < jobs.size(); i++) {
+            cout << "Location: " << jobs[i].location << "\t";
+        }
+        cout << endl;
+
+        for (int i = 0; i < jobs.size(); i++) {
+            cout << "Requirements: " << jobs[i].requirements << "\t";
+        }
+        cout << endl;
+
+
+        cout << Name << endl << Description << endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
+    }*/
+
+    //setters
+    void setJobID(int id) {
+        JobID = id;
+    }
+    void setTitle(string t) {
+        Name = t;
+    }
+    void setDec(string d) {
+        Description = d;
+    }
+    void setExp(int exp) {
+        experience = exp;
+    }
+    void setMinMax(int min, int max) {
+        min_salary = min;
+        max_salary = max;
+    }
+    void setOpenings(int o) {
+        available_openings = o;
+    }
+    void set_skill(string new_skill, string percent, int m) { Job_skills[m][0] = new_skill; Job_skills[m][1] = percent; num_skills = m + 1; }
+    void addApplicant(user app) {
+        applicants.push_back(app);
+    }
+    void addHired(user hire) {
+        hired.push_back(hire);
+    }
+
+    //getters
+    user getHired(int h) {
+        return hired[h];
+    }
+
+};
+
+int Job::TotalJobs = 0;
+
+
 class employer :public user
 {
 private:
     vector<user> Employees;
-    //Job * Jobs[15];
     double min_wage;
     string company_name;
+    int countJob;
+
 public:
+    Job * Jobs[15];
     employer()
     {
         type = "employer";
+        countJob = 0;
+        min_wage = 0.0;
     }
-    /* void set_id_and_password_employer() //use user class func will work fine IA
-     {
-         id = company_name + "_" + id_num;
-         set_password();
-     }*/
-    void set_min_wage()
+
+
+    void display_details(string type) {
+        cout << "--------------------------------------------" << endl;
+        cout << "->PROFILE<-" << endl;
+        cout << "Company Name: " << company_name << endl;
+        user::display_details("Employer");
+
+        cout << "--------------------------------------------" << endl;
+    }
+
+    //setters
+    void set_company_name(string name)
     {
-        cout << "Enter minimum salary being offered: " << endl;
-        cin >> min_wage;
+        company_name = name;
     }
-    void set_company_name()
+    void set_min_wage(double x)
     {
-        cout << "Enter Company Name: ";
-        cin >> company_name;
+        min_wage = x;
     }
+
+    //getters
     double get_min_wage()
     {
         return min_wage;
@@ -1282,12 +1468,120 @@ public:
         cout << "Company name: " << company_name << endl;
         cout << "-------------------------------------------------" << endl;
     }
-
+   
     
-    //JobPost() new Job(xyz) 15 jobs limit
-    // i++;
-    //
-    // Jobs[i] = new Job()
+    void user_setter(admin& a) {
+        cout << "Company or Organization Name: ";
+        cin >> company_name;
+        user::user_setter(a);
+        cout << "Enter Minimum Salary Offered: " << endl;
+        cin >> min_wage;
+
+    }
+    bool username_verify(string uname, vector<employer> e) {
+
+        for (auto& employer : e) {
+            if (employer.id == uname) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    void set_user_id_and_password(vector<employer> e)
+    {
+        bool flag;
+        do {
+            flag = 0;
+            cout << "Set Username: " << "\t[Please remember this username to login into your account]" << endl;
+            cin >> id;
+            if (username_verify(id, e) == true) { cout << "Username already taken! Re-enter!" << endl; flag = 1; }
+        } while (flag == 1);
+        set_password();
+    }
+
+    void writeRecord() {
+        fstream file;
+
+        file.open("employer.txt", ios::out | ios::app);
+
+
+        file << id << "," << password << "," << company_name << "," << email << "," << phone_number << ","
+            << city << "," << depart << "," << sub_depart << ",";
+        //for (int y = 0; y < 30; y++) {
+        //    file << " "; //leaving space for job id insertion
+        //}
+
+        file << "\n";
+
+        file.close();
+
+
+    }
+
+
+
+    void JobPost() {
+        string line, word;
+
+        if (countJob < 15) {
+            Jobs[countJob] = new Job(Domain);
+
+ 
+            fstream inFile("employer.txt", ios::in | ios::out);
+            ofstream outFile("temp.txt");
+
+            string line;
+
+            while (getline(inFile, line)) {
+               
+                istringstream ss(line);
+
+                outFile << line;
+
+                getline(ss, word, ',');
+                if (word == id) {
+                    outFile << Jobs[countJob]->JobID << ",";
+                }
+                
+                
+                outFile << "\n";
+                 
+                
+            }
+
+            inFile.close();
+            outFile.close();
+
+            remove("employer.txt");
+            rename("temp.txt", "employer.txt");
+
+
+            Jobs[countJob++]->JobDatatoFile();
+        }
+        
+    }
+
+
+    void addJobEmployees(Job job) {
+        countJob++;
+        for (int i = 0; i < job.hiredEmployees; i++) {
+            Employees.push_back(job.getHired(i));
+        }
+        
+    }
+
+
+    void displayJobs() {
+        for (int i = 0, x = 0, y = 0; i < countJob; i++, x += 15) {
+            //gotoxy(x, y);
+            cout << "$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$\n";
+            Jobs[i]->displayJob();
+            cout << "$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$\n\n";
+            //if (y > 5) { y += 10; }
+        }
+    }
+
     //HireEmployee(); check that employee not already there
     // for(i < countJob){}
     // Employees.pushback(u)
@@ -1295,53 +1589,4 @@ public:
     
 };
 
-class Job {
-    string Name, Description, Job_skills[5], responsibilities[6];
-    user applicants[10];
-    user hired[5];
-    user temp; //skill selecter
-    int experience, min_salary, max_salary, hiredEmployees, available_openings;
 
-public:
-
-
-    Job() {
-        cout << "\n->Enter Job Details<-\n";
-        cout << "Job Title: ";
-        cin >> Name;
-        cout << "Job Description: ";
-        cin >> Description;
-        cout << "List skills required for the Job: \n";
-
-        temp.SelectDomain();
-        temp.SelectSkills();
-        for (int i = 0; i < 5; i++) {
-            if (temp.skill[i][0] != "A") {
-                Job_skills[i] = temp.skill[i][0];
-            }
-        }
-        
-        cout << "Job Responsibilites: " << endl;
-        for (int i = 0; i < 6; i++) {
-            cout << "#" << i + 1 << endl;
-            cin >> responsibilities[i];
-            cout << "\n\nPress S to submit or any key to continue" << endl;
-            char end = _getch();
-            if (end == 'S' || end == 's') { break; }
-        }
-
-
-        cout << "Experience required (in years): ";
-        cin >> experience;
-        cout << "Salary Range(Enter minimum & maximum): ";
-        cin >> min_salary >> max_salary;
-
-        available_openings = 5 - hiredEmployees;
-       
-    }
-
-
-
-
-
-};

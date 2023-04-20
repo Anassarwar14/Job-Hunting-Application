@@ -66,14 +66,20 @@ bool isNameValid(string str)
 
 class admin
 {
-private:
-    string email, re_entered_email, phone_num, first_name, last_name, education;
-    int age, re_checked_email;
-    bool check_email, check_age, phone_check, check_fname, check_lname, email_comapre_check;
+   string email, re_entered_email, phone_num, first_name, last_name, education;
+   int age, re_checked_email;
+   bool check_email, check_age, phone_check, check_fname, check_lname, email_comapre_check;
    vector <user> users;
    vector <employer> employers;
+   vector <Job> Jobs;
 
 public:
+    admin() {
+        readUserRecord();
+        readJobRecord();
+        readEmployerRecord();
+    }
+
     void admin_check_employer(employer employer);
     void admin_check_user(user user)
     {
@@ -131,101 +137,174 @@ public:
     }
 
 
+  /* void displayJobs() {
+        for (int i = 0; i < Jobs.size(); i++) {
+            cout << Jobs[i].Name << "\t\t\t\t\n";
+        }
+
+
+        for (int i = 0; i < Jobs.size(); i++) {
+            cout << "Salary: " << Jobs[i].min_salary + "-" + Jobs[i].max_salary << "\t";
+        }
+        cout << endl;
+
+        for (int i = 0; i < Jobs.size(); i++) {
+            cout << "Location: " << Jobs[i].location << "\t";
+        }
+        cout << endl;
+
+        for (int i = 0; i < Jobs.size(); i++) {
+            cout << "Requirements: " << Jobs[i].requirements << "\t";
+        }
+        cout << endl;
+
+
+        cout << Name << endl << Description << endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
+    }*/
+
+
 void JobsSearch() {
         string department, sub_department;
-        int  check2, search2 , search3;
-        cout << "1. Computer science/IT\n2. Medical\n3. Engineering" << endl;
-        cin >> search2;
-        switch (search2)
+        int  check2, search , search2, x = 0, y = 0;
+
+        employer e;
+       /* e.JobPost();
+        e.JobPost();
+        e.JobPost();*/
+
+        employers.push_back(e);
+
+        cout << "Search:\n1. By Industry\n2. By Sub Field\n3. By City\n4. By Skills\n5. By Comapany" << endl;
+        cin >> search;
+        switch (search)
         {
         case 1:
-            department = "Comuter Science";
-            do
+            cout << "1. Computer science/IT\n2. Medical\n3. Engineering" << endl;
+            cin >> search2;
+            system("cls");
+
+            for (int i = 0; i < employers.size(); i++)
+            {
+               //employers[i].displayJobs();
+                if (employers[i].get_department() == "Computer Science" && search2 == 1) {
+                    employers[i].displayJobs();
+                }
+                else if (employers[i].get_department() == "Medical" && search2 == 2) {
+                    employers[i].displayJobs();
+                }
+                else if (employers[i].get_department() == "Engineering" && search2 == 3) {
+                    employers[i].displayJobs();
+                }
+
+            }
+
+            //department = "Comuter Science";
+           /* do
             {
                 check2 = 0;
-                cout << "\n1.Search by Sub Department \n 2.Search by skills\n4.Show results" << endl;
+
                 cin >> search3;
                 switch (search3)
                 {
                 case 1:
-             /*       sub_department = subdepartment_CS();
-                    for (i = 0; i < employers.size(); i++)
-                    {
-                        if (employers[i].get_department() == department && employers[i].get_sub_depart() == sub_department)
-                        {
-                            //employers[i].displayJobs()
-                            cout << "Enter "
-                            if()
-                            employers[i].display_details(employers[i].get_type());
-                            //employers[i].display_employer_min_wageAND_name();
-                            //employers[i].display_id();
-                        }
-                    }
-             */
                     break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    for (int i = 0; i < employers.size(); i++)
-                    {
-                        if (employers[i].get_department() == department)
-                        {
-                            employers[i].display_details(employers[i].get_type());
-                            employers[i].display_employer_min_wageAND_name();
-                            employers[i].display_id();
-                        }
-                    }
-                    break;
-                default:
-                    check2 = 1;
-                    break;
-                }
 
-            } while (check2 == 1);
+                case 2:*/
+                /*       sub_department = subdepartment_CS();
+                       for (i = 0; i < employers.size(); i++)
+                       {
+                           if (employers[i].get_department() == department && employers[i].get_sub_depart() == sub_department)
+                           {
+                               //employers[i].displayJobs()
+                               cout << "Enter "
+                               if()
+                               employers[i].display_details(employers[i].get_type());
+                               //employers[i].display_employer_min_wageAND_name();
+                               //employers[i].display_id();
+                           }
+                       }
+                */
+                /* break;
 
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
+             case 3:
+                 break;
+             case 4:
+                 for (int i = 0; i < employers.size(); i++)
+                 {
+                     if (employers[i].get_department() == department)
+                     {
+                         employers[i].display_details(employers[i].get_type());
+                         employers[i].display_employer_min_wageAND_name();
+                         employers[i].display_id();
+                     }
+                 }
+                 break;
+             default:
+                 check2 = 1;
+                 break;
+             }
 
+         } while (search != 4);
+
+         break;
+     case 2:
+         break;
+     case 3:
+         break;
+
+     }
+     */
         }
-        
 }
 
-void login(user u) {
+void login(user * u) {
         int check1, search1, getch();
 
         system("cls");
         SetColor(1);
-        cout << "Hello " << u.get_first_name() << "! hope you are doing well\n\n" << endl;
+        cout << "Hello " << u->get_first_name() << "! Welcome to this Wonderful Platform\n\nThe Hunt Begins!\n" << endl;
+        SetColor(13);
         do
         {
             check1 = 0;
-            cout << "1. Search for a job\n2. View Account Details \n3. Modify Acccount Details\n4. Logout" << endl;
+            if (u->get_type() == "user") {
+                cout << "1. Search For A Job";
+            }
+            else {
+                cout << "1. Post A Job";
+            }
+            cout << "\n\n2. View Account Details\n\n3. Modify Acccount Details\n\n4. Logout\n" << endl;
             cin >> search1;
 
             switch (search1)
             {
             case 1:
-               JobsSearch();
+                if (u->get_type() == "user") {
+                    JobsSearch();
+                }
+                else {
+                    if (employer* e = dynamic_cast<employer*>(u)) { //needed to call jobpost(), only present in child class(employer)
+                        e->JobPost();
+                    }
+                    else {
+                        cout << "Dynamic cast error"; getch();
+                    }
+                }
                 break;
 
             case 2:
-                u.display_details("user");
+                u->display_details(u->get_type());
                 getch();
                 system("cls");
                 break;
 
             case 3:
-                u.modifyDetails("user");
+                u->modifyDetails(u->get_type());
                 break;
 
             case 4:
                 SetColor(5); cout << "\n\t\t\t\t\tLogging out.."; Sleep(300); cout << "."; Sleep(500); SetColor(0);
-                check1 = 1;
+               // check1 = 1;
                 break;
 
             default:
@@ -233,15 +312,14 @@ void login(user u) {
                 system("cls");
                 break;
             }
-        } while (check1 == 0);
+        } while (search1 != 4);
 
+ }
 
-    }
-
-void readallRecord() {
+void readUserRecord() {
     vector<string> row;
   
-    string line, word, temp;
+    string line, word;
 
     int i = 0, n = 0;
 
@@ -291,6 +369,146 @@ void readallRecord() {
     }
 }
 
+void readEmployerRecord() {
+        vector<string> row;
+
+        string line, word;
+
+        int i = 0, n = 0;
+
+        //counting number of records
+        fstream file("employer.txt", ios::in);
+
+        while (getline(file, line)) {
+            n++;
+        }
+
+        file.close();
+
+        employers.resize(n);
+
+
+        //reading records
+        file.open("employer.txt", ios::in);
+
+        while (getline(file, line)) {
+
+            row.clear();
+
+            istringstream ss(line);
+
+            while (getline(ss, word, ',')) {
+
+                row.push_back(word);
+
+            }
+
+            employers[i].set_idPass(row[0], row[1]);
+            employers[i].set_company_name(row[2]);
+            employers[i].set_email(row[3]);
+            employers[i].set_phone_number(row[4]);
+            employers[i].set_city(row[5]);
+            employers[i].set_department(row[6]);
+            employers[i].set_sub_depart(row[7]);
+            
+            for (int m = 8; m < row.size(); m++) {//finding jobs that match particular employer and adding in its object
+                for (auto& Job : Jobs) {
+                        if (Job.JobID == stoi(row[m])) {
+                            employers[i].Jobs[m - 8] = &Job;
+                            employers[i].addJobEmployees(Job);
+                        }
+                }
+            }
+            
+            i++;
+
+        }
+}
+
+void readJobRecord() {
+    vector<string> row;
+
+    string line, word;
+
+    int i = 0, n = 0;
+
+    //counting number of records
+    fstream file("Jobs.txt", ios::in);
+
+    while (getline(file, line)) {
+        n++;
+    }
+
+    file.close();
+
+    Jobs.resize(n);
+
+
+    //reading records
+    file.open("Jobs.txt", ios::in);
+
+    while (getline(file, line)) {
+
+        row.clear();
+
+        istringstream ss(line);
+
+        while (getline(ss, word, ',')) {
+
+            row.push_back(word);
+
+        }
+
+        Jobs[i].setJobID(stoi(row[0]));
+        Jobs[i].setTitle(row[1]);
+        Jobs[i].setDec(row[2]);
+        Jobs[i].setExp(stoi(row[3]));
+        Jobs[i].setMinMax(stoi(row[4]), stoi(row[5]));
+        Jobs[i].setOpenings(stoi(row[6]));
+        
+        for (int m = 0, n = 7; n < 12; n+=2, m++) {
+            if (row[n] != "") {
+                Jobs[i].set_skill(row[n], row[n + 1], m);
+            }
+        }
+
+        for (int n = 12; n < 17; n++) {
+            if (row[n] != "") {
+                Jobs[i].responsibilities[n-12] = row[n];
+                Jobs[i].num_res++;
+            }
+        }
+
+        int pos1 = line.find("[");
+        int pos2 = line.find("]");
+        string hiredStr = line.substr(pos1 + 1, pos2 - pos1 - 1);
+        istringstream ss2(hiredStr);
+
+            while (getline(ss2, hiredStr, ',')) {
+                for (auto& user : users) {
+                    if (user.get_username() == hiredStr) {
+                        Jobs[i].addHired(user);
+                    }
+                }
+            }
+
+            int pos3 = line.find("^", pos2);
+            string AppStr = line.substr(pos2 + 2, pos3 - pos2 - 2);
+            istringstream ss3(AppStr);
+
+            while (getline(ss3, AppStr, ',')) {
+                for (auto& user : users) {
+                    if (user.get_username() == AppStr) {
+                        Jobs[i].addApplicant(user);
+                    }
+                }
+            }
+
+
+        i++;
+
+    }
+}
 
 
 vector<user> get_users()
@@ -344,18 +562,19 @@ void admin::admin_check_employer(employer employer)
 
 
     if (check_email1 == true && check_min_wage == true && email_comapre_check1 == true && phone_check1 == true){
-        cout << "Account was successfully created!" << endl;
 
-        employer_check1 = true;
-        employer.setter_valid_account(employer_check1);
- //       employer.set_user_id_and_password(employers);
+        employer.setter_valid_account(true);
+        employer.set_user_id_and_password(employers);
+        employer.writeRecord();
+        system("cls");
+        SetColor(2);  cout << "Account was successfully created!\n" << endl;  SetColor(0);
+        employer.display_details("user");
         employers.push_back(employer);
     }
 
     else{
         cout << "OoPs! An error occured while creating your account\nUser could not be aunthenticated!" << endl;
-        employer_check1 = false;
-        employer.setter_valid_account(employer_check1);
+        employer.setter_valid_account(false);
     }
 
 }

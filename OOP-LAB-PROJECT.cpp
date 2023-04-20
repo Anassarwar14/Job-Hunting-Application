@@ -9,11 +9,6 @@
 
 //vector <user> users;//used to access the user objects which would be returned from the admin
 
-void gotoxy(short x, short y) {
-	COORD pos = { x, y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
-
 
 
 string subdepartment_CS()
@@ -119,11 +114,11 @@ void intro() {
 	system("Color E7");
 	frame();
 	gotoxy(32, 6);
-	SetColor(13);
+	SetColor(5);
 	cout << "+++++WELCOME TO JOBAL+++++";
-	SetColor(6);
+	SetColor(1);
 	cout << "\n\n\n\n\t\t\t   Ready to hunt for high paying Jobs ? \n\n\t\t\t\tYou are at the right place!" << endl;
-	SetColor(3);
+	SetColor(8);
 	cout << "\n\n\n\t\t\t\tPress any key to continue";
 
 	_getch();
@@ -137,23 +132,27 @@ int main()
 	vector <user> users;//used to access the user objects which would be returned from the admin
 	vector <employer> employers;
 	int choice, check1 = 0, i = 0, check2 = 0, count = 0, userSize = 0, empSize = 0, incUsername = 0, getch();
+	char _end = 'e';
 	admin a;
 	user u;
 	employer e;
 
 	string user_name, password, department, sub_department;
 	
-	system("Color F0");
-	Job j;
-
+	
+	//Job j;
+	//system("cls");
+	//j.displayJob();
+	//_getch();
+	
 	intro();
-
+	
 	do
 	{	
 		system("Color F0");
 		frame();
 		
-		cout << "Enter from the choice of action:\n\t\t1: Sign up as a User\n\t\t2: Sign up as an Employer\n\t\t3. Login as a User\n\t\t4. Login as an Employee \n\n\t\tPress 5 to exit\t\t";
+		cout << "Enter from the choice of action:\n\t\t1: Sign up as a User\n\t\t2: Sign up as an Employer\n\t\t3: Login as a User\n\t\t4: Login as an Employer \n\n\t\tPress 5 to exit\t\t";
 		cin >> choice;
 		system("cls");
 		switch (choice)
@@ -161,25 +160,19 @@ int main()
 
 		case 1:
 			SetColor(1); cout << "-->Enter User details<--\n" << endl; SetColor(4);
-			u.setType("user");
-			u.user_setter(a, u.get_type());
+			//u.setType("user");
+			u.user_setter(a);
 			a.admin_check_user(u);
-
 			getch();
+
 			break;
 			
 		case 2:
 			SetColor(1); cout << "-->Enter Company details<--\n" << endl; SetColor(0);
-			e.user_setter(a, e.get_type());
-			e.set_min_wage();
-			e.set_company_name();
+			e.user_setter(a);
 			a.admin_check_employer(e);
-			if (e.get_validity() == true)
-			{
-				employers.push_back(e);
-				e.display_details(e.get_type());
-				e.display_employer_min_wageAND_name();
-			}
+			getch();
+
 			break;
 
 		case 3:
@@ -187,7 +180,6 @@ int main()
 			frame();
 			cout << "-----LOGIN-----\n\n\t\t";
 
-			a.readallRecord();
 			users = a.get_users();
 			
 				cout << "Enter Username: ";
@@ -210,7 +202,7 @@ int main()
 
 							if (users[i].get_password() == password)
 							{
-								a.login(users[i]);
+								a.login(&users[i]);
 								break; //count =3;
 							}
 							else
@@ -226,14 +218,65 @@ int main()
 					}
 				}
 
-				if(incUsername == 1){ gotoxy(9, 18); SetColor(4);  cout << "Incorrect Username! Press any key to continue"; SetColor(0); incUsername = 1; getch(); }
+				if (incUsername == 1) {
+					gotoxy(9, 18); SetColor(4);  cout << "Incorrect Username! Press any key to continue\n\n\n\t ";
+					SetColor(8); cout << "Press 'B' to return"; _end = toupper(getch());
+				}
 
-			}while (incUsername == 1);
+			}while (_end != 'B' && incUsername == 1);
 			
 			break;
 
 
 		case 4:
+			do {
+				frame();
+				cout << "-----LOGIN-----\n\n\t\t";
+
+				employers = a.get_employers();
+
+				cout << "Enter Username: ";
+				cin >> user_name;
+
+
+				incUsername = 1;
+				for (i = 0; i < employers.size(); i++)////Use userSize again if error appears
+				{
+					if (employers[i].get_username() == user_name)//check
+					{
+						count = 0;
+						incUsername = 0;
+						do
+						{
+							gotoxy(16, 7);
+							cout << "Enter password: ";
+							cin >> password;
+
+							if (employers[i].get_password() == password)
+							{
+								a.login(&employers[i]);
+								break; //count =3;
+							}
+							else
+							{
+								gotoxy(10, 16);
+								SetColor(4);
+								cout << "Incorrect Password!!\tAttempt: " << count + 1 << "/3" << endl;
+								SetColor(0);
+								count++;
+							}
+						} while (count < 3);
+						break;
+					}
+				}
+
+
+				if (incUsername == 1) {
+					gotoxy(9, 18); SetColor(4);  cout << "Incorrect Username! Press any key to continue\n\n\n\t "; 
+					SetColor(8); cout << "Press 'B' to return"; _end = toupper(getch()); 
+				}
+
+			} while ( _end != 'B' && incUsername == 1);
 
 			break;
 
@@ -254,3 +297,5 @@ int main()
 
 
 
+//issues:
+//jobs[i] or employer[i] ? in jobsearch()
