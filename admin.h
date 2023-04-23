@@ -213,7 +213,6 @@ public:
                 system("cls");
 
             }
-
             else if (j != JobsTobePrinted - 1 && m % 3 == 0) {
                 x = 5, y = 4;
                 do {
@@ -228,7 +227,6 @@ public:
                 system("cls");
 
             }
-
             else if (j == JobsTobePrinted - 1 && m <= 3) {
                 do {
                     choice = toupper(_getch());
@@ -237,19 +235,11 @@ public:
             }
 
 
-
             if (choice == 'S') {
                 //Jobs[i].ApplyJob()
                 break;
             }
 
-            /*if (i == JobsTobePrinted - 1 && choice != 'P') {
-                m = 0;
-                system("cls");
-            }*/
-
-            //issues/cases to be attended:
-            //p not working prpoperly
 
         }
 
@@ -273,46 +263,55 @@ void JobsSearch() {
             cin >> search2;
             system("cls");
 
-            for (int i = 0; i < employers.size(); i++)
-            {
+            for (int i = 0; i < Jobs.size(); i++) {
+                for (int j = 0; j < employers.size(); j++)
+                {
+                    for (int k = 0; k < employers[j].get_jobCount(); k++) {
+                        if (Jobs[i].JobID == employers[j].Jobs[k]->JobID) {
+                            if (employers[j].get_department() == "Computer Science" && search2 == 1) {
+                                index.push_back(i);
+                            }
+                            else if (employers[j].get_department() == "Medical" && search2 == 2) {
+                                index.push_back(i);
+                            }
+                            else if (employers[j].get_department() == "Engineering" && search2 == 3) {
+                                index.push_back(i);
+                            }
+                        }
+                    }
 
-                if (employers[i].get_department() == "Computer Science" && search2 == 1) {
-                    employers[i].displayJobs();
                 }
-                else if (employers[i].get_department() == "Medical" && search2 == 2) {
-                    employers[i].displayJobs();
-                }
-                else if (employers[i].get_department() == "Engineering" && search2 == 3) {
-                    employers[i].displayJobs();
-                }
-
             }
-            cout << endl;
+            displayAllJobs(index); index.clear();
 
             //_getch();
             break;
         
         case 2:
-
             for (int i = 1; i <= 3; i++) {
                 cout << i << ". " << cities[i - 1] << endl;
             }
             cin >> x;
             system("cls");
 
-            for (int i = 0; i < employers.size(); i++)
-            {
-                if (employers[i].get_city() == cities[x-1]) {
-                    employers[i].displayJobs();
+            for (int i = 0; i < Jobs.size(); i++) {
+                for (int j = 0; j < employers.size(); j++){
+                    for (int k = 0; k < employers[j].get_jobCount(); k++) {
+                        if (Jobs[i].JobID == employers[j].Jobs[k]->JobID) {
+                            if (employers[j].get_city() == cities[x - 1]) {
+                                index.push_back(i);
+                            }
+                        }
+
+                    }
                 }
-                        
             }
+            displayAllJobs(index); index.clear();
 
             //_getch();
             break;
             
         case 3:
-
             for (int i = 0; i < Jobs.size(); i++) { //preventing duplicate skills being printed
                 for (int j = 0; j < 5; j++, y++) {
                     for (int k = 0; k < skills.size(); k++) {
@@ -337,7 +336,6 @@ void JobsSearch() {
             system("cls");
 
 
-
             for (int i = 0; i < Jobs.size(); i++) { //preventing duplicate skills being printed
                 for (int j = 0; j < 5; j++) {
                     if (skills[x-1] == Jobs[i].Job_skills[j][0]) {
@@ -350,8 +348,7 @@ void JobsSearch() {
             //_getch();
             break;
      
-        case 4:
-            
+        case 4:         
             for (int i = 0; i < employers.size(); i++) {
                 SetColor(6); cout << i + 1 << ". |" << employers[i].get_company_name() << "|"; SetColor(3); cout << "\n   " << employers[i].get_department() << "\n\n";
             }
@@ -359,7 +356,20 @@ void JobsSearch() {
             cin >> x;
             system("cls");
 
-            employers[x - 1].displayJobs();
+            for (int i = 0; i < Jobs.size(); i++) {
+                for (int j = 0; j < employers.size(); j++) {
+                    for (int k = 0; k < employers[j].get_jobCount(); k++) {
+                        if (Jobs[i].JobID == employers[j].Jobs[k]->JobID) {
+                            if (employers[j].get_company_name() == employers[x - 1].get_company_name()) {
+                                index.push_back(i);
+                            }
+                        }
+
+                    }
+                }
+            }
+            displayAllJobs(index); index.clear();
+
             //_getch();
             break;
         

@@ -1573,16 +1573,7 @@ public:
     void displayJobs() {
         static int m = 0, x = 5, y = 4;
         for (int i = 0; i < countJob; i++) {
-            //gotoxy(x, y);
-            //cout << "$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$\n";
-            //Jobs[i]->displayJob();
-           //cout << "$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$\n\n";
-            //if (y > 5) { y += 10; }
 
-            if (m % 3 == 0) {
-                x = 5, y = 4;
-                _getch();
-            }
 
             gotoxy(x, y);
             SetColor(8); cout << "   --------JOB#" << ++m << "--------";
@@ -1606,7 +1597,67 @@ public:
             cout << "Openings Left: "; SetColor(3); cout << Jobs[i]->available_openings; SetColor(8);
             y = 4;
             x += 45;
-            SetColor(5);
+
+            SetColor(7);
+            gotoxy(2, 13);
+            for (int k = 0; k < 29; k++) {
+                cout << "____";
+            }
+            SetColor(3); gotoxy(3, 15); cout << "<[P:Prev\t\t\t\t\t\tS:Select\t\t\t\t\t     More:M]>"; SetColor(5);
+
+
+
+            //cases for moving accross pages
+            //if (j == JobsTobePrinted - 1 && m % 3 != 0) {
+            //    x = 5, y = 4;
+            //    do {
+            //        choice = toupper(_getch());
+            //        if (choice == 'P' && m > 3 && (m % 2) - 1 == 0) {
+            //            m -= 5;
+            //            j -= 5;//although m and i j have 1 unit dist diff i j gets ++ once the cycle repeats
+            //            i -= 5;//in the case of showall
+            //            break;
+            //        }
+            //        else if (choice == 'P' && m > 3 && (m % 3) - 1 == 0) {
+            //            m -= 4;
+            //            j -= 4;
+            //            i -= 4;
+            //            break;
+            //        }
+            //    } while (choice != 'S');
+            //    system("cls");
+
+            //}
+            //else if (j != JobsTobePrinted - 1 && m % 3 == 0) {
+            //    x = 5, y = 4;
+            //    do {
+            //        choice = toupper(_getch());
+            //        if (choice == 'P' && m > 3) {
+            //            m -= 6;
+            //            j -= 6;
+            //            i -= 6;
+            //            break;
+            //        }
+            //    } while (choice != 'M' && choice != 'S');
+            //    system("cls");
+
+            //}
+            //else if (j == JobsTobePrinted - 1 && m <= 3) {
+            //    do {
+            //        choice = toupper(_getch());
+            //    } while (choice != 'S');
+            //    //system("cls");
+            //}
+
+
+            //if (choice == 'S') {
+            //    //Jobs[i].ApplyJob()
+            //    break;
+            //}
+
+
+
+
 
 
                 /* static int m = 0;
