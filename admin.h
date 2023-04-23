@@ -137,55 +137,145 @@ public:
     }
 
 
-  /* void displayJobs() {
-        for (int i = 0; i < Jobs.size(); i++) {
-            cout << Jobs[i].Name << "\t\t\t\t\n";
+    void displayAllJobs(vector<int> T) {
+        int m = 0, x = 5, y = 4;
+        int n = 0, JobsTobePrinted = Jobs.size();
+        char choice = 'A';
+
+        if (!T.empty()) {
+            JobsTobePrinted = T.size();
         }
 
+        for (int i = 0, j = 0; j < JobsTobePrinted; i++, j++) {
 
-        for (int i = 0; i < Jobs.size(); i++) {
-            cout << "Salary: " << Jobs[i].min_salary + "-" + Jobs[i].max_salary << "\t";
+            if (!T.empty()) { i = T[j]; }
+
+
+            for (int z = 0; z < employers.size(); z++) {
+                for (int w = 0; w < employers[z].get_jobCount(); w++) {
+                    if (Jobs[i].JobID == employers[z].Jobs[w]->JobID) {
+                        n = z;
+                    }
+                }
+            }
+
+
+            gotoxy(x, y);
+            SetColor(8); cout << "   --------JOB#" << ++m << "--------";
+
+
+            gotoxy(x, ++y);
+            SetColor(1); cout << "|>" << Jobs[i].Name << "<|";
+
+
+            gotoxy(x, ++y);
+            SetColor(6); cout << "[" << employers[n].get_company_name() << "]"; SetColor(8);
+
+            gotoxy(x, ++y);
+            cout << "Salary: "; SetColor(2);  cout << "$" << Jobs[i].min_salary << "-" << Jobs[i].max_salary; SetColor(8);
+
+
+            gotoxy(x, ++y);
+            cout << "Location: "; SetColor(4); cout << employers[n].get_city(); SetColor(8);
+
+            gotoxy(x, ++y);
+            cout << "Openings Left: "; SetColor(3); cout << Jobs[i].available_openings;
+            y = 4;
+            x += 45;
+            
+            SetColor(7);
+            gotoxy(2, 13);
+            for (int k = 0; k < 29; k++) {
+                cout << "____";
+            }
+            SetColor(3); gotoxy(3, 15); cout << "<[P:Prev\t\t\t\t\t\tS:Select\t\t\t\t\t     More:M]>"; SetColor(5);
+
+            
+
+            //cases for moving accross pages
+            if (j == JobsTobePrinted - 1 && m % 3 != 0) {
+                x = 5, y = 4;
+                do {
+                    choice = toupper(_getch());
+                    if (choice == 'P' && m > 3 && (m % 2) - 1 == 0) {
+                        m -= 5;
+                        j -= 5;//although m and i j have 1 unit dist diff i j gets ++ once the cycle repeats
+                        i -= 5;//in the case of showall
+                        break;
+                    }
+                    else if (choice == 'P' && m > 3 && (m % 3) - 1 == 0) {
+                        m -= 4;
+                        j -= 4;
+                        i -= 4;
+                        break;
+                    }
+                } while (choice != 'S');
+                system("cls");
+
+            }
+
+            else if (j != JobsTobePrinted - 1 && m % 3 == 0) {
+                x = 5, y = 4;
+                do {
+                    choice = toupper(_getch());
+                    if (choice == 'P' && m > 3) {
+                        m -= 6;
+                        j -= 6;
+                        i -= 6;
+                        break;
+                    }
+                } while (choice != 'M' && choice != 'S');
+                system("cls");
+
+            }
+
+            else if (j == JobsTobePrinted - 1 && m <= 3) {
+                do {
+                    choice = toupper(_getch());
+                } while (choice != 'S');
+                //system("cls");
+            }
+
+
+
+            if (choice == 'S') {
+                //Jobs[i].ApplyJob()
+                break;
+            }
+
+            /*if (i == JobsTobePrinted - 1 && choice != 'P') {
+                m = 0;
+                system("cls");
+            }*/
+
+            //issues/cases to be attended:
+            //p not working prpoperly
+
         }
-        cout << endl;
 
-        for (int i = 0; i < Jobs.size(); i++) {
-            cout << "Location: " << Jobs[i].location << "\t";
-        }
-        cout << endl;
-
-        for (int i = 0; i < Jobs.size(); i++) {
-            cout << "Requirements: " << Jobs[i].requirements << "\t";
-        }
-        cout << endl;
-
-
-        cout << Name << endl << Description << endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
-    }*/
-
+    }
 
 void JobsSearch() {
-        string department, sub_department;
-        int  check2, search , search2, x = 0, y = 0;
+        int search, search2, x = 0, y = 0;
+        string cities[] = { "Karachi", "Lahore", "Islamabad" };
+        vector<string>skills; vector<int> index;
+        bool flag = false;
 
-        employer e;
-       /* e.JobPost();
-        e.JobPost();
-        e.JobPost();*/
-
-        employers.push_back(e);
-
-        cout << "Search:\n1. By Industry\n2. By Sub Field\n3. By City\n4. By Skills\n5. By Comapany" << endl;
+        cout << "Search:\n1. By Industry\n2. By City\n3. By Skills\n4. By Comapany\n5. Show All\n\nPress 6 to go to main menu" << endl;
         cin >> search;
+
+        readJobRecord();
+        readEmployerRecord();
         switch (search)
         {
         case 1:
-            cout << "1. Computer science/IT\n2. Medical\n3. Engineering" << endl;
+            cout << "1. Computer science\\IT\n2. Medical\n3. Engineering" << endl;
             cin >> search2;
             system("cls");
 
             for (int i = 0; i < employers.size(); i++)
             {
-               //employers[i].displayJobs();
+
                 if (employers[i].get_department() == "Computer Science" && search2 == 1) {
                     employers[i].displayJobs();
                 }
@@ -197,64 +287,97 @@ void JobsSearch() {
                 }
 
             }
+            cout << endl;
 
-            //department = "Comuter Science";
-           /* do
+            //_getch();
+            break;
+        
+        case 2:
+
+            for (int i = 1; i <= 3; i++) {
+                cout << i << ". " << cities[i - 1] << endl;
+            }
+            cin >> x;
+            system("cls");
+
+            for (int i = 0; i < employers.size(); i++)
             {
-                check2 = 0;
+                if (employers[i].get_city() == cities[x-1]) {
+                    employers[i].displayJobs();
+                }
+                        
+            }
 
-                cin >> search3;
-                switch (search3)
-                {
-                case 1:
-                    break;
+            //_getch();
+            break;
+            
+        case 3:
 
-                case 2:*/
-                /*       sub_department = subdepartment_CS();
-                       for (i = 0; i < employers.size(); i++)
-                       {
-                           if (employers[i].get_department() == department && employers[i].get_sub_depart() == sub_department)
-                           {
-                               //employers[i].displayJobs()
-                               cout << "Enter "
-                               if()
-                               employers[i].display_details(employers[i].get_type());
-                               //employers[i].display_employer_min_wageAND_name();
-                               //employers[i].display_id();
-                           }
-                       }
-                */
-                /* break;
+            for (int i = 0; i < Jobs.size(); i++) { //preventing duplicate skills being printed
+                for (int j = 0; j < 5; j++, y++) {
+                    for (int k = 0; k < skills.size(); k++) {
+                        if (Jobs[i].Job_skills[j][0] == skills[k]) {
+                            flag = true;
+                        }
+                    }
 
-             case 3:
-                 break;
-             case 4:
-                 for (int i = 0; i < employers.size(); i++)
-                 {
-                     if (employers[i].get_department() == department)
-                     {
-                         employers[i].display_details(employers[i].get_type());
-                         employers[i].display_employer_min_wageAND_name();
-                         employers[i].display_id();
-                     }
-                 }
-                 break;
-             default:
-                 check2 = 1;
-                 break;
-             }
+                    if (flag) { flag = false; continue; }
+                    if (Jobs[i].Job_skills[j][0] == "") { continue; }
 
-         } while (search != 4);
+                       skills.push_back(Jobs[i].Job_skills[j][0]);
+                       
+                }
+                
+            }
 
-         break;
-     case 2:
-         break;
-     case 3:
-         break;
+            for (int i = 0; i < skills.size(); i++) {
+                cout << i + 1 << ". " << skills[i] << endl;
+            }
+            cin >> x;
+            system("cls");
 
+
+
+            for (int i = 0; i < Jobs.size(); i++) { //preventing duplicate skills being printed
+                for (int j = 0; j < 5; j++) {
+                    if (skills[x-1] == Jobs[i].Job_skills[j][0]) {
+                        index.push_back(i);
+                    }
+                }
+            }
+
+            displayAllJobs(index); index.clear();
+            //_getch();
+            break;
+     
+        case 4:
+            
+            for (int i = 0; i < employers.size(); i++) {
+                SetColor(6); cout << i + 1 << ". |" << employers[i].get_company_name() << "|"; SetColor(3); cout << "\n   " << employers[i].get_department() << "\n\n";
+            }
+            SetColor(5);
+            cin >> x;
+            system("cls");
+
+            employers[x - 1].displayJobs();
+            //_getch();
+            break;
+        
+        case 5:
+            system("cls");
+            displayAllJobs(index);
+            //_getch();
+            break;
+        
+        case 6:
+            break;
+
+        default:
+            cout << "Invalid Input!" << endl; Sleep(650);
      }
-     */
-        }
+
+
+     //SelectJob()
 }
 
 void login(user * u) {
@@ -375,6 +498,7 @@ void readEmployerRecord() {
         string line, word;
 
         int i = 0, n = 0;
+        employers.clear(); 
 
         //counting number of records
         fstream file("employer.txt", ios::in);
@@ -431,6 +555,7 @@ void readJobRecord() {
     string line, word;
 
     int i = 0, n = 0;
+    Jobs.clear();
 
     //counting number of records
     fstream file("Jobs.txt", ios::in);

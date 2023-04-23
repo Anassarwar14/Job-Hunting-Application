@@ -1260,7 +1260,7 @@ class Job {
     vector <user> hired;
 
 public:
-    string Name, Description, Job_skills[5][2], responsibilities[6];
+    string Name, Description, city, Job_skills[5][2], responsibilities[6];
     user temp; //skill selecter
     int experience, min_salary, max_salary, hiredEmployees, available_openings, num_applicants, num_skills, num_res;
     int JobID;
@@ -1314,7 +1314,7 @@ public:
 
 
     void displayJob() {
-        cout << Name << endl << Description << endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
+        cout << Name << endl << endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
     }
 
 
@@ -1355,9 +1355,9 @@ public:
     
    /* void displayJobs(vector<Job> jobs) {
         for (int i = 0; i < jobs.size(); i++) {
-            cout << jobs[i].Name << "\t\t\t\t\n";
+            cout << jobs[i].Name << "\t\t\t\t";
         }
-
+        cout << endl;
 
         for (int i = 0; i < jobs.size(); i++) {
             cout << "Salary: " << jobs[i].min_salary + "-" + jobs[i].max_salary << "\t";
@@ -1462,6 +1462,7 @@ public:
     {
         return company_name;
     }
+    int get_jobCount() { return countJob; }
     void display_employer_min_wageAND_name()
     {
         //cout << "Company offers min wage =" << min_wage << endl;
@@ -1508,9 +1509,6 @@ public:
 
         file << id << "," << password << "," << company_name << "," << email << "," << phone_number << ","
             << city << "," << depart << "," << sub_depart << ",";
-        //for (int y = 0; y < 30; y++) {
-        //    file << " "; //leaving space for job id insertion
-        //}
 
         file << "\n";
 
@@ -1573,12 +1571,76 @@ public:
 
 
     void displayJobs() {
-        for (int i = 0, x = 0, y = 0; i < countJob; i++, x += 15) {
+        static int m = 0, x = 5, y = 4;
+        for (int i = 0; i < countJob; i++) {
             //gotoxy(x, y);
-            cout << "$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$\n";
-            Jobs[i]->displayJob();
-            cout << "$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$\n\n";
+            //cout << "$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$\n";
+            //Jobs[i]->displayJob();
+           //cout << "$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$-$\n\n";
             //if (y > 5) { y += 10; }
+
+            if (m % 3 == 0) {
+                x = 5, y = 4;
+                _getch();
+            }
+
+            gotoxy(x, y);
+            SetColor(8); cout << "   --------JOB#" << ++m << "--------";
+
+
+            gotoxy(x, ++y);
+            SetColor(1); cout << "|>" << Jobs[i]->Name << "<|";
+
+
+            gotoxy(x, ++y);
+            SetColor(6); cout << "[" << company_name << "]"; SetColor(8);
+
+            gotoxy(x, ++y);
+            cout << "Salary: "; SetColor(2);  cout << "$" << Jobs[i]->min_salary << "-" << Jobs[i]->max_salary; SetColor(8);
+
+
+            gotoxy(x, ++y);
+            cout << "Location: "; SetColor(4); cout << city; SetColor(8);
+
+            gotoxy(x, ++y);
+            cout << "Openings Left: "; SetColor(3); cout << Jobs[i]->available_openings; SetColor(8);
+            y = 4;
+            x += 45;
+            SetColor(5);
+
+
+                /* static int m = 0;
+                 for (int i = 0; i < countJob; i++) {
+                     SetColor(8); cout << "  \t--------JOB#" << ++m << "--------\t\t\t";
+                 }
+                 cout << endl;
+
+                 for (int i = 0; i < countJob; i++) {
+                     SetColor(1); cout << "\t|>" << Jobs[i]->Name << "<|" << "\t";
+                 }
+                 cout << endl;
+
+                 for (int i = 0; i < countJob; i++) {
+                     SetColor(6); cout << "\t[" << company_name << "]" << "\t\t\t"; SetColor(8);
+                 }
+                 cout << endl;
+
+                 for (int i = 0; i < countJob; i++) {
+                     cout << "\tSalary: "; SetColor(2);  cout << "$" << Jobs[i]->min_salary << "-" << Jobs[i]->max_salary << "\t\t\t"; SetColor(8);
+                 }
+                 cout << endl;
+
+                 for (int i = 0; i < countJob; i++) {
+                     cout << "\tLocation: "; SetColor(4); cout << city << "\t\t\t"; SetColor(8);
+                 }
+                 cout << endl;
+
+                 for (int i = 0; i < countJob; i++) {
+                     cout << "\tOpenings Left: "; SetColor(3); cout << Jobs[i]->available_openings << "\t\t\t"; SetColor(8);
+                 }
+
+                 SetColor(5);*/
+                 //}
         }
     }
 

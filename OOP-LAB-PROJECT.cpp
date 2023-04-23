@@ -180,6 +180,7 @@ int main()
 			frame();
 			cout << "-----LOGIN-----\n\n\t\t";
 
+			a.readUserRecord();
 			users = a.get_users();
 			
 				cout << "Enter Username: ";
@@ -233,6 +234,7 @@ int main()
 				frame();
 				cout << "-----LOGIN-----\n\n\t\t";
 
+				a.readEmployerRecord();
 				employers = a.get_employers();
 
 				cout << "Enter Username: ";
