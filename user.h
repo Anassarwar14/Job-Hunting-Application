@@ -7,6 +7,7 @@
 #include <fstream>
 
 
+
 using namespace std;
 
 
@@ -1112,6 +1113,14 @@ public:
     }
 
 
+    //overloading
+    bool operator == (user u) {
+        if (u.get_username() == id && u.password == password) {
+            return true;
+        }
+
+        return false;
+    }
 
 
     //getters
@@ -1246,10 +1255,9 @@ public:
 
     }
     void set_idPass(string username, string pass) { id = username; password = pass; }//for filing
-
+    
 
     friend class Job;
-    //ApplyJob()
 
 };
 
@@ -1260,18 +1268,23 @@ class Job {
     vector <user> hired;
 
 public:
-    string Name, Description, city, Job_skills[5][2], responsibilities[6];
+    string Name, Description, Job_skills[5][2], responsibilities[6];
     user temp; //skill selecter
-    int experience, min_salary, max_salary, hiredEmployees, available_openings, num_applicants, num_skills, num_res;
+    int experience, min_salary, max_salary, available_openings, num_applicants, hiredEmployees, num_skills, num_res;
     int JobID;
     static int TotalJobs;
 
 
     Job(){//needed to make vector in admin
         TotalJobs++;
+        num_applicants = 0; hiredEmployees = 0; num_skills = 0;  num_res = 0;
+        available_openings = 5;
     } 
-    Job(int EmpDomain) {
+
+    Job(int EmpDomain){
         JobID = ++TotalJobs;
+        num_skills = 0; num_applicants = 0; hiredEmployees = 0; num_skills = 0;  num_res = 0;
+
         cout << "\n->Enter Job Details<-\n";
         cout << "Job Title: ";
         cin.ignore();
@@ -1309,12 +1322,39 @@ public:
         cout << "Salary Range(Enter minimum & maximum): ";
         cin >> min_salary >> max_salary;
         cout << endl;
-        available_openings = 5 - hiredEmployees;
+
+        available_openings = 5;
     }
 
 
     void displayJob() {
-        cout << Name << endl << endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
+        string Title = Name;
+        transform(Title.begin(), Title.end(), Title.begin(), ::toupper);
+
+        SetColor(13); cout << "\n\n\t\t\t\t  -----" << Title << "-----"; SetColor(8);
+        cout << "\n\n\t\tJob Description: \n\t\t  "; SetColor(9);
+        for (int i = 0; i < Description.size(); i++) {
+
+            cout << Description.at(i);
+            if (i % 80 == 0 && i > 0) {
+                cout << "\n\t\t  ";
+                if (Description.at(i) != ' ') { cout << '-'; }
+            }
+        }
+   
+
+        SetColor(8); cout << "\n\n\t\tSkills Required: "; SetColor(9);
+        for (int i = 0; i < num_skills; i++) {
+            cout << "\n\t\t   " << Job_skills[i][0] << "  (" << Job_skills[i][1] << "%)";
+        }
+            
+        SetColor(8); cout << "\n\n\t\tResponsibilities: "; SetColor(9);
+        for (int i = 0; i < num_res; i++) {
+            cout << "\n\t\t > " << responsibilities[i];
+        }
+
+            
+            //endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
     }
 
 
@@ -1349,34 +1389,128 @@ public:
         file.close();
     }
 
+    void updateRecord() {
+        string line, word;
+
+            fstream inFile("Jobs.txt", ios::in | ios::out);
+            ofstream outFile("temp.txt");
 
 
-    //friend void displayJobs(vector<Job> Jobs);
-    
-   /* void displayJobs(vector<Job> jobs) {
-        for (int i = 0; i < jobs.size(); i++) {
-            cout << jobs[i].Name << "\t\t\t\t";
+            while (getline(inFile, line)) {
+
+                istringstream ss(line);
+
+               
+
+                getline(ss, word, ',');
+                if (stoi(word) == JobID) {
+                    outFile << JobID << "," << Name << "," << Description << "," << experience << ","
+                        << min_salary << "," << max_salary << "," << available_openings << ",";
+                    for (int j = 0; j < 5; j++) {
+                        outFile << Job_skills[j][0] << "," << Job_skills[j][1] << ",";
+                    }
+
+
+                    for (int j = 0; j < 6; j++) {
+                        outFile << responsibilities[j] << ",";
+                    }
+
+
+                    outFile << "[";
+                    for (int j = 0; j < hiredEmployees; j++) {
+                        outFile << hired[j].get_username() << ",";
+                    }
+                    outFile << "]";
+
+                    outFile << "^";
+                    for (int j = 0; j < num_applicants; j++) {
+                        outFile << applicants[j].get_username() << ",";
+                    }
+                    outFile << "^" << "," << "\n";
+
+                    continue;
+                }
+
+                outFile << line << "\n";
+
+
+            }
+
+            inFile.close();
+            outFile.close();
+
+            remove("Jobs.txt");
+            rename("temp.txt", "Jobs.txt");
+
+    }
+
+    void ApplyJob(user u, bool isEmployee) {
+        bool flag = false, eligible = false;
+        char choice = 'B';
+        int skillmatch = 0;
+
+        //employee na ho company ka
+
+        for (int i = 0; i < applicants.size(); i++) {
+            if (u == applicants[i]) {
+                flag = true;
+                break;
+            }
         }
-        cout << endl;
 
-        for (int i = 0; i < jobs.size(); i++) {
-            cout << "Salary: " << jobs[i].min_salary + "-" + jobs[i].max_salary << "\t";
+
+        if(!flag){
+            system("cls");
+            displayJob();
+
+            SetColor(10); cout << "\n\n\n\t\t\t\t\t>> [A]pply Now <<";  SetColor(6);  cout << "    |    "; SetColor(12); cout << "[C]ancel"; SetColor(7);
+            cout << "\n\t\t\t\t\t  _____________\t\t   ______"; SetColor(5);
+            
+            choice = toupper(_getch());
+            if(choice == 'A'){
+                
+                for (int i = 0; i < num_skills; i++) {
+                    for (int j = 0; j < u.num_skills; j++) {
+                        if (Job_skills[i][0] == u.skill[j][0] && stoi(u.skill[j][1]) > stoi(Job_skills[i][1]) ) {
+                            skillmatch++;
+                        }
+                    }
+                }
+
+                if (skillmatch == num_skills && !isEmployee ) {
+                    eligible = true;
+                }
+                else if (isEmployee) {
+                    SetColor(4); cout << "\n\n\t\tCannot Apply! Your profile indicates you are already employed in this company";
+                }
+
+               
+                if(u.Domain == temp.Domain && eligible) {
+                    addApplicant(u);
+                    updateRecord();
+                    SetColor(2); cout << "\n\n\t\tSuccessfully Applied! The company will get back to you shortly"; 
+                }
+                else if (u.Domain != temp.Domain) {
+                    SetColor(4); cout << "\n\n\t\tCannot Apply! You are not allowed to apply to Jobs from this domain";
+                }
+                else if(!eligible){
+                    SetColor(4); cout << "\n\n\t\tCannot Apply! Your skills doesn't match the Job's criteria";
+                }
+
+            }
+
+            Sleep(2500);
         }
-        cout << endl;
-
-        for (int i = 0; i < jobs.size(); i++) {
-            cout << "Location: " << jobs[i].location << "\t";
+        else {
+            SetColor(4); cout << "\n\nAlready Applied!";
+            Sleep(2500);
         }
-        cout << endl;
+        
 
-        for (int i = 0; i < jobs.size(); i++) {
-            cout << "Requirements: " << jobs[i].requirements << "\t";
-        }
-        cout << endl;
+        SetColor(5);
+    }
 
 
-        cout << Name << endl << Description << endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
-    }*/
 
     //setters
     void setJobID(int id) {
@@ -1399,17 +1533,49 @@ public:
         available_openings = o;
     }
     void set_skill(string new_skill, string percent, int m) { Job_skills[m][0] = new_skill; Job_skills[m][1] = percent; num_skills = m + 1; }
+    void setDomain(int a) {
+        temp.Domain = a;
+    }
     void addApplicant(user app) {
         applicants.push_back(app);
+        num_applicants++;
     }
     void addHired(user hire) {
         hired.push_back(hire);
+        hiredEmployees++;
+        available_openings--;
+
+        /*bool flag = false;
+
+        for (int j = 0; j < employers.size(); j++) {
+            for (int k = 0; k < employers[j].get_jobCount(); k++) {
+                if (Jobs[i].JobID == employers[j].Jobs[k]->JobID) {
+                    if (employers[j].get_company_name() == employers[x - 1].get_company_name()) {
+                        index.push_back(i);
+                    }
+                }
+
+            }
+        }
+
+
+        for (int j = 0; j < countJob; j++) {
+            if (JobID == Jobs[j]->JobID) {
+                flag = true;
+                break;
+            }
+        }*/
     }
 
     //getters
     user getHired(int h) {
         return hired[h];
     }
+    user getApplicant(int a) {
+        return applicants[a];
+    }
+
+
 
 };
 
@@ -1561,16 +1727,27 @@ public:
     }
 
 
-    void addJobEmployees(Job job) {
+    void addJobEmployees(Job * job) {
         countJob++;
-        for (int i = 0; i < job.hiredEmployees; i++) {
-            Employees.push_back(job.getHired(i));
+        job->setDomain(Domain);
+        for (int i = 0; i < job->hiredEmployees; i++) {
+            Employees.push_back(job->getHired(i));
+        }
+     
+    }
+    bool isEmployee(user u) {
+
+        for (int j = 0; j < Employees.size(); j++){
+            if (u == Employees[j]) {
+                return true;
+            }
         }
         
+        return false;
     }
 
 
-    void displayJobs() {
+   /* void displayJobs() {
         static int m = 0, x = 5, y = 4;
         for (int i = 0; i < countJob; i++) {
 
@@ -1690,10 +1867,10 @@ public:
                      cout << "\tOpenings Left: "; SetColor(3); cout << Jobs[i]->available_openings << "\t\t\t"; SetColor(8);
                  }
 
-                 SetColor(5);*/
+                 SetColor(5);
                  //}
         }
-    }
+    }*/
 
     //HireEmployee(); check that employee not already there
     // for(i < countJob){}
