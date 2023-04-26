@@ -1356,6 +1356,55 @@ public:
             
             //endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
     }
+    void modifyJob() {
+        int option;
+
+        do {
+            system("cls");
+            cout << "Modify:\n1.Job Title\n2.Job Description\n3.Experience\n4.Min Salary\n5.Max Salary\n6.Skills Required\n\nPress 7 to return to main menu" << endl;
+            cin >> option;
+
+            cin.ignore();
+            switch (option) {
+            case 1:
+                cout << "Enter New Title: "; getline(cin, Name); cout << "Title Changed to " << Name << endl; Sleep(650);
+                break;
+            case 2:
+                cout << "Enter New Description: "; getline(cin, Description);; cout << "Description Changed Successfully!" << endl;
+                break;
+            case 3:
+                cout << "Enter New Experience"; cin >> experience; cout << "Min Experience Set to " << experience << endl; Sleep(650);
+                break;
+            case 4:
+                cout << "Enter New Min Salary"; cin >> min_salary; cout << "Min Salary set to " << min_salary << endl; Sleep(650);
+                break;
+            case 5:
+                cout << "Enter New Max Salary"; cin >> max_salary; cout << "Max Salary set to " << max_salary << endl; Sleep(650);
+                break;
+            case 6:
+                cout << "Enter New Skill Data: ";
+                temp.i = 0;
+                temp.SelectSkills();
+
+                for (int i = 0; i < temp.num_skills && i < 5; i++) {
+                    Job_skills[i][0] = temp.skill[i][0];
+                    Job_skills[i][1] = temp.skill[i][1];
+                    num_skills++;
+                }
+                cout << "Skill Data Updated!" << endl; Sleep(650);
+                break;
+
+            case 7: //added so it doesnt go to default
+                break;
+
+            default:
+                cout << "Invalid choice! Enter from 1 to 7" << endl; Sleep(500);
+                break;
+            }
+
+            updateRecord();
+        } while (option != 7);
+    }
 
 
     void JobDatatoFile() {
@@ -1449,8 +1498,6 @@ public:
         char choice = 'B';
         int skillmatch = 0;
 
-        //employee na ho company ka
-
         for (int i = 0; i < applicants.size(); i++) {
             if (u == applicants[i]) {
                 flag = true;
@@ -1497,18 +1544,26 @@ public:
                     SetColor(4); cout << "\n\n\t\tCannot Apply! Your skills doesn't match the Job's criteria";
                 }
 
+                Sleep(2500);
             }
-
-            Sleep(2500);
+            else {
+                
+                cout << "\t";
+                for (int i = 0; i < 3; i++) {
+                    SetColor(4); cout << "\\\b"; Sleep(170); cout << "|\b"; Sleep(170); cout << "/\b"; Sleep(170); cout << "-\b"; Sleep(170);
+                }
+            }
         }
         else {
             SetColor(4); cout << "\n\nAlready Applied!";
             Sleep(2500);
         }
         
-
         SetColor(5);
     }
+
+
+
 
 
 
@@ -1684,7 +1739,6 @@ public:
     }
 
 
-
     void JobPost() {
         string line, word;
 
@@ -1747,135 +1801,11 @@ public:
     }
 
 
-   /* void displayJobs() {
-        static int m = 0, x = 5, y = 4;
-        for (int i = 0; i < countJob; i++) {
+   
 
-
-            gotoxy(x, y);
-            SetColor(8); cout << "   --------JOB#" << ++m << "--------";
-
-
-            gotoxy(x, ++y);
-            SetColor(1); cout << "|>" << Jobs[i]->Name << "<|";
-
-
-            gotoxy(x, ++y);
-            SetColor(6); cout << "[" << company_name << "]"; SetColor(8);
-
-            gotoxy(x, ++y);
-            cout << "Salary: "; SetColor(2);  cout << "$" << Jobs[i]->min_salary << "-" << Jobs[i]->max_salary; SetColor(8);
-
-
-            gotoxy(x, ++y);
-            cout << "Location: "; SetColor(4); cout << city; SetColor(8);
-
-            gotoxy(x, ++y);
-            cout << "Openings Left: "; SetColor(3); cout << Jobs[i]->available_openings; SetColor(8);
-            y = 4;
-            x += 45;
-
-            SetColor(7);
-            gotoxy(2, 13);
-            for (int k = 0; k < 29; k++) {
-                cout << "____";
-            }
-            SetColor(3); gotoxy(3, 15); cout << "<[P:Prev\t\t\t\t\t\tS:Select\t\t\t\t\t     More:M]>"; SetColor(5);
-
-
-
-            //cases for moving accross pages
-            //if (j == JobsTobePrinted - 1 && m % 3 != 0) {
-            //    x = 5, y = 4;
-            //    do {
-            //        choice = toupper(_getch());
-            //        if (choice == 'P' && m > 3 && (m % 2) - 1 == 0) {
-            //            m -= 5;
-            //            j -= 5;//although m and i j have 1 unit dist diff i j gets ++ once the cycle repeats
-            //            i -= 5;//in the case of showall
-            //            break;
-            //        }
-            //        else if (choice == 'P' && m > 3 && (m % 3) - 1 == 0) {
-            //            m -= 4;
-            //            j -= 4;
-            //            i -= 4;
-            //            break;
-            //        }
-            //    } while (choice != 'S');
-            //    system("cls");
-
-            //}
-            //else if (j != JobsTobePrinted - 1 && m % 3 == 0) {
-            //    x = 5, y = 4;
-            //    do {
-            //        choice = toupper(_getch());
-            //        if (choice == 'P' && m > 3) {
-            //            m -= 6;
-            //            j -= 6;
-            //            i -= 6;
-            //            break;
-            //        }
-            //    } while (choice != 'M' && choice != 'S');
-            //    system("cls");
-
-            //}
-            //else if (j == JobsTobePrinted - 1 && m <= 3) {
-            //    do {
-            //        choice = toupper(_getch());
-            //    } while (choice != 'S');
-            //    //system("cls");
-            //}
-
-
-            //if (choice == 'S') {
-            //    //Jobs[i].ApplyJob()
-            //    break;
-            //}
-
-
-
-
-
-
-                /* static int m = 0;
-                 for (int i = 0; i < countJob; i++) {
-                     SetColor(8); cout << "  \t--------JOB#" << ++m << "--------\t\t\t";
-                 }
-                 cout << endl;
-
-                 for (int i = 0; i < countJob; i++) {
-                     SetColor(1); cout << "\t|>" << Jobs[i]->Name << "<|" << "\t";
-                 }
-                 cout << endl;
-
-                 for (int i = 0; i < countJob; i++) {
-                     SetColor(6); cout << "\t[" << company_name << "]" << "\t\t\t"; SetColor(8);
-                 }
-                 cout << endl;
-
-                 for (int i = 0; i < countJob; i++) {
-                     cout << "\tSalary: "; SetColor(2);  cout << "$" << Jobs[i]->min_salary << "-" << Jobs[i]->max_salary << "\t\t\t"; SetColor(8);
-                 }
-                 cout << endl;
-
-                 for (int i = 0; i < countJob; i++) {
-                     cout << "\tLocation: "; SetColor(4); cout << city << "\t\t\t"; SetColor(8);
-                 }
-                 cout << endl;
-
-                 for (int i = 0; i < countJob; i++) {
-                     cout << "\tOpenings Left: "; SetColor(3); cout << Jobs[i]->available_openings << "\t\t\t"; SetColor(8);
-                 }
-
-                 SetColor(5);
-                 //}
-        }
-    }*/
-
-    //HireEmployee(); check that employee not already there
+    //HireEmployee(); 
     // for(i < countJob){}
     // Employees.pushback(u)
-    //setuseridpass
     
 };
 

@@ -151,11 +151,12 @@ public:
         for (int i = 0; i < 21; i++) {
             cout << "\b \b";
         }
-        cout << "\x1b[1A\t\t ";
+        cout << "\x1b[1A\t\t   \b\b";
     }
 
     void viewJobs(user * u) {
         int m = 0, x = 0;
+        char choice;
 
         system("cls");
         if (u->get_type() == "user") {
@@ -178,10 +179,14 @@ public:
             }
 
             cout << "\n\nEnter Job-Number: ";
-            cin >> x;
+            do {
+                cin >> x;
+            } while (x > m);
+            
             system("cls");
             Jobs[--x].displayJob(); _getch();
             system("cls");
+
         }
         else {
             if (employer* e = dynamic_cast<employer*>(u)) {
@@ -193,16 +198,41 @@ public:
                                       <<"   Openings: " << e->Jobs[j]->available_openings << endl;
                 }
 
-                cin >> x;
+
+                cout << "\n\nEnter Job-Number: ";
+                do {
+                    cin >> x;
+                } while (x > m);
+
+                --x;
                 system("cls");
-                e->Jobs[--x]->displayJob(); _getch();
+                e->Jobs[x]->displayJob(); 
+
+                SetColor(6); cout << "\n\n\n\t\t\t\t[M]odify Details"; SetColor(10); cout << "\t[V]iew Applicants"; SetColor(12); cout << "\t[C]ancel"; SetColor(7);
+                cout << "\n\t\t\t\t ______________\t\t _______________\t ______"; SetColor(5); 
+
+                choice = toupper(_getch());
+                if (choice == 'M') {
+                    e->Jobs[x]->modifyJob();
+                }
+                else if(choice == 'V') {
+                    system("cls");
+                    cout << "-^-Applicants-^-\n";
+                    for (int i = 0; i < e->Jobs[x]->num_applicants; i++) {
+                        cout << i + 1 << ". " 
+                            << e->Jobs[x]->getApplicant(i).get_first_name() << " "
+                            << e->Jobs[x]->getApplicant(i).get_last_name() << "  (@"
+                            << e->Jobs[x]->getApplicant(i).get_username()  << ")";
+                    }   
+                    _getch();
+                }
                 system("cls");
                 //choice to view applicants
             }
                
         }
             
-    SetColor(5);
+        SetColor(5);
     }
 
     void displayAllJobs(vector<int> T, user * u) {
@@ -257,7 +287,8 @@ public:
                 for (int k = 0; k < 29; k++) {
                     cout << "____";
                 }
-                SetColor(3); gotoxy(3, 18); cout << "<[P:Prev\t\t\t\t\t\tS:Select\t\t\t\t\t     More:M]>"; SetColor(5);
+                SetColor(3); gotoxy(3, 18); cout << "<[P:Prev\t\t\t\t\t\tS:Select\t\t\t\t\t     More:M]>";
+                SetColor(11); gotoxy(1, 28); cout << "Press 'E' to exit"; SetColor(5);
 
             
 
@@ -280,7 +311,7 @@ public:
                             system("cls");
                             break;
                         }
-                    } while (choice != 'S');
+                    } while (choice != 'S' && choice != 'E');
 
                 }
                 else if (j != JobsTobePrinted - 1 && m % 3 == 0) {
@@ -293,18 +324,22 @@ public:
                             i -= 6;
                             break;
                         }
-                    } while (choice != 'M' && choice != 'S');
-                    if (choice == 'M'){ system("cls");}
+
+                        if (choice == 'M') { system("cls"); }
+                    } while (choice != 'M' && choice != 'S' && choice != 'E');
+                    
                 }
                 else if (j == JobsTobePrinted - 1 && m <= 3) {
                     do {
                         choice = toupper(_getch());
-                    } while (choice != 'S');
+                    } while (choice != 'S' && choice != 'E');
                 }
 
 
+
+
                 if (choice == 'S') {
-                    cout << "\n\nEnter Job-Num#: ";
+                    gotoxy(1, 23); cout << "Enter Job-Num#: ";
                     do {
                         cin >> a;
 
@@ -320,9 +355,12 @@ public:
                 
                
                     Jobs[a].ApplyJob(*u, isUserEmployee(*u));
+
+                    x = 5; y = 6; m = 0; i = -1; j = -1; choice = 'B';
                     system("cls");
-                    break;
+                    
                 }
+                else if (choice == 'E') { system("cls"); break; }
 
 
             }
@@ -698,9 +736,9 @@ public:
                 }
             }
 
-            for (int n = 12; n < 17; n++) {
+            for (int n = 17; n < 23; n++) {
                 if (row[n] != "") {
-                    Jobs[i].responsibilities[n-12] = row[n];
+                    Jobs[i].responsibilities[n-17] = row[n];
                     Jobs[i].num_res++;
                 }
             }

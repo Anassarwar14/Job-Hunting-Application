@@ -299,5 +299,11 @@ int main()
 
 
 
-//issues:
-//jobs[i] or employer[i] ? in jobsearch()
+//issues/TODO:
+//respons in txt missing
+//complete individual Job display 
+//choice to view applicants in view jobs (interviees employees jobwise also)
+//modify details
+//premium account subsc etc feature
+//.csv/in another branch
+
