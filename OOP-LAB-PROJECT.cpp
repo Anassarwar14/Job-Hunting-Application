@@ -171,7 +171,6 @@ int main()
 			SetColor(1); cout << "-->Enter Company details<--\n" << endl; SetColor(0);
 			e.user_setter(a);
 			a.admin_check_employer(e);
-			getch();
 
 			break;
 
@@ -300,10 +299,9 @@ int main()
 
 
 //issues/TODO:
-//respons in txt missing
-//complete individual Job display 
-//choice to view applicants in view jobs (interviees employees jobwise also)
-//modify details
+//choice to view total employees
+//screening test
+//cover letter(optional)
 //premium account subsc etc feature
-//.csv/in another branch
-
+//.csv in another branch
+//admin control panel(delete records)

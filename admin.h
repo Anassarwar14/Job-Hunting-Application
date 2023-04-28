@@ -12,7 +12,6 @@
 using namespace std;
 
 
-
 bool isEmailValid(string email) {
     const regex pattern("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
     return regex_match(email, pattern);
@@ -154,9 +153,28 @@ public:
         cout << "\x1b[1A\t\t   \b\b";
     }
 
+    void EmpSub(user * u) {
+        bool x;
+        if (u->get_type() == "user") {
+            x = u->Subscribe();
+            if (x == true) {
+                readUserRecord();
+                //profit+99;
+            }
+            
+        }
+        else {
+            if (employer* e = dynamic_cast<employer*>(u)) { //needed to call jobpost(), only present in child class(employer)
+                e->AllEmployees();
+            }
+        }
+
+    }
+
     void viewJobs(user * u) {
-        int m = 0, x = 0;
+        int m = 0, x = 0, y = 0, z = 0;
         char choice;
+        vector<bool> flag;
 
         system("cls");
         if (u->get_type() == "user") {
@@ -164,14 +182,31 @@ public:
                 for (int j = 0; j < Jobs[i].num_applicants; j++) {
 
                     if (u->get_username() == Jobs[i].getApplicant(j).get_username()) {
-                        if (m == 0) { cout << "---Applied To---\n"; }
-                        SetColor(6); cout << ++m << ". " << Jobs[i].Name << endl << "   Total Applicants: " << Jobs[i].num_applicants << endl;
+                        if (m == 0) { cout << "---Applied To---\n\n"; }
+
+                        SetColor(6); cout << ++m << ". " << Jobs[i].Name << " ";
+
+                        for (int k = 0; k < Jobs[i].num_intviews; k++) {
+                            if (Jobs[i].getApplicant(j) == Jobs[i].getInterviewee(k)) {
+                                SetColor(11); cout << "\t{Shortlisted For Interview}"; SetColor(5);
+                            }
+                        }
+
+                        flag.resize(Jobs[i].num_Scr);
+                        for (int k = 0; k < Jobs[i].num_Scr; k++) {
+                            if (Jobs[i].getApplicant(j) == Jobs[i].getScreeners(k)) {
+                                SetColor(11); cout << "\t{Instant Hire after Screening test}"; SetColor(5);
+                                flag[i] = true;
+                            }
+                        }
+
+                        SetColor(6); cout << endl << "   Total Applicants: " << Jobs[i].num_applicants << endl << endl; SetColor(5);
                     }
                 }
 
                 for (int j = 0; j < Jobs[i].hiredEmployees; j++) {
                     if (u->get_username() == Jobs[i].getHired(j).get_username()) {
-                        SetColor(6); cout << "---Currently Employed In---\n" << Jobs[i].Name << "Collegues: " << Jobs[i].hiredEmployees << endl;
+                        SetColor(6); cout << "---Currently Employed In---\n\n" << Jobs[i].Name << "Collegues: " << Jobs[i].hiredEmployees << endl;
                     }
                 }
                     
@@ -182,9 +217,23 @@ public:
             do {
                 cin >> x;
             } while (x > m);
-            
+            --x;
+
             system("cls");
-            Jobs[--x].displayJob(); _getch();
+            if (flag[x] == true) {
+                cout << "1:Take the Screening Test\n2:Display Job";
+                cin >> y;
+
+                if(y == 1){
+                    //Jobs[x].Screening_test(u)
+                    readJobRecord();
+                    readEmployerRecord();
+                }
+            }
+
+            Jobs[x].displayJob(); 
+            SetColor(10); cout << "\n\n\n\t\t\t\t\t[C]ontinue"; 
+            cout << "\n\t\t\t\t\t ________";  _getch();
             system("cls");
 
         }
@@ -192,10 +241,11 @@ public:
             if (employer* e = dynamic_cast<employer*>(u)) {
                 if (m == 0) { cout << "Total Jobs Posted: " << e->get_jobCount() <<"\n---Jobs Posted---\n\n"; }
                 for (int j = 0; j < e->get_jobCount(); j++) {
-                    SetColor(6); cout << ++m << ". " << e->Jobs[j]->Name << endl 
-                                      <<"   Applicants: " << e->Jobs[j]->num_applicants
-                                      <<"   Hired: " << e->Jobs[j]->hiredEmployees
-                                      <<"   Openings: " << e->Jobs[j]->available_openings << endl;
+                    SetColor(6); cout << ++m << ". " << e->Jobs[j]->Name << endl
+                        << "   Applicants: " << e->Jobs[j]->num_applicants
+                        << "   Hired: " << e->Jobs[j]->hiredEmployees
+                        << "   Interviewing: " << e->Jobs[j]->num_intviews
+                        << "   Openings: " << e->Jobs[j]->available_openings << endl << endl;
                 }
 
 
@@ -217,17 +267,67 @@ public:
                 }
                 else if(choice == 'V') {
                     system("cls");
-                    cout << "-^-Applicants-^-\n";
+                    flag.clear();
+                    flag.resize(e->Jobs[x]->num_applicants);
+
+                    cout << "-^-\033[4mApplicants\033[24m-^-\n";
                     for (int i = 0; i < e->Jobs[x]->num_applicants; i++) {
                         cout << i + 1 << ". " 
                             << e->Jobs[x]->getApplicant(i).get_first_name() << " "
-                            << e->Jobs[x]->getApplicant(i).get_last_name() << "  (@"
+                            << e->Jobs[x]->getApplicant(i).get_last_name() << "\t(@"
                             << e->Jobs[x]->getApplicant(i).get_username()  << ")";
+                        
+                        if (e->Jobs[x]->getApplicant(i).Account_Status == "Premium") {
+                            SetColor(9); cout << " [*Recommended]"; SetColor(5);
+                        }
+
+                        for (int k = 0; k < e->Jobs[x]->num_intviews; k++) {
+                            if (e->Jobs[x]->getApplicant(i) == e->Jobs[x]->getInterviewee(k)) {
+                                SetColor(11); cout << "\t{Interviewing}"; SetColor(5);
+                                flag[i] = true;
+                            }
+                        }
+
+                        for (int k = 0; k < e->Jobs[x]->num_Scr; k++) {
+                            if (e->Jobs[x]->getApplicant(i) == e->Jobs[x]->getScreeners(k)) {
+                                SetColor(11); cout << "\t{Pending Screening test}"; SetColor(5);
+                                flag[i] = true;
+                            }
+                        }
+
+                        cout << endl;
                     }   
-                    _getch();
+                    
+
+                    if (e->Jobs[x]->num_applicants != 0) {
+                        cout << "\n\nEnter Applicant-Number: ";
+                        cin >> y;
+                        --y;
+
+                        e->Jobs[x]->getApplicant(y).display_details("user"); _getch();
+
+                        if (!flag[y]) {
+                            SetColor(4); cout << "\nChoice of Action:"; SetColor(5); cout << "\n1. Hire Applicant\n2. Shortlist for Interview\n3. Selection by Screening test\n\nEnter any key to contiue\n";
+                            cin >> z;
+
+                            if (z == 1) {
+                                e->Jobs[x]->addHired(e->Jobs[x]->getApplicant(y)); 
+                            }
+                            else if (z == 2) { e->Jobs[x]->addInterviewee(e->Jobs[x]->getApplicant(y)); }
+                            else if (z == 3) { e->Jobs[x]->addScreeners(e->Jobs[x]->getApplicant(y)); }
+
+                            e->Jobs[x]->updateRecord();
+                        }
+                        
+                    }
+                    else {
+                        SetColor(4); cout << "Sorry! No Applicants Yet!"; Sleep(800); SetColor(5);
+                    }
                 }
+
+                readJobRecord();
+                readEmployerRecord();
                 system("cls");
-                //choice to view applicants
             }
                
         }
@@ -407,8 +507,6 @@ public:
                     }
                 }
                 displayAllJobs(index, u); index.clear();
-
-                //_getch();
                 break;
         
             case 2:
@@ -431,12 +529,9 @@ public:
                     }
                 }
                 displayAllJobs(index, u); index.clear();
-
-                //_getch();
                 break;
             
             case 3:
-
                 for (int i = 0; i < Jobs.size(); i++) { //preventing duplicate skills being printed
                     for (int j = 0; j < 5; j++, y++) {
                         for (int k = 0; k < skills.size(); k++) {
@@ -472,20 +567,29 @@ public:
                 displayAllJobs(index, u); index.clear();
                 break;
      
-            case 4:
-            
+            case 4:        
                 for (int i = 0; i < employers.size(); i++) {
                     SetColor(6); cout << i + 1 << ". |" << employers[i].get_company_name() << "|"; SetColor(3); cout << "\n   " << employers[i].get_department() << "\n\n";
                 }
                 SetColor(5);
                 cin >> x;
-                system("cls");
+                
+                --x;
+                if (u->Account_Status == "Premium") {
+                    cout << "1: Employer Profile\n2: Continue to Jobs";
+                    cin >> y;
 
+                    if (y == 1) {
+                        employers[x].display_details("Employer");
+                    }
+                }
+
+                system("cls");
                 for (int i = 0; i < Jobs.size(); i++) {
                     for (int j = 0; j < employers.size(); j++) {
                         for (int k = 0; k < employers[j].get_jobCount(); k++) {
                             if (Jobs[i].JobID == employers[j].Jobs[k]->JobID) {
-                                if (employers[j].get_company_name() == employers[x - 1].get_company_name()) {
+                                if (employers[j].get_company_name() == employers[x].get_company_name()) {
                                     index.push_back(i);
                                 }
                             }
@@ -494,14 +598,10 @@ public:
                     }
                 }
                 displayAllJobs(index, u); index.clear();
-
-                //_getch();
                 break;
         
             case 5:
-
                 displayAllJobs(index, u);
-                //_getch();
                 break;
         
             case 6:
@@ -511,8 +611,6 @@ public:
                 cout << "Invalid Input!" << endl; Sleep(650);
          }
 
-
-         //SelectJob()
     }
 
     void login(user * u) {
@@ -524,14 +622,13 @@ public:
             SetColor(13);
             do
             {
-                check1 = 0;
                 if (u->get_type() == "user") {
-                    cout << "1. Search For A Job\n\n2. View Hired/Applied to Jobs";
+                    cout << "1. Search For A Job\n\n2. View Hired/Applied to Jobs\n\n3. Subscribe to Premimum";
                 }
                 else {
-                    cout << "1. Post A Job\n\n2. View Jobs Posted";
+                    cout << "1. Post A Job\n\n2. View Jobs Posted\n\n3. All Employees";
                 }
-                cout << "\n\n3. View Account Details\n\n4. Modify Acccount Details\n\n5. Logout\n" << endl;
+                cout << "\n\n4. View Account Details\n\n5. Modify Acccount Details\n\n6. Logout\n" << endl;
                 cin >> search1;
 
                 switch (search1)
@@ -554,19 +651,22 @@ public:
                     viewJobs(u);
                     break;
 
+
                 case 3:
-                    u->display_details(u->get_type());
-                    getch();
-                    system("cls");
+                    EmpSub(u);
                     break;
 
                 case 4:
-                    u->modifyDetails(u->get_type());
+                    u->display_details(u->get_type());
+                    system("cls");
                     break;
 
                 case 5:
+                    u->modifyDetails();
+                    break;
+
+                case 6:
                     SetColor(5); cout << "\n\t\t\t\t\tLogging out.."; Sleep(300); cout << "."; Sleep(500); SetColor(0);
-                   // check1 = 1;
                     break;
 
                 default:
@@ -574,7 +674,7 @@ public:
                     system("cls");
                     break;
                 }
-            } while (search1 != 5);
+            } while (search1 != 6);
 
      }
 
@@ -615,14 +715,15 @@ public:
                 users[i].set_idPass(row[0], row[1]);
                 users[i].set_first_name(row[2]);
                 users[i].set_last_name(row[3]);
-                users[i].set_age(stoi(row[4]));
-                users[i].set_education(row[5]);
-                users[i].set_email(row[6]);
-                users[i].set_phone_number(row[7]);
-                users[i].set_city(row[8]);
-                users[i].set_department(row[9]);
-                users[i].set_sub_depart(row[10]);
-                for (int m = 0 , n = 11; n < row.size(); n+=2, m++) {
+                users[i].set_acc_status(row[4]);
+                users[i].set_age(stoi(row[5]));
+                users[i].set_education(row[6]);
+                users[i].set_email(row[7]);
+                users[i].set_phone_number(row[8]);
+                users[i].set_city(row[9]);
+                users[i].set_department(row[10]);
+                users[i].set_sub_depart(row[11]);
+                for (int m = 0 , n = 12; n < row.size(); n+=2, m++) {
                         users[i].set_skill(row[n], row[n+1], m);
                 }
 
@@ -767,6 +868,35 @@ public:
                         }
                     }
                 }
+
+                pos3 = line.find_last_of("^");
+                int pos4 = line.find_last_of("~");
+                string IntStr = line.substr(pos3 + 2, pos4 - pos3 - 3);
+                istringstream ss4(IntStr);
+
+
+                while (getline(ss4, IntStr, ',')) {
+                    for (auto& user : users) {
+                        if (user.get_username() == IntStr) {
+                            Jobs[i].addInterviewee(user);
+                        }
+                    }
+                }
+
+                pos4 = line.find_last_of("~");
+                int pos5 = line.find_last_of("|");
+                string ScrStr = line.substr(pos4 + 2, pos5 - pos4 - 3);
+                istringstream ss5(ScrStr);
+
+
+                while (getline(ss5, ScrStr, ',')) {
+                    for (auto& user : users) {
+                        if (user.get_username() == ScrStr) {
+                            Jobs[i].addScreeners(user);
+                        }
+                    }
+                }
+
 
 
             i++;

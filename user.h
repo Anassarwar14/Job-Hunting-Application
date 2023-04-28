@@ -54,7 +54,7 @@ void gotoxy(short x, short y) {
 class user
 {
     string first_name, last_name, latest_education;
-    int age, i = 0, num_skills = 0;
+    int age;
 
 
 protected:
@@ -63,15 +63,16 @@ protected:
     string skill[15][2];//skill[][0] contains 'skill' skill[][1] contains 'rating'
     string depart;//e.g:CS,medical etc
     string sub_depart;//e.g datascientist
-    int Domain = 0;
+    int Domain = 0, i = 0, num_skills = 0;
     bool valid;//if 1 then valid else non valid
 
 public:
+    string Account_Status;
     static int id_number;
-    user()//////////////////////////this will be called in employer class also!!!!!!!//but then employer cnstcr called so its fine
+    user()
     {
         type = "user";
-
+        Account_Status = "Free";
     }
 
     void SelectDomain() {
@@ -918,17 +919,16 @@ public:
             for (int j = 0; j < num_skills; j++) {
                 cout << skill[j][0] << " (" << skill[j][1] << "%)" << endl;//would print only the number of skills chosen due to static i
             }
-            cout << "--------------------------------------------" << endl;
+            cout << "--------------------------------------------" << endl; _getch();
         }
        
        
 
 
     }
-    void modifyDetails(string type) {
+    virtual void modifyDetails() {
         int option;
 
-        if (type == "user") {
             do {
                 system("cls");
                 cout << "Modify:\n1.First Name\n2.Last Name\n3.Age\n4.Email\n5.Phone Number\n6.Education"
@@ -987,12 +987,6 @@ public:
                 updateRecord();
             } while (option != 8);
 
-
-        }
-        /* else {
-             cout << ""
-         }*/
-
         system("cls");
     }
 
@@ -1048,8 +1042,10 @@ public:
         file.open("user.txt", ios::out | ios::app);
 
 
-        file << id << "," << password << "," << first_name << "," << last_name << "," << age << "," << latest_education << "," << email << "," << phone_number << ","
+        file << id << "," << password << "," << first_name << "," << last_name << "," << Account_Status << "," << age << "," 
+            << latest_education << "," << email << "," << phone_number << ","
             << city << "," << depart << "," << sub_depart << ",";
+
         for (int i = 0; i < num_skills; i++) {
             file << skill[i][0] << "," << skill[i][1] << ",";
         }
@@ -1059,7 +1055,7 @@ public:
 
 
     }
-    void updateRecord() {
+    virtual void updateRecord() {
         vector<string> lines;
         string line, word;
         int pos = 0, n = 0, i = 0;
@@ -1093,7 +1089,8 @@ public:
         while (i < n) {
 
             if (i == pos || (i == n - 1 && n == pos)) {
-                file << id << "," << password << "," << first_name << "," << last_name << "," << age << "," << latest_education << "," << email << "," << phone_number << ","
+                file << id << "," << password << "," << first_name << "," << last_name << "," << Account_Status << "," << age << "," 
+                    << latest_education << "," << email << "," << phone_number << ","
                     << city << "," << depart << "," << sub_depart << ",";
 
                 for (int a = 0; a < num_skills; a += 2) {
@@ -1111,7 +1108,36 @@ public:
 
         file.close();
     }
+    bool Subscribe() {
+        char choice;
 
+        system("cls");
+        if (Account_Status == "Free") {
+            SetColor(3); cout << "|<<<<< Premimum Subscription Plan >>>>>|\n\n"; SetColor(8);
+            cout << "\t\t\t\t\tFree\t     *Premium\n" << endl;
+            cout << "Job Application Tracking:\t\t"; SetColor(2); cout << " YES\t\tYES\n\n"; SetColor(8);
+            cout << "Priority Access to High Income Jobs:\t"; SetColor(4); cout << " NO\t\t"; SetColor(2); cout << "YES\n\n"; SetColor(8);
+            cout << "Recommended to Employers:\t\t"; SetColor(4); cout << " NO\t\t"; SetColor(2); cout << "YES\n\n"; SetColor(8);
+            cout << "Advanced Search Filters:\t\t"; SetColor(2); cout << " YES\t\tYES\n\n"; SetColor(8);
+            cout << "Access to Employer Profiles:\t\t"; SetColor(4); cout << " NO\t\t"; SetColor(2); cout << "YES\n\n"; SetColor(1);
+
+            cout << "Upgrade to Premium in Only $99\n" << endl;
+            SetColor(10); cout << "[G]o Ahead\t"; SetColor(4); cout << "[N]o Thanks"; SetColor(5);
+            choice = toupper(_getch());
+            if (choice == 'G') {
+                Account_Status = "Premium";
+                updateRecord();
+                system("cls");
+                return true;
+            }
+        }
+        else {
+            cout << "Already Subscribed!"; Sleep(1000);
+        }
+       
+        system("cls");
+        return false;
+    }
 
     //overloading
     bool operator == (user u) {
@@ -1185,6 +1211,7 @@ public:
     //setters
     void set_first_name(string fname) { first_name = fname; }
     void set_last_name(string lname) { last_name = lname; }
+    void set_acc_status(string status) { Account_Status = status; }
     void set_email(string em) { email = em; }
     void set_age(int a) { age = a; }
     void set_phone_number(string ph) { phone_number = ph; }
@@ -1266,25 +1293,29 @@ public:
 class Job {
     vector <user> applicants;
     vector <user> hired;
+    vector <user> interviewees;
+    vector <user> Screeners;
 
 public:
     string Name, Description, Job_skills[5][2], responsibilities[6];
     user temp; //skill selecter
-    int experience, min_salary, max_salary, available_openings, num_applicants, hiredEmployees, num_skills, num_res;
+    int experience, min_salary, max_salary, available_openings, num_applicants, hiredEmployees, num_intviews, num_Scr;
+    int num_skills, num_res;
     int JobID;
     static int TotalJobs;
 
 
     Job(){//needed to make vector in admin
         TotalJobs++;
-        num_applicants = 0; hiredEmployees = 0; num_skills = 0;  num_res = 0;
-        available_openings = 5;
+        num_applicants = 0; hiredEmployees = 0; num_intviews = 0; num_Scr = 0; num_skills = 0;  num_res = 0;
+        available_openings = 0;
     } 
 
     Job(int EmpDomain){
         JobID = ++TotalJobs;
-        num_skills = 0; num_applicants = 0; hiredEmployees = 0; num_skills = 0;  num_res = 0;
+        num_skills = 0; num_applicants = 0; hiredEmployees = 0; num_intviews = 0;  num_Scr = 0;  num_skills = 0;  num_res = 0;
 
+        system("cls");
         cout << "\n->Enter Job Details<-\n";
         cout << "Job Title: ";
         cin.ignore();
@@ -1323,7 +1354,8 @@ public:
         cin >> min_salary >> max_salary;
         cout << endl;
 
-        available_openings = 5;
+        cout << "No. of Employees needed: ";
+        cin >> available_openings;
     }
 
 
@@ -1353,8 +1385,10 @@ public:
             cout << "\n\t\t > " << responsibilities[i];
         }
 
-            
-            //endl << experience << endl << min_salary << "-" << max_salary << endl << available_openings << endl;
+        SetColor(8); cout << "\n\n\n\t\t\033[4mExperience\033[24m: "; SetColor(9);
+        SetColor(13); cout << experience << "+ years\t"; 
+        SetColor(8); cout << "\033[4mSalary Range\033[24m: ";
+        SetColor(2); cout << "$" << min_salary << "-" << max_salary << endl << endl;
     }
     void modifyJob() {
         int option;
@@ -1433,7 +1467,21 @@ public:
         for (int j = 0; j < num_applicants; j++) {
             file << applicants[j].get_username() << ",";
         }
-        file << "^" << "," << "\n";
+        file << "^";
+
+        file << "~";
+        for (int j = 0; j < num_intviews; j++) {
+            file << interviewees[j].get_username() << ",";
+        }
+        file << "~";
+
+        file << "|";
+        for (int j = 0; j < num_Scr; j++) {
+            file << Screeners[j].get_username() << ",";
+        }
+        file << "|" << "," << "\n";
+
+
     
         file.close();
     }
@@ -1475,7 +1523,19 @@ public:
                     for (int j = 0; j < num_applicants; j++) {
                         outFile << applicants[j].get_username() << ",";
                     }
-                    outFile << "^" << "," << "\n";
+                    outFile << "^";
+
+                    outFile << "~";
+                    for (int j = 0; j < num_intviews; j++) {
+                        outFile << interviewees[j].get_username() << ",";
+                    }
+                    outFile << "~";
+
+                    outFile << "|";
+                    for (int j = 0; j < num_Scr; j++) {
+                        outFile << Screeners[j].get_username() << ",";
+                    }
+                    outFile << "|" << "," << "\n";
 
                     continue;
                 }
@@ -1562,7 +1622,31 @@ public:
         SetColor(5);
     }
 
+    void Screening_test(user * u) {
+        bool pass = false;
 
+        if (temp.Domain == 1) {
+            //Comp test
+        }
+        else if (temp.Domain == 2) {
+            //Medical test
+        }
+        else if (temp.Domain == 3) {
+            //Engineering test
+        }
+
+        if (pass) {
+            SetColor(10); cout << "Congratulations! You passed the test\n You are Hired!"; SetColor(5);
+            addHired(*u);
+        }
+        else {
+            SetColor(4); cout << "Sorry! You Failed!\nTry Applying for a differnt Job"; SetColor(5);
+            removeApplicant(*u);
+            removeScreener(*u);
+        }
+
+        updateRecord();
+    }
 
 
 
@@ -1587,7 +1671,9 @@ public:
     void setOpenings(int o) {
         available_openings = o;
     }
-    void set_skill(string new_skill, string percent, int m) { Job_skills[m][0] = new_skill; Job_skills[m][1] = percent; num_skills = m + 1; }
+    void set_skill(string new_skill, string percent, int m) {
+        Job_skills[m][0] = new_skill; Job_skills[m][1] = percent; num_skills = m + 1;
+    }
     void setDomain(int a) {
         temp.Domain = a;
     }
@@ -1595,31 +1681,39 @@ public:
         applicants.push_back(app);
         num_applicants++;
     }
-    void addHired(user hire) {
-        hired.push_back(hire);
-        hiredEmployees++;
-        available_openings--;
-
-        /*bool flag = false;
-
-        for (int j = 0; j < employers.size(); j++) {
-            for (int k = 0; k < employers[j].get_jobCount(); k++) {
-                if (Jobs[i].JobID == employers[j].Jobs[k]->JobID) {
-                    if (employers[j].get_company_name() == employers[x - 1].get_company_name()) {
-                        index.push_back(i);
-                    }
-                }
-
+    void removeApplicant(user app) {
+        for (int i = 0; i < num_applicants; i++) {
+            if (app == applicants[i]) {
+                applicants.erase(applicants.begin() + i);
             }
         }
-
-
-        for (int j = 0; j < countJob; j++) {
-            if (JobID == Jobs[j]->JobID) {
-                flag = true;
-                break;
+    }
+    void removeScreener(user app) {
+        for (int i = 0; i < num_Scr; i++) {
+            if (app == applicants[i]) {
+                applicants.erase(applicants.begin() + i);
             }
-        }*/
+        }
+    }
+    void addHired(user hire) {
+        if (available_openings != 0) {
+            removeApplicant(hire);
+            removeScreener(hire);
+            hired.push_back(hire);
+            hiredEmployees++;
+            available_openings--;
+        }
+        else {
+            cout << "Hiring limit for this Job has reached! Cannot Hire more!" << endl; Sleep(800);
+        }
+    }
+    void addInterviewee(user inter) {
+        interviewees.push_back(inter);
+        num_intviews++;
+    }
+    void addScreeners(user Scr) {
+        Screeners.push_back(Scr);
+        num_Scr++;
     }
 
     //getters
@@ -1629,7 +1723,12 @@ public:
     user getApplicant(int a) {
         return applicants[a];
     }
-
+    user getInterviewee(int b) {
+        return interviewees[b];
+    }
+    user getScreeners(int c) {
+        return Screeners[c];
+    }
 
 
 };
@@ -1654,14 +1753,106 @@ public:
         min_wage = 0.0;
     }
 
+    void writeRecord() override {
+        fstream file;
 
-    void display_details(string type) {
+        file.open("employer.txt", ios::out | ios::app);
+
+
+        file << id << "," << password << "," << company_name << "," << email << "," << phone_number << ","
+            << city << "," << depart << "," << sub_depart << ",";
+
+        file << "\n";
+
+        file.close();
+
+
+    }
+    void updateRecord() override {
+        string line, word;
+
+        fstream inFile("employer.txt", ios::in | ios::out);
+        ofstream outFile("temp.txt");
+
+
+        while (getline(inFile, line)) {
+
+            istringstream ss(line);
+
+            getline(ss, word, ',');
+            if (word == id) {
+                outFile << id << "," << password << "," << company_name << "," << email << "," << phone_number << ","
+                    << city << "," << depart << "," << sub_depart << ",";
+                    
+                for (int j = 0; j < countJob; j++) {
+                    outFile << Jobs[j]->JobID << ",";
+                }
+                outFile << "\n";
+
+                continue;
+            }
+
+            outFile << line << "\n";
+        }
+
+        inFile.close();
+        outFile.close();
+
+        remove("employer.txt");
+        rename("temp.txt", "employer.txt");
+
+    }
+    void display_details(string type) override {
         cout << "--------------------------------------------" << endl;
         cout << "->PROFILE<-" << endl;
         cout << "Company Name: " << company_name << endl;
         user::display_details("Employer");
 
         cout << "--------------------------------------------" << endl;
+        _getch();
+    }
+    void modifyDetails() override {
+        int option;
+
+        do {
+            system("cls");
+            cout << "Modify:\n1.Comapany Name\n2.Email\n3.Contact Info\n4.City"
+                << "\n5.Department\n6.Sub-Department\n\nPress 7 to return to main menu" << endl;
+            cin >> option;
+
+            switch (option) {
+            case 1:
+                cout << "Set Company Name: "; cin >> company_name; cout << "Company Name Set to " << company_name << endl; Sleep(650);
+                break;
+            case 2:
+                cout << "Set Email: "; cin >> email; cout << "Email Set to " << email << endl; Sleep(650);
+                break;
+            case 3:
+                cout << "Set Contact Number: "; cin >> phone_number; cout << "Contact Number Set to " << phone_number << endl; Sleep(650);
+                break;
+            case 4:
+                cout << "Set City: "; cin >> city; cout << "Location set to " << city << endl; Sleep(650);
+                break;
+            case 5:
+                cout << "Set Department: "; cin >> depart; cout << "Department set to " << depart << endl; Sleep(650);
+                break;
+            case 6:
+                cout << "Set Sub-Department: "; cin >> sub_depart; cout << "Sub-Department set to " << sub_depart << endl; Sleep(650);
+                break;
+
+
+            case 7: //added so it doesnt go to default
+                break;
+
+            default:
+                cout << "Invalid choice! Enter from 1 to 7" << endl; Sleep(500);
+                break;
+            }
+
+            updateRecord();
+        } while (option != 7);
+
+        system("cls");
     }
 
     //setters
@@ -1722,21 +1913,7 @@ public:
         set_password();
     }
 
-    void writeRecord() {
-        fstream file;
-
-        file.open("employer.txt", ios::out | ios::app);
-
-
-        file << id << "," << password << "," << company_name << "," << email << "," << phone_number << ","
-            << city << "," << depart << "," << sub_depart << ",";
-
-        file << "\n";
-
-        file.close();
-
-
-    }
+   
 
 
     void JobPost() {
@@ -1800,7 +1977,21 @@ public:
         return false;
     }
 
+    void AllEmployees() {
+        system("cls");
+        for (int i = 0; i < Employees.size(); i++) {
+            cout << i + 1 << ". "
+                << Employees[i].get_first_name() << " "
+                << Employees[i].get_last_name() << "\t(@"
+                << Employees[i].get_username() << ")";
+        }
 
+        if (i == 0) {
+            SetColor(4); cout << "No Employees!"; SetColor(5);
+        }
+
+        _getch(); system("cls");
+    }
    
 
     //HireEmployee(); 
