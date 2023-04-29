@@ -17,8 +17,6 @@ class admin;
 class employer;
 
 
-//string id_num = to_string(id_number);
-
 void string_setter_to_A(string str[15][2])
 {
     for (int i = 0; i < 15; i++)
@@ -1393,6 +1391,8 @@ public:
 
         cout << "No. of Employees needed: ";
         cin >> available_openings;
+
+        system("cls"); SetColor(5);
     }
 
 
