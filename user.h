@@ -1039,7 +1039,7 @@ public:
     virtual void writeRecord() {
         fstream file;
 
-        file.open("user.txt", ios::out | ios::app);
+        file.open("user.csv", ios::out | ios::app);
 
 
         file << id << "," << password << "," << first_name << "," << last_name << "," << Account_Status << "," << age << "," 
@@ -1061,7 +1061,7 @@ public:
         int pos = 0, n = 0, i = 0;
 
         fstream file;
-        file.open("user.txt", ios::in);
+        file.open("user.csv", ios::in);
 
         while (getline(file, line)) {
 
@@ -1083,7 +1083,7 @@ public:
 
 
 
-        file.open("user.txt", ios::out);
+        file.open("user.csv", ios::out);
 
         i = 0;
         while (i < n) {
@@ -1111,8 +1111,8 @@ public:
     virtual void deleteRecord() {
         string line, word;
 
-        fstream inFile("user.txt", ios::in | ios::out);
-        ofstream outFile("temp.txt");
+        fstream inFile("user.csv", ios::in | ios::out);
+        ofstream outFile("temp.csv");
 
 
         while (getline(inFile, line)) {
@@ -1132,8 +1132,8 @@ public:
         inFile.close();
         outFile.close();
 
-        remove("user.txt");
-        rename("temp.txt", "user.txt");
+        remove("user.csv");
+        rename("temp.csv", "user.csv");
     }
 
 
@@ -1475,8 +1475,8 @@ public:
     void deleteJob() {
         string line, word;
 
-        fstream inFile("Jobs.txt", ios::in | ios::out);
-        ofstream outFile("temp.txt");
+        fstream inFile("Jobs.csv", ios::in | ios::out);
+        ofstream outFile("temp.csv");
 
 
         while (getline(inFile, line)) {
@@ -1496,13 +1496,13 @@ public:
         inFile.close();
         outFile.close();
 
-        remove("Jobs.txt");
-        rename("temp.txt", "Jobs.txt");
+        remove("Jobs.csv");
+        rename("temp.csv", "Jobs.csv");
     }
 
     void JobDatatoFile() {
         fstream file;
-        file.open("Jobs.txt", ios::out | ios::app);
+        file.open("Jobs.csv", ios::out | ios::app);
 
         file << JobID << "," << Name << "," << Description << "," << experience << ","
             << min_salary << "," << max_salary << "," << available_openings << ",";
@@ -1548,8 +1548,8 @@ public:
     void updateRecord() {
         string line, word;
 
-            fstream inFile("Jobs.txt", ios::in | ios::out);
-            ofstream outFile("temp.txt");
+            fstream inFile("Jobs.csv", ios::in | ios::out);
+            ofstream outFile("temp.csv");
 
 
             while (getline(inFile, line)) {
@@ -1607,8 +1607,8 @@ public:
             inFile.close();
             outFile.close();
 
-            remove("Jobs.txt");
-            rename("temp.txt", "Jobs.txt");
+            remove("Jobs.csv");
+            rename("temp.csv", "Jobs.csv");
 
     }
 
@@ -1854,6 +1854,15 @@ public:
             }
         }
     }
+    void removeHired(user hire) {
+        for (int i = 0; i < hiredEmployees; i++) {
+            if (hire == hired[i]) {
+                hired.erase(hired.begin() + i);
+                hiredEmployees--;
+                available_openings++;
+            }
+        }
+    }
     void addHired(user hire) {
         if (available_openings != 0) {
             removeApplicant(hire);
@@ -1915,7 +1924,7 @@ public:
     void writeRecord() override {
         fstream file;
 
-        file.open("employer.txt", ios::out | ios::app);
+        file.open("employer.csv", ios::out | ios::app);
 
 
         file << id << "," << password << "," << company_name << "," << email << "," << phone_number << ","
@@ -1930,8 +1939,8 @@ public:
     void updateRecord() override {
         string line, word;
 
-        fstream inFile("employer.txt", ios::in | ios::out);
-        ofstream outFile("temp.txt");
+        fstream inFile("employer.csv", ios::in | ios::out);
+        ofstream outFile("temp.csv");
 
 
         while (getline(inFile, line)) {
@@ -1957,15 +1966,15 @@ public:
         inFile.close();
         outFile.close();
 
-        remove("employer.txt");
-        rename("temp.txt", "employer.txt");
+        remove("employer.csv");
+        rename("temp.csv", "employer.csv");
 
     }
     void deleteRecord() override {
         string line, word;
 
-        fstream inFile("employer.txt", ios::in | ios::out);
-        ofstream outFile("temp.txt");
+        fstream inFile("employer.csv", ios::in | ios::out);
+        ofstream outFile("temp.csv");
 
 
         while (getline(inFile, line)) {
@@ -1989,8 +1998,8 @@ public:
         inFile.close();
         outFile.close();
 
-        remove("employer.txt");
-        rename("temp.txt", "employer.txt");
+        remove("employer.csv");
+        rename("temp.csv", "employer.csv");
     }
     void display_details(string type) override {
         cout << "--------------------------------------------" << endl;
@@ -2118,8 +2127,8 @@ public:
             Jobs[countJob] = new Job(Domain);
 
  
-            fstream inFile("employer.txt", ios::in | ios::out);
-            ofstream outFile("temp.txt");
+            fstream inFile("employer.csv", ios::in | ios::out);
+            ofstream outFile("temp.csv");
 
             string line;
 
@@ -2143,8 +2152,8 @@ public:
             inFile.close();
             outFile.close();
 
-            remove("employer.txt");
-            rename("temp.txt", "employer.txt");
+            remove("employer.csv");
+            rename("temp.csv", "employer.csv");
 
 
             Jobs[countJob++]->JobDatatoFile();

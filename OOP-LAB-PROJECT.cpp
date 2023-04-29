@@ -155,7 +155,6 @@ int main()
 
 		case 1:
 			SetColor(1); cout << "-->Enter User details<--\n" << endl; SetColor(4);
-			//u.setType("user");
 			u.user_setter(a);
 			a.admin_check_user(u);
 			getch();

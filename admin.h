@@ -344,7 +344,6 @@ public:
         int m = 0, x = 0, y = 0, z = 0;
         char choice;
         vector<bool> flag;
-
         system("cls");
         if (u->get_type() == "user") {
             flag.resize(Jobs.size());
@@ -374,8 +373,9 @@ public:
                 }
 
                 for (int j = 0; j < Jobs[i].hiredEmployees; j++) {
-                    if (u->get_username() == Jobs[i].getHired(j).get_username()) {
-                        SetColor(6); cout << "---Currently Employed In---\n\n" << Jobs[i].Name << "Collegues: " << Jobs[i].hiredEmployees << endl;
+                    if (*u == Jobs[i].getHired(j)) {
+                        SetColor(5); cout << "---Currently Employed As---\n\n"; SetColor(6); cout << ++m << ". " << Jobs[i].Name << "\n   Collegues: " << Jobs[i].hiredEmployees << endl; SetColor(5);
+
                     }
                 }
                     
@@ -481,6 +481,9 @@ public:
 
                             if (z == 1) {
                                 e->Jobs[x]->addHired(e->Jobs[x]->getApplicant(y)); 
+                                for (int i = 0; i < Jobs.size(); i++) {
+                                    Jobs[i].removeHired(e->Jobs[x]->getApplicant(y));
+                                }
                             }
                             else if (z == 2) { e->Jobs[x]->addInterviewee(e->Jobs[x]->getApplicant(y)); }
                             else if (z == 3) { e->Jobs[x]->addScreeners(e->Jobs[x]->getApplicant(y)); }
@@ -792,7 +795,7 @@ public:
             do
             {
                 if (u->get_type() == "user") {
-                    cout << "1. Search For A Job\n\n2. View Hired/Applied to Jobs\n\n3. Subscribe to Premimum";
+                    cout << "1. Search For A Job\n\n2. View Hired/Applied to Jobs\n\n3. Subscribe to Premimum*";
                 }
                 else {
                     cout << "1. Post A Job\n\n2. View Jobs Posted\n\n3. All Employees";
@@ -892,7 +895,7 @@ public:
         int i = 0, n = 0;
 
         //counting number of records
-        fstream file("user.txt", ios::in);
+        fstream file("user.csv", ios::in);
 
         while (getline(file, line)) {
             n++; 
@@ -904,7 +907,7 @@ public:
 
 
         //reading records
-        file.open("user.txt", ios::in);
+        file.open("user.csv", ios::in);
 
         while (getline(file, line)) {
 
@@ -947,7 +950,7 @@ public:
             employers.clear(); 
 
             //counting number of records
-            fstream file("employer.txt", ios::in);
+            fstream file("employer.csv", ios::in);
 
             while (getline(file, line)) {
                 n++;
@@ -959,7 +962,7 @@ public:
 
 
             //reading records
-            file.open("employer.txt", ios::in);
+            file.open("employer.csv", ios::in);
 
             while (getline(file, line)) {
 
@@ -1004,7 +1007,7 @@ public:
         Jobs.clear();
 
         //counting number of records
-        fstream file("Jobs.txt", ios::in);
+        fstream file("Jobs.csv", ios::in);
 
         while (getline(file, line)) {
             n++;
@@ -1016,7 +1019,7 @@ public:
 
 
         //reading records
-        file.open("Jobs.txt", ios::in);
+        file.open("Jobs.csv", ios::in);
 
         while (getline(file, line)) {
 
