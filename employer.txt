@@ -1,4 +1,0 @@
-astera,astera123,Astera,astera@gmail.com,09123213212,Karachi,Computer Science,IT Project Manager,2,5,
-system,system123,Systems-Limited,sys@gmail.com,2193121221,Karachi,Computer Science,Software Developer,1,
-folio3,folio345,Folio3,folio@gmail.com,9012312322,Lahore,Computer Science,Data Scientist,3,
-stella,stella123,Stella Technology,stella@gmail.com,3424646445,Islamabad,Medical,Neurology,4,

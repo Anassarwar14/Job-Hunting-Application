@@ -328,12 +328,11 @@ public:
             x = u->Subscribe();
             if (x == true) {
                 readUserRecord();
-                //profit+99;
             }
             
         }
         else {
-            if (employer* e = dynamic_cast<employer*>(u)) { //needed to call jobpost(), only present in child class(employer)
+            if (employer* e = dynamic_cast<employer*>(u)) {
                 e->AllEmployees();
             }
         }
@@ -344,7 +343,6 @@ public:
         int m = 0, x = 0, y = 0, z = 0;
         char choice;
         vector<bool> flag;
-
         system("cls");
         if (u->get_type() == "user") {
             flag.resize(Jobs.size());
@@ -374,41 +372,47 @@ public:
                 }
 
                 for (int j = 0; j < Jobs[i].hiredEmployees; j++) {
-                    if (u->get_username() == Jobs[i].getHired(j).get_username()) {
-                        SetColor(6); cout << "---Currently Employed In---\n\n" << Jobs[i].Name << "Collegues: " << Jobs[i].hiredEmployees << endl;
+                    if (*u == Jobs[i].getHired(j)) {
+                        SetColor(5); cout << "---Currently Employed As---\n\n"; SetColor(6); cout << ++m << ". " << Jobs[i].Name << "\n   Collegues: " << Jobs[i].hiredEmployees << endl; SetColor(5);
+
                     }
                 }
                     
                 
             }
 
-            cout << "\n\nEnter Job-Number: ";
-            do {
-                cin >> x;
-            } while (x > m);
-            --x;
+            if (m != 0) {
+                cout << "\n\nEnter Job-Number: ";
+                do {
+                    cin >> x;
+                } while (x > m);
+                --x;
 
-            if (flag[x] == true) {
-                cout << "\n1:Take the Screening Test\n2:Display Job\n";
-                cin >> y;
+                if (flag[x] == true) {
+                    cout << "\n1:Take the Screening Test\n2:Display Job\n";
+                    cin >> y;
 
-                if(y == 1){
-                    Jobs[x].Screening_test(u);
-                    readJobRecord();
-                    readEmployerRecord();
+                    if (y == 1) {
+                        Jobs[x].Screening_test(u);
+                        readJobRecord();
+                        readEmployerRecord();
+                    }
                 }
+
+                system("cls");
+                Jobs[x].displayJob();
+                SetColor(10); cout << "\n\n\n\t\t\t\t\t[C]ontinue";
+                cout << "\n\t\t\t\t\t ________";  _getch();
             }
-
+            else {
+                cout << "Not Applied Anywhere!"; _getch();
+            }
+           
             system("cls");
-            Jobs[x].displayJob(); 
-            SetColor(10); cout << "\n\n\n\t\t\t\t\t[C]ontinue"; 
-            cout << "\n\t\t\t\t\t ________";  _getch();
-            system("cls");
-
         }
         else {
             if (employer* e = dynamic_cast<employer*>(u)) {
-                if (m == 0) { cout << "Total Jobs Posted: " << e->get_jobCount() <<"\n---Jobs Posted---\n\n"; }
+                if (m == 0) { cout << "Total Jobs Posted: " << e->get_jobCount() << "\n---Jobs Posted---\n\n"; }
                 for (int j = 0; j < e->get_jobCount(); j++) {
                     SetColor(6); cout << ++m << ". " << e->Jobs[j]->Name << endl
                         << "   Applicants: " << e->Jobs[j]->num_applicants
@@ -417,87 +421,96 @@ public:
                         << "   Openings: " << e->Jobs[j]->available_openings << endl << endl;
                 }
 
+                if (m != 0) {
+                    cout << "\n\nEnter Job-Number: ";
+                    do {
+                        cin >> x;
+                    } while (x > m);
 
-                cout << "\n\nEnter Job-Number: ";
-                do {
-                    cin >> x;
-                } while (x > m);
-
-                --x;
-                system("cls");
-                e->Jobs[x]->displayJob(); 
-
-                SetColor(6); cout << "\n\n\n\t\t\t\t[M]odify Details"; SetColor(10); cout << "\t[V]iew Applicants"; SetColor(12); cout << "\t[C]ancel"; SetColor(7);
-                cout << "\n\t\t\t\t ______________\t\t _______________\t ______"; SetColor(5); 
-
-                choice = toupper(_getch());
-                if (choice == 'M') {
-                    e->Jobs[x]->modifyJob();
-                }
-                else if(choice == 'V') {
+                    --x;
                     system("cls");
-                    flag.clear();
-                    flag.resize(e->Jobs[x]->num_applicants);
+                    e->Jobs[x]->displayJob();
 
-                    cout << "-^-\033[4mApplicants\033[24m-^-\n";
-                    for (int i = 0; i < e->Jobs[x]->num_applicants; i++) {
-                        cout << i + 1 << ". " 
-                            << e->Jobs[x]->getApplicant(i).get_first_name() << " "
-                            << e->Jobs[x]->getApplicant(i).get_last_name() << "\t(@"
-                            << e->Jobs[x]->getApplicant(i).get_username()  << ")";
-                        
-                        if (e->Jobs[x]->getApplicant(i).Account_Status == "Premium") {
-                            SetColor(9); cout << " [*Recommended]"; SetColor(5);
-                        }
+                    SetColor(6); cout << "\n\n\n\t\t\t\t[M]odify Details"; SetColor(10); cout << "\t[V]iew Applicants"; SetColor(12); cout << "\t[C]ancel"; SetColor(7);
+                    cout << "\n\t\t\t\t ______________\t\t _______________\t ______"; SetColor(5);
 
-                        for (int k = 0; k < e->Jobs[x]->num_intviews; k++) {
-                            if (e->Jobs[x]->getApplicant(i) == e->Jobs[x]->getInterviewee(k)) {
-                                SetColor(11); cout << "\t{Interviewing}"; SetColor(5);
-                                flag[i] = true;
-                            }
-                        }
-
-                        for (int k = 0; k < e->Jobs[x]->num_Scr; k++) {
-                            if (e->Jobs[x]->getApplicant(i) == e->Jobs[x]->getScreeners(k)) {
-                                SetColor(11); cout << "\t{Pending Screening test}"; SetColor(5);
-                                flag[i] = true;
-                            }
-                        }
-
-                        cout << endl;
-                    }   
-                    
-
-                    if (e->Jobs[x]->num_applicants != 0) {
-                        cout << "\n\nEnter Applicant-Number: ";
-                        cin >> y;
-                        --y;
-
-                        e->Jobs[x]->getApplicant(y).display_details("user"); _getch();
-
-                        if (!flag[y]) {
-                            SetColor(4); cout << "\nChoice of Action:"; SetColor(5); cout << "\n1. Hire Applicant\n2. Shortlist for Interview\n3. Selection by Screening test\n\nEnter any num to contiue\n";
-                            cin >> z;
-
-                            if (z == 1) {
-                                e->Jobs[x]->addHired(e->Jobs[x]->getApplicant(y)); 
-                            }
-                            else if (z == 2) { e->Jobs[x]->addInterviewee(e->Jobs[x]->getApplicant(y)); }
-                            else if (z == 3) { e->Jobs[x]->addScreeners(e->Jobs[x]->getApplicant(y)); }
-
-                            e->Jobs[x]->updateRecord();
-                        }
-                        
+                    choice = toupper(_getch());
+                    if (choice == 'M') {
+                        e->Jobs[x]->modifyJob();
                     }
-                    else {
-                        SetColor(4); cout << "Sorry! No Applicants Yet!"; Sleep(800); SetColor(5);
+                    else if (choice == 'V') {
+                        system("cls");
+                        flag.clear();
+                        flag.resize(e->Jobs[x]->num_applicants);
+
+                        cout << "-^-\033[4mApplicants\033[24m-^-\n";
+                        for (int i = 0; i < e->Jobs[x]->num_applicants; i++) {
+                            cout << i + 1 << ". "
+                                << e->Jobs[x]->getApplicant(i).get_first_name() << " "
+                                << e->Jobs[x]->getApplicant(i).get_last_name() << "\t(@"
+                                << e->Jobs[x]->getApplicant(i).get_username() << ")";
+
+                            if (e->Jobs[x]->getApplicant(i).Account_Status == "Premium") {
+                                SetColor(9); cout << " [*Recommended]"; SetColor(5);
+                            }
+
+                            for (int k = 0; k < e->Jobs[x]->num_intviews; k++) {
+                                if (e->Jobs[x]->getApplicant(i) == e->Jobs[x]->getInterviewee(k)) {
+                                    SetColor(11); cout << "\t{Interviewing}"; SetColor(5);
+                                    flag[i] = true;
+                                }
+                            }
+
+                            for (int k = 0; k < e->Jobs[x]->num_Scr; k++) {
+                                if (e->Jobs[x]->getApplicant(i) == e->Jobs[x]->getScreeners(k)) {
+                                    SetColor(11); cout << "\t{Pending Screening test}"; SetColor(5);
+                                    flag[i] = true;
+                                }
+                            }
+
+                            cout << endl;
+                        }
+
+
+                        if (e->Jobs[x]->num_applicants != 0) {
+                            cout << "\n\nEnter Applicant-Number: ";
+                            cin >> y;
+                            --y;
+
+                            e->Jobs[x]->getApplicant(y).display_details("user"); _getch();
+
+                            if (!flag[y]) {
+                                SetColor(4); cout << "\nChoice of Action:"; SetColor(5); cout << "\n1. Hire Applicant\n2. Shortlist for Interview\n3. Selection by Screening test\n\nEnter any num to contiue\n";
+                                cin >> z;
+
+                                if (z == 1) {
+                                    e->Jobs[x]->addHired(e->Jobs[x]->getApplicant(y));
+                                    for (int i = 0; i < Jobs.size(); i++) {
+                                        Jobs[i].removeHired(e->Jobs[x]->getApplicant(y));
+                                    }
+                                }
+                                else if (z == 2) { e->Jobs[x]->addInterviewee(e->Jobs[x]->getApplicant(y)); }
+                                else if (z == 3) { e->Jobs[x]->addScreeners(e->Jobs[x]->getApplicant(y)); }
+
+                                e->Jobs[x]->updateRecord();
+                            }
+
+                        }
+                        else {
+                            SetColor(4); cout << "Sorry! No Applicants Yet!"; Sleep(800); SetColor(5);
+                        }
                     }
+
+                    readJobRecord();
+                    readEmployerRecord();
+                
                 }
-
-                readJobRecord();
-                readEmployerRecord();
+                else {
+                    cout << "No Jobs Posted!"; _getch();
+                }
+            
                 system("cls");
-            }
+            }    
                
         }
             
@@ -792,7 +805,7 @@ public:
             do
             {
                 if (u->get_type() == "user") {
-                    cout << "1. Search For A Job\n\n2. View Hired/Applied to Jobs\n\n3. Subscribe to Premimum";
+                    cout << "1. Search For A Job\n\n2. View Hired/Applied to Jobs\n\n3. Subscribe to Premimum*";
                 }
                 else {
                     cout << "1. Post A Job\n\n2. View Jobs Posted\n\n3. All Employees";
@@ -892,8 +905,9 @@ public:
         int i = 0, n = 0;
 
         //counting number of records
-        fstream file("user.txt", ios::in);
+        fstream file("user.csv", ios::in);
 
+        getline(file, line);
         while (getline(file, line)) {
             n++; 
         }
@@ -904,8 +918,9 @@ public:
 
 
         //reading records
-        file.open("user.txt", ios::in);
+        file.open("user.csv", ios::in);
 
+        getline(file, line);
         while (getline(file, line)) {
 
             row.clear();
@@ -947,8 +962,9 @@ public:
             employers.clear(); 
 
             //counting number of records
-            fstream file("employer.txt", ios::in);
+            fstream file("employer.csv", ios::in);
 
+            getline(file, line);
             while (getline(file, line)) {
                 n++;
             }
@@ -959,8 +975,9 @@ public:
 
 
             //reading records
-            file.open("employer.txt", ios::in);
+            file.open("employer.csv", ios::in);
 
+            getline(file, line);
             while (getline(file, line)) {
 
                 row.clear();
@@ -1004,8 +1021,9 @@ public:
         Jobs.clear();
 
         //counting number of records
-        fstream file("Jobs.txt", ios::in);
+        fstream file("Jobs.csv", ios::in);
 
+        getline(file, line);
         while (getline(file, line)) {
             n++;
         }
@@ -1016,8 +1034,9 @@ public:
 
 
         //reading records
-        file.open("Jobs.txt", ios::in);
+        file.open("Jobs.csv", ios::in);
 
+        getline(file, line);
         while (getline(file, line)) {
 
             row.clear();
