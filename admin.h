@@ -66,7 +66,7 @@ bool isNameValid(string str)
 
 class admin
 {
-   string email, re_entered_email, phone_num, first_name, last_name, education;
+   string adminID, adminPass, email, re_entered_email, phone_num, first_name, last_name, education;
    int age, re_checked_email;
    bool check_email, check_age, phone_check, check_fname, check_lname, email_comapre_check;
    vector <user> users;
@@ -75,9 +75,19 @@ class admin
 
 public:
     admin() {
+        adminID = "anas"; //can take user input to set(just saving time)
+        adminPass = "anas123";
         readUserRecord();
         readJobRecord();
         readEmployerRecord();
+    }
+
+
+    string get_username() {
+        return adminID;
+    }
+    string get_password() {
+        return adminPass;
     }
 
     void admin_check_employer(employer employer);
@@ -153,6 +163,165 @@ public:
         cout << "\x1b[1A\t\t   \b\b";
     }
 
+    //Admin
+    void ControlPanel() {
+        int manage, option, x;
+        
+        do {
+            system("cls");
+            cout << "1. Manage Jobs\n2. Manage Employers\n3. Manage Users\n\nPress 4 to return to main menu\n\n";
+            cin >> manage;
+            switch (manage) {
+            case 1:
+                system("cls");
+                for (int i = 0; i < Jobs.size(); i++) {
+
+                    if (i == 0) { cout << "Total Jobs: " << Jobs.size() << "\n---Jobs---\n\n"; }
+
+                    SetColor(0); cout << i + 1 << ". " << Jobs[i].Name << endl
+                        << "   Applicants: " << Jobs[i].num_applicants
+                        << "   Hired: " << Jobs[i].hiredEmployees
+                        << "   Interviewing: " << Jobs[i].num_intviews
+                        << "   Openings: " << Jobs[i].available_openings << endl << endl;
+                }
+
+                cout << "1. View\n2. Modify\n3. Remove\n\n";
+                cin >> option;
+
+                cout << "\n\nEnter Job-Number: ";
+                do {
+                    cin >> x;
+                } while (x > Jobs.size());
+                --x;
+
+                if (option == 1) {
+                    system("cls");
+                    Jobs[x].displayJob();
+                    SetColor(10); cout << "\n\n\n\t\t\t\t\t[C]ontinue";
+                    cout << "\n\t\t\t\t\t ________"; SetColor(0);  _getch();
+                }
+                else if (option == 2) {
+                    Jobs[x].modifyJob();
+                    readJobRecord();
+                }
+                else {
+                    Jobs[x].deleteJob();
+                    readJobRecord();
+                    readEmployerRecord();
+                    cout << "Job Successfully Removed!"; Sleep(700);
+                }
+
+                break;
+
+            case 2:
+                system("cls");
+                for (int i = 0; i < employers.size(); i++) {
+
+                    if (i == 0) { cout << "Total Employers: " << employers.size() << "\n---Employers---\n\n"; }
+
+                    SetColor(0); cout << i + 1 << ". " << employers[i].get_company_name() << endl
+                        << "   Jobs Posted: " << employers[i].get_jobCount()
+                        << "   Charged Uptil Now: $" << employers[i].getPayment() << endl << endl;
+                }
+
+                cout << "1. View\n2. Modify\n3. Remove\n\n";
+                cin >> option;
+
+                cout << "\n\nEnter Employer-Number: ";
+                do {
+                    cin >> x;
+                } while (x > employers.size());
+                --x;
+
+                if (option == 1) {
+                    system("cls");
+                    employers[x].display_details("Employer");
+                }
+                else if (option == 2) {
+                    employers[x].modifyDetails();
+                }
+                else {
+                    employers[x].deleteRecord();
+                    readJobRecord();
+                    readEmployerRecord();
+                    cout << "Employer Successfully Removed!"; Sleep(700);
+                }
+
+                break;
+
+            case 3:
+                system("cls");
+                for (int i = 0; i < users.size(); i++) {
+                    if (i == 0) { cout << "Total Users: " << users.size() << "\n---Users---\n\n"; }
+
+                    SetColor(0); cout << i + 1 << ". " << users[i].get_first_name() << " " << users[i].get_last_name() << "\t(@" << users[i].get_username() << ")" << endl
+                        << "   Major: " << users[i].get_department() << endl
+                        << "   Account Status: " << users[i].Account_Status << "|  Paid: $" << users[i].getPayment() << endl << endl;
+                }
+
+                cout << "1. View\n2. Modify\n3. Remove\n\n";
+                cin >> option;
+
+                cout << "\n\nEnter User-Number: ";
+                do {
+                    cin >> x;
+                } while (x > users.size());
+                --x;
+
+                if (option == 1) {
+                    system("cls");
+                    users[x].display_details("user");
+                }
+                else if (option == 2) {
+                    users[x].modifyDetails();
+                }
+                else {
+                    users[x].deleteRecord();
+                    readUserRecord();
+                    cout << "User Successfully Removed!"; Sleep(700);
+                }
+                break;
+                
+            case 4:
+                break;
+
+            default:
+                cout << "Wrong Entry!"; Sleep(800);
+                system("cls");
+                break;
+            }
+        } while (manage != 4);
+    }
+    void ViewProfits() {
+        int total_profit = 0, choice = 0, m = 0;
+        system("cls");
+        do {
+            cout << "1. Total Profits\n2. Profit Summary\n\n";
+            cin >> choice;
+        } while (choice > 2);
+
+        system("cls");
+        for (int i = 0; i < users.size(); i++) {
+            total_profit += users[i].getPayment();
+            if (choice == 2 && users[i].getPayment() != 0) {
+                SetColor(0); cout << ++m << ". " << users[i].get_first_name() << " " << users[i].get_last_name() << "\t(@" << users[i].get_username() << ")" << endl
+                    << "   Charged: $" << users[i].getPayment() << endl << endl;
+            }
+        }
+        for (int i = 0; i < employers.size(); i++) {
+            total_profit += employers[i].getPayment();
+            if (choice == 2 && employers[i].getPayment() != 0) {
+                SetColor(0); cout << ++m << ". " << employers[i].get_company_name() << endl
+                    << "   Charged: $" << employers[i].getPayment() << endl << endl;
+            }
+        }
+        
+        cout << "\n\nTotal Profit: $" << total_profit; _getch();
+            
+    }
+
+    
+    //User
     void EmpSub(user * u) {
         bool x;
         if (u->get_type() == "user") {
@@ -178,6 +347,7 @@ public:
 
         system("cls");
         if (u->get_type() == "user") {
+            flag.resize(Jobs.size());
             for (int i = 0; i < Jobs.size(); i++) {
                 for (int j = 0; j < Jobs[i].num_applicants; j++) {
 
@@ -192,7 +362,6 @@ public:
                             }
                         }
 
-                        flag.resize(Jobs[i].num_Scr);
                         for (int k = 0; k < Jobs[i].num_Scr; k++) {
                             if (Jobs[i].getApplicant(j) == Jobs[i].getScreeners(k)) {
                                 SetColor(11); cout << "\t{Instant Hire after Screening test}"; SetColor(5);
@@ -219,18 +388,18 @@ public:
             } while (x > m);
             --x;
 
-            system("cls");
             if (flag[x] == true) {
-                cout << "1:Take the Screening Test\n2:Display Job";
+                cout << "\n1:Take the Screening Test\n2:Display Job\n";
                 cin >> y;
 
                 if(y == 1){
-                    //Jobs[x].Screening_test(u)
+                    Jobs[x].Screening_test(u);
                     readJobRecord();
                     readEmployerRecord();
                 }
             }
 
+            system("cls");
             Jobs[x].displayJob(); 
             SetColor(10); cout << "\n\n\n\t\t\t\t\t[C]ontinue"; 
             cout << "\n\t\t\t\t\t ________";  _getch();
@@ -307,7 +476,7 @@ public:
                         e->Jobs[x]->getApplicant(y).display_details("user"); _getch();
 
                         if (!flag[y]) {
-                            SetColor(4); cout << "\nChoice of Action:"; SetColor(5); cout << "\n1. Hire Applicant\n2. Shortlist for Interview\n3. Selection by Screening test\n\nEnter any key to contiue\n";
+                            SetColor(4); cout << "\nChoice of Action:"; SetColor(5); cout << "\n1. Hire Applicant\n2. Shortlist for Interview\n3. Selection by Screening test\n\nEnter any num to contiue\n";
                             cin >> z;
 
                             if (z == 1) {
@@ -663,6 +832,10 @@ public:
 
                 case 5:
                     u->modifyDetails();
+
+                    readUserRecord();
+                    readJobRecord();
+                    readEmployerRecord();
                     break;
 
                 case 6:
@@ -677,6 +850,39 @@ public:
             } while (search1 != 6);
 
      }
+    void login() {
+        int search;
+
+        do
+        {
+            system("cls");
+            cout << "1. Control Panel\n\n2. View Profits\n\n3. Logout\n\n";
+            cin >> search;
+            switch (search)
+            {
+            case 1:
+                ControlPanel();
+                break;
+
+            case 2:
+                ViewProfits();
+                break;
+
+            case 3:
+                SetColor(5); cout << "\n\t\t\t\t\tLogging out.."; Sleep(300); cout << "."; Sleep(500); SetColor(0);
+                break;
+
+            default:
+                cout << "Wrong Entry!"; Sleep(400);
+                system("cls");
+                break;
+            }
+        } while (search != 3);
+
+    }
+
+
+
 
     void readUserRecord() {
         vector<string> row;

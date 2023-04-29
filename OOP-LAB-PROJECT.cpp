@@ -139,12 +139,7 @@ int main()
 
 	string user_name, password, department, sub_department;
 	
-	
-	//Job j;
-	//system("cls");
-	//j.displayJob();
-	//_getch();
-	
+
 	intro();
 	
 	do
@@ -152,7 +147,7 @@ int main()
 		system("Color F0");
 		frame();
 		
-		cout << "Enter from the choice of action:\n\t\t1: Sign up as a User\n\t\t2: Sign up as an Employer\n\t\t3: Login as a User\n\t\t4: Login as an Employer \n\n\t\tPress 5 to exit\t\t";
+		cout << "Enter from the choice of action:\n\t\t1: Sign up as a User\n\t\t2: Sign up as an Employer\n\t\t3: Login as a User\n\t\t4: Login as an Employer\n\t\t5: Admin\n\n\t\tPress 6 to exit\t\t";
 		cin >> choice;
 		system("cls");
 		switch (choice)
@@ -188,9 +183,9 @@ int main()
 
 
 				incUsername = 1;
-				for (i = 0; i < users.size(); i++)////Use userSize again if error appears
+				for (i = 0; i < users.size(); i++)
 				{
-					if (users[i].get_username() == user_name)//check
+					if (users[i].get_username() == user_name)
 					{
 						count = 0;
 						incUsername = 0;
@@ -241,9 +236,9 @@ int main()
 
 
 				incUsername = 1;
-				for (i = 0; i < employers.size(); i++)////Use userSize again if error appears
+				for (i = 0; i < employers.size(); i++)
 				{
-					if (employers[i].get_username() == user_name)//check
+					if (employers[i].get_username() == user_name)
 					{
 						count = 0;
 						incUsername = 0;
@@ -256,7 +251,7 @@ int main()
 							if (employers[i].get_password() == password)
 							{
 								a.login(&employers[i]);
-								break; //count =3;
+								break;
 							}
 							else
 							{
@@ -281,7 +276,55 @@ int main()
 
 			break;
 
-		case 5://added so it doesnt go to default
+		case 5:
+			do {
+				frame();
+				cout << "-----LOGIN-----\n\n\t\t";
+
+
+				cout << "Enter Username: ";
+				cin >> user_name;
+
+				incUsername = 1;
+
+					if (a.get_username() == user_name)//check
+					{
+						count = 0;
+						incUsername = 0;
+						do
+						{
+							gotoxy(16, 7);
+							cout << "Enter password: ";
+							cin >> password;
+
+							if (a.get_password() == password)
+							{
+								a.login();
+								break; 
+							}
+							else
+							{
+								gotoxy(10, 16);
+								SetColor(4);
+								cout << "Incorrect Password!!\tAttempt: " << count + 1 << "/3" << endl;
+								SetColor(0);
+								count++;
+							}
+						} while (count < 3);
+						break;
+					}
+				
+
+				if (incUsername == 1) {
+					gotoxy(9, 18); SetColor(4);  cout << "Incorrect Username! Press any key to continue\n\n\n\t ";
+					SetColor(8); cout << "Press 'B' to return"; _end = toupper(getch());
+				}
+
+			} while (_end != 'B' && incUsername == 1);
+
+			break;
+
+		case 6://added so it doesnt go to default
 			break;
 
 		default:
@@ -292,16 +335,11 @@ int main()
 			break;
 
 		}
-	} while (choice != 5);
+	} while (choice != 6);
 
 }
 
 
 
 //issues/TODO:
-//choice to view total employees
-//screening test
-//cover letter(optional)
-//premium account subsc etc feature
 //.csv in another branch
-//admin control panel(delete records)

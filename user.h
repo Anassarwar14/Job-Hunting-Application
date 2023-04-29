@@ -63,7 +63,7 @@ protected:
     string skill[15][2];//skill[][0] contains 'skill' skill[][1] contains 'rating'
     string depart;//e.g:CS,medical etc
     string sub_depart;//e.g datascientist
-    int Domain = 0, i = 0, num_skills = 0;
+    int Domain = 0, i = 0, num_skills = 0, payment_to_admin = 0;
     bool valid;//if 1 then valid else non valid
 
 public:
@@ -1108,6 +1108,35 @@ public:
 
         file.close();
     }
+    virtual void deleteRecord() {
+        string line, word;
+
+        fstream inFile("user.txt", ios::in | ios::out);
+        ofstream outFile("temp.txt");
+
+
+        while (getline(inFile, line)) {
+
+            istringstream ss(line);
+
+            getline(ss, word, ',');
+            if (word == id) {
+                continue;
+            }
+
+            outFile << line << "\n";
+
+
+        }
+
+        inFile.close();
+        outFile.close();
+
+        remove("user.txt");
+        rename("temp.txt", "user.txt");
+    }
+
+
     bool Subscribe() {
         char choice;
 
@@ -1116,7 +1145,7 @@ public:
             SetColor(3); cout << "|<<<<< Premimum Subscription Plan >>>>>|\n\n"; SetColor(8);
             cout << "\t\t\t\t\tFree\t     *Premium\n" << endl;
             cout << "Job Application Tracking:\t\t"; SetColor(2); cout << " YES\t\tYES\n\n"; SetColor(8);
-            cout << "Priority Access to High Income Jobs:\t"; SetColor(4); cout << " NO\t\t"; SetColor(2); cout << "YES\n\n"; SetColor(8);
+            cout << "Multiple Attempts Screening test:\t"; SetColor(4); cout << " NO\t\t"; SetColor(2); cout << "YES\n\n"; SetColor(8);
             cout << "Recommended to Employers:\t\t"; SetColor(4); cout << " NO\t\t"; SetColor(2); cout << "YES\n\n"; SetColor(8);
             cout << "Advanced Search Filters:\t\t"; SetColor(2); cout << " YES\t\tYES\n\n"; SetColor(8);
             cout << "Access to Employer Profiles:\t\t"; SetColor(4); cout << " NO\t\t"; SetColor(2); cout << "YES\n\n"; SetColor(1);
@@ -1126,6 +1155,7 @@ public:
             choice = toupper(_getch());
             if (choice == 'G') {
                 Account_Status = "Premium";
+                payment_to_admin += 99;
                 updateRecord();
                 system("cls");
                 return true;
@@ -1207,11 +1237,14 @@ public:
     {
         return valid;
     }
+    int getPayment() {
+        return payment_to_admin;
+    }
 
     //setters
     void set_first_name(string fname) { first_name = fname; }
     void set_last_name(string lname) { last_name = lname; }
-    void set_acc_status(string status) { Account_Status = status; }
+    void set_acc_status(string status) { Account_Status = status; if (status == "Premium") { payment_to_admin += 99; } }
     void set_email(string em) { email = em; }
     void set_age(int a) { age = a; }
     void set_phone_number(string ph) { phone_number = ph; }
@@ -1439,7 +1472,33 @@ public:
             updateRecord();
         } while (option != 7);
     }
+    void deleteJob() {
+        string line, word;
 
+        fstream inFile("Jobs.txt", ios::in | ios::out);
+        ofstream outFile("temp.txt");
+
+
+        while (getline(inFile, line)) {
+
+            istringstream ss(line);
+
+            getline(ss, word, ',');
+            if (stoi(word) == JobID) {
+                continue;
+            }
+
+            outFile << line << "\n";
+
+
+        }
+
+        inFile.close();
+        outFile.close();
+
+        remove("Jobs.txt");
+        rename("temp.txt", "Jobs.txt");
+    }
 
     void JobDatatoFile() {
         fstream file;
@@ -1622,29 +1681,127 @@ public:
         SetColor(5);
     }
 
-    void Screening_test(user * u) {
+
+    void isAnsValid(char* ans) {
+
+        *ans = toupper(*ans);
+        do {
+            if (*ans != 'A' && *ans != 'B' && *ans != 'C' && *ans != 'D') {
+                cout << "Invalid Input! Enter Again\n";
+                cin >> *ans;
+                *ans = toupper(*ans);
+            }
+        } while (*ans != 'A' && *ans != 'B' && *ans != 'C' && *ans != 'D');
+
+    }
+    bool Test(int domain) {
+
+        char ans;
+        int score = 0;
+
+        system("cls");
+        if (domain == 1) {
+            cout << "Computer Science Screening Test. Contains 5 MCQs and each MCQ is worth 5 points.\nAtleast 3 MCQs should be correct to pass the test" << endl;
+            cout << "Q1. Which type of memory is volatile?" << endl;
+            cout << "A. RAM\nB. ROM\nC. SSD\nD. HDD" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'A') { score += 5; }
+            cout << "\nQ2. What language does the computer understand?" << endl;
+            cout << "A. Human Language\nB. Assembly language\nC. Machine code\nD. High level langauge" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'C') { score += 5; }
+            cout << "\nQ3. What is a byte?" << endl;
+            cout << "A. Group of 4 bits\nB. Group of 2 bits\nC. Group of 8 bits\nD. Group of 10 bits" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'B') { score += 5; }
+            cout << "\nQ4. Which register holds an address?" << endl;
+            cout << "A. MAR\nB. MDR\nC. ALU\nD. CIR" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'A') { score += 5; }
+            cout << "\nQ5. which of the following is not a network protocol" << endl;
+            cout << "A. HTTP\nB. XML\nC. SMTP\nD. FTP" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'B') { score += 5; }
+
+        }
+        else if (domain == 2) {
+            cout << "Meidical Screening Test. Contains 5 MCQs and each MCQ is worth 5 points.\nAtleast 3 MCQs should be correct to pass the test" << endl;
+            cout << "Q1. Which of the following is an autoimmune disease?" << endl;
+            cout << "A. Asthma\nB. Multiple Sclerosis\nC. Malaria\nD. Tuberculosis" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'B') { score += 5; }
+            cout << "\nQ2. Which of the following is a symptom of diabetes?" << endl;
+            cout << "A. Hypertension\nB. Hyperthyroidism\nC. Hyperglycemia\nD. Hypercholestrolemia" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'C') { score += 5; }
+            cout << "\nQ3. Which of the following is not a viral disease?" << endl;
+            cout << "A. Influenza\nB. Meazles\nC. Malaria\nChicken Pox" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'C') { score += 5; }
+            cout << "\nQ4. Which of the following is not a type of cancer?" << endl;
+            cout << "A. Leukemia\nB. Melanoma\nC. Cirrhosis\nD. Carcinoma" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'C') { score += 5; }
+            cout << "\nQ5. which of the following is an antibiotic" << endl;
+            cout << "A. Aspirin\nB. Penicilin\nC. Acetaminophen\nD. Ibuprofen" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'B') { score += 5; }
+
+        }
+        else if (domain == 3) {
+            cout << "Engineering Screening Test. Contains 5 MCQs and each MCQ is worth 5 points.\nAtleast 3 MCQs should be correct to pass the test" << endl;
+            cout << "Q1. Which of the following is an example of renewable energy source?" << endl;
+            cout << "A. Coal\nB. Natural gas\nC. Solar\nD. Nuclear" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'C') { score += 5; }
+            cout << "\nQ2. Which of the following is not a type of material used in 3d printing?" << endl;
+            cout << "A. PLA\nB. ABS\nC. PET\nD. THC" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'D') { score += 5; }
+            cout << "\nQ3. Which of the following is a measure of a material's resistance to deformation under stress?" << endl;
+            cout << "A. Strain\nB. Stress\nC. Elastic Modulus\nD. Yield strength " << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'C') { score += 5; }
+            cout << "\nQ4. Which of the following is not a type of electrical circuit?" << endl;
+            cout << "A. Series circuit\nB. Parallel circuit\nC. Combination circuit\nD. Diagonal circuit" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'D') { score += 5; }
+            cout << "\nQ5. which of the following is a type of bridge" << endl;
+            cout << "A. Arch\nB. Wall\nC. Door\nD. Floor" << endl;
+            cin >> ans; isAnsValid(&ans);
+            if (ans == 'A') { score += 5; }
+
+        }
+
+
+        SetColor(9); cout << "\nScore: " << score << "/25" << endl; SetColor(5);
+
+        if (score >= 15) { return true; }
+
+        return false;
+    }
+    void Screening_test(user* u) {
         bool pass = false;
+        int premium_tries = 3;
+    
+        do{
+            pass = Test(temp.Domain);
 
-        if (temp.Domain == 1) {
-            //Comp test
-        }
-        else if (temp.Domain == 2) {
-            //Medical test
-        }
-        else if (temp.Domain == 3) {
-            //Engineering test
-        }
+            if (pass) {
+                SetColor(10); cout << "Congratulations! You passed the test\n You are Hired!"; SetColor(5);
+                addHired(*u);
+            }
+            else if (!pass && u->Account_Status == "Premium" && --premium_tries != 0) {
+                SetColor(4); cout << "\n\nSorry! You Failed!\nStill have " << premium_tries << " tries left!"; SetColor(5);
+            }
+            else {
+                SetColor(4); cout << "\n\nSorry! You Failed!\nTry Applying for a differnt Job"; SetColor(5);
+                removeApplicant(*u);
+                removeScreener(*u);
+            }
 
-        if (pass) {
-            SetColor(10); cout << "Congratulations! You passed the test\n You are Hired!"; SetColor(5);
-            addHired(*u);
-        }
-        else {
-            SetColor(4); cout << "Sorry! You Failed!\nTry Applying for a differnt Job"; SetColor(5);
-            removeApplicant(*u);
-            removeScreener(*u);
-        }
-
+            _getch();
+        } while (!pass && u->Account_Status == "Premium" && premium_tries != 0);
         updateRecord();
     }
 
@@ -1685,13 +1842,15 @@ public:
         for (int i = 0; i < num_applicants; i++) {
             if (app == applicants[i]) {
                 applicants.erase(applicants.begin() + i);
+                num_applicants--;
             }
         }
     }
-    void removeScreener(user app) {
+    void removeScreener(user Scr) {
         for (int i = 0; i < num_Scr; i++) {
-            if (app == applicants[i]) {
-                applicants.erase(applicants.begin() + i);
+            if (Scr == Screeners[i]) {
+                Screeners.erase(Screeners.begin() + i);
+                num_Scr--;
             }
         }
     }
@@ -1801,6 +1960,37 @@ public:
         remove("employer.txt");
         rename("temp.txt", "employer.txt");
 
+    }
+    void deleteRecord() override {
+        string line, word;
+
+        fstream inFile("employer.txt", ios::in | ios::out);
+        ofstream outFile("temp.txt");
+
+
+        while (getline(inFile, line)) {
+
+            istringstream ss(line);
+
+            getline(ss, word, ',');
+            if (word == id) {
+                for (int i = 0; i < countJob; i++) {
+                    Jobs[i]->deleteJob();
+                }
+
+                continue;
+            }
+
+            outFile << line << "\n";
+
+
+        }
+
+        inFile.close();
+        outFile.close();
+
+        remove("employer.txt");
+        rename("temp.txt", "employer.txt");
     }
     void display_details(string type) override {
         cout << "--------------------------------------------" << endl;
@@ -1917,9 +2107,14 @@ public:
 
 
     void JobPost() {
+        char choice;
+        cout << "[For Every Employee Hired From this Job You will be Charged Only $50]\n\n";
+        SetColor(10); cout << "[G]o Ahead\t"; SetColor(4); cout << "[R]eturn"; SetColor(5);
+        choice = toupper(_getch());
+
         string line, word;
 
-        if (countJob < 15) {
+        if (countJob < 15 && choice == 'G') {
             Jobs[countJob] = new Job(Domain);
 
  
@@ -1963,6 +2158,7 @@ public:
         job->setDomain(Domain);
         for (int i = 0; i < job->hiredEmployees; i++) {
             Employees.push_back(job->getHired(i));
+            payment_to_admin += 50;
         }
      
     }
@@ -1993,11 +2189,6 @@ public:
         _getch(); system("cls");
     }
    
-
-    //HireEmployee(); 
-    // for(i < countJob){}
-    // Employees.pushback(u)
-    
 };
 
 
