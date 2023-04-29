@@ -1063,6 +1063,10 @@ public:
         fstream file;
         file.open("user.csv", ios::in);
 
+        getline(file, line);
+        lines.push_back(line);
+        n++;
+
         while (getline(file, line)) {
 
             istringstream ss(line);
@@ -1551,6 +1555,8 @@ public:
             fstream inFile("Jobs.csv", ios::in | ios::out);
             ofstream outFile("temp.csv");
 
+            getline(inFile, line);
+            outFile << line << "\n";
 
             while (getline(inFile, line)) {
 

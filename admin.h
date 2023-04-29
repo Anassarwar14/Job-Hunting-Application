@@ -897,6 +897,7 @@ public:
         //counting number of records
         fstream file("user.csv", ios::in);
 
+        getline(file, line);
         while (getline(file, line)) {
             n++; 
         }
@@ -909,6 +910,7 @@ public:
         //reading records
         file.open("user.csv", ios::in);
 
+        getline(file, line);
         while (getline(file, line)) {
 
             row.clear();
@@ -952,6 +954,7 @@ public:
             //counting number of records
             fstream file("employer.csv", ios::in);
 
+            getline(file, line);
             while (getline(file, line)) {
                 n++;
             }
@@ -964,6 +967,7 @@ public:
             //reading records
             file.open("employer.csv", ios::in);
 
+            getline(file, line);
             while (getline(file, line)) {
 
                 row.clear();
@@ -1009,6 +1013,7 @@ public:
         //counting number of records
         fstream file("Jobs.csv", ios::in);
 
+        getline(file, line);
         while (getline(file, line)) {
             n++;
         }
@@ -1021,6 +1026,7 @@ public:
         //reading records
         file.open("Jobs.csv", ios::in);
 
+        getline(file, line);
         while (getline(file, line)) {
 
             row.clear();
