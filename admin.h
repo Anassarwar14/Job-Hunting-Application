@@ -617,7 +617,19 @@ public:
                         choice = toupper(_getch());
                     } while (choice != 'S' && choice != 'E');
                 }
-
+                else if (j == JobsTobePrinted - 1 && m % 3 == 0) {
+                    x = 5, y = 6;
+                    do {
+                        choice = toupper(_getch());
+                        if (choice == 'P' && m > 3) {
+                            m -= 6;
+                            j -= 6;
+                            i -= 6;
+                            system("cls");
+                            break;
+                        }
+                    } while (choice != 'S' && choice != 'E');
+                }
 
 
 
@@ -759,7 +771,7 @@ public:
                 
                 --x;
                 if (u->Account_Status == "Premium") {
-                    cout << "1: Employer Profile\n2: Continue to Jobs";
+                    cout << "1: Employer Profile\n2: Continue to Jobs\n\n";
                     cin >> y;
 
                     if (y == 1) {

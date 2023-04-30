@@ -2195,10 +2195,10 @@ public:
             cout << i + 1 << ". "
                 << Employees[i].get_first_name() << " "
                 << Employees[i].get_last_name() << "\t(@"
-                << Employees[i].get_username() << ")";
+                << Employees[i].get_username() << ")" << endl;
         }
 
-        if (i == 0) {
+        if (Employees.size() == 0) {
             SetColor(4); cout << "No Employees!"; SetColor(5);
         }
 
