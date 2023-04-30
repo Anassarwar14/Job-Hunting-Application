@@ -1,6 +1,6 @@
 # JOBAL
 
-> Job hunting application using C++
+> Job hunting application on CLI
 
 > Language: C++
 
