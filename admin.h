@@ -373,7 +373,7 @@ public:
 
                 for (int j = 0; j < Jobs[i].hiredEmployees; j++) {
                     if (*u == Jobs[i].getHired(j)) {
-                        SetColor(5); cout << "---Currently Employed As---\n\n"; SetColor(6); cout << ++m << ". " << Jobs[i].Name << "\n   Collegues: " << Jobs[i].hiredEmployees << endl; SetColor(5);
+                        SetColor(5); cout << "---Currently Employed As---\n\n"; SetColor(6); cout << ++m << ". " << Jobs[i].Name << "\n   Collegues: " << Jobs[i].hiredEmployees - 1 << endl; SetColor(5);
 
                     }
                 }
@@ -579,14 +579,14 @@ public:
                     x = 5, y = 6;
                     do {
                         choice = toupper(_getch());
-                        if (choice == 'P' && m > 3 && (m % 2) - 1 == 0) {
+                        if (choice == 'P' && m > 3 && (m - 2) % 3 == 0) {
                             m -= 5;
                             j -= 5;//although m and i j have 1 unit dist diff i j gets ++ once the cycle repeats
                             i -= 5;//in the case of showall
                             system("cls");
                             break;
                         }
-                        else if (choice == 'P' && m > 3 && (m % 3) - 1 == 0) {
+                        else if (choice == 'P' && m > 3 && (m - 1) % 3 == 0) {
                             m -= 4;
                             j -= 4;
                             i -= 4;
@@ -604,6 +604,7 @@ public:
                             m -= 6;
                             j -= 6;
                             i -= 6;
+                            system("cls");
                             break;
                         }
 
@@ -805,7 +806,7 @@ public:
             do
             {
                 if (u->get_type() == "user") {
-                    cout << "1. Search For A Job\n\n2. View Hired/Applied to Jobs\n\n3. Subscribe to Premimum*";
+                    cout << "1. Search For A Job\n\n2. View Hired/Applied to Jobs\n\n3. Subscribe to Premium*";
                 }
                 else {
                     cout << "1. Post A Job\n\n2. View Jobs Posted\n\n3. All Employees";

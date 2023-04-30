@@ -1373,13 +1373,12 @@ public:
 
         cout << "Job Responsibilites: " << endl;
         for (int i = 0; i < 6; i++) {
-            cout << "#" << i + 1 << endl;
-            cin.ignore();
-            getline(cin, responsibilities[i]);
+            cout << "#" << i + 1 << ":\n";
+            getline(cin >> ws, responsibilities[i]);
             num_res++;
-            cout << "\nPress S to submit or any key to continue" << endl;
-            char end = _getch();
-            if (end == 'S' || end == 's') { break; }
+            cout << "Press S to submit or any key to continue\n" << endl;
+            char end = toupper(_getch());
+            if (end == 'S') { break; }
         }
 
 
@@ -1392,6 +1391,7 @@ public:
         cout << "No. of Employees needed: ";
         cin >> available_openings;
 
+        SetColor(2); cout << "\n\n\t\tJob Successfully Posted! You will be notified on any Applicants";
         system("cls"); SetColor(5);
     }
 
@@ -1652,15 +1652,16 @@ public:
                 if (skillmatch == num_skills && !isEmployee ) {
                     eligible = true;
                 }
-                else if (isEmployee) {
-                    SetColor(4); cout << "\n\n\t\tCannot Apply! Your profile indicates you are already employed in this company";
-                }
+                
 
                
                 if(u.Domain == temp.Domain && eligible) {
                     addApplicant(u);
                     updateRecord();
                     SetColor(2); cout << "\n\n\t\tSuccessfully Applied! The company will get back to you shortly"; 
+                }
+                else if (isEmployee) {
+                    SetColor(4); cout << "\n\n\t\tCannot Apply! Your profile indicates you are already employed in this company";
                 }
                 else if (u.Domain != temp.Domain) {
                     SetColor(4); cout << "\n\n\t\tCannot Apply! You are not allowed to apply to Jobs from this domain";
@@ -2123,8 +2124,8 @@ public:
 
     void JobPost() {
         char choice;
-        cout << "[For Every Employee Hired From this Job You will be Charged Only $50]\n\n";
-        SetColor(10); cout << "[G]o Ahead\t"; SetColor(4); cout << "[R]eturn"; SetColor(5);
+        SetColor(9); cout << "\n[For Every Employee Hired From this Job You will be Charged $50]\n\n";
+        SetColor(10); cout << "\t\t[G]o Ahead\t"; SetColor(4); cout << "[R]eturn"; SetColor(5);
         choice = toupper(_getch());
 
         string line, word;
