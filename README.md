@@ -56,8 +56,8 @@ Key features of the application include,
     - Total Profit
     - Profit Summary 
     
+    
 
 > We at Jobal understand the emotional journey of job hunting and 
   strive to make it a smoother and more rewarding experience for both job seekers and employers.
      
-
