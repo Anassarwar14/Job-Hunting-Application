@@ -2191,6 +2191,7 @@ public:
 
     void AllEmployees() {
         system("cls");
+        cout << "---Employees---\n\n";
         for (int i = 0; i < Employees.size(); i++) {
             cout << i + 1 << ". "
                 << Employees[i].get_first_name() << " "

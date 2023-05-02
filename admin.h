@@ -340,7 +340,7 @@ public:
     }
 
     void viewJobs(user * u) {
-        int m = 0, x = 0, y = 0, z = 0;
+        int m = 0, x = 0, y = 0, z = 0, index[25];
         char choice;
         vector<bool> flag;
         system("cls");
@@ -349,10 +349,11 @@ public:
             for (int i = 0; i < Jobs.size(); i++) {
                 for (int j = 0; j < Jobs[i].num_applicants; j++) {
 
-                    if (u->get_username() == Jobs[i].getApplicant(j).get_username()) {
+                    if (*u == Jobs[i].getApplicant(j)) {
                         if (m == 0) { cout << "---Applied To---\n\n"; }
 
                         SetColor(6); cout << ++m << ". " << Jobs[i].Name << " ";
+                        index[m] = i;
 
                         for (int k = 0; k < Jobs[i].num_intviews; k++) {
                             if (Jobs[i].getApplicant(j) == Jobs[i].getInterviewee(k)) {
@@ -363,22 +364,22 @@ public:
                         for (int k = 0; k < Jobs[i].num_Scr; k++) {
                             if (Jobs[i].getApplicant(j) == Jobs[i].getScreeners(k)) {
                                 SetColor(11); cout << "\t{Instant Hire after Screening test}"; SetColor(5);
-                                flag[i] = true;
+                                flag[m] = true;
                             }
                         }
 
                         SetColor(6); cout << endl << "   Total Applicants: " << Jobs[i].num_applicants << endl << endl; SetColor(5);
                     }
                 }
+            }
 
+            for (int i = 0; i < Jobs.size(); i++) {
                 for (int j = 0; j < Jobs[i].hiredEmployees; j++) {
                     if (*u == Jobs[i].getHired(j)) {
-                        SetColor(5); cout << "---Currently Employed As---\n\n"; SetColor(6); cout << ++m << ". " << Jobs[i].Name << "\n   Collegues: " << Jobs[i].hiredEmployees - 1 << endl; SetColor(5);
+                        SetColor(5); cout << "---Currently Employed As---\n\n"; SetColor(6); cout << "-->" << Jobs[i].Name << "\n   Collegues: " << Jobs[i].hiredEmployees - 1 << endl; SetColor(5);
 
                     }
                 }
-                    
-                
             }
 
             if (m != 0) {
@@ -386,21 +387,21 @@ public:
                 do {
                     cin >> x;
                 } while (x > m);
-                --x;
+                
 
                 if (flag[x] == true) {
                     cout << "\n1:Take the Screening Test\n2:Display Job\n";
                     cin >> y;
 
                     if (y == 1) {
-                        Jobs[x].Screening_test(u);
+                        Jobs[index[x]].Screening_test(u);
                         readJobRecord();
                         readEmployerRecord();
                     }
                 }
 
                 system("cls");
-                Jobs[x].displayJob();
+                Jobs[index[x]].displayJob();
                 SetColor(10); cout << "\n\n\n\t\t\t\t\t[C]ontinue";
                 cout << "\n\t\t\t\t\t ________";  _getch();
             }
@@ -440,6 +441,16 @@ public:
                     }
                     else if (choice == 'V') {
                         system("cls");
+
+                        cout << "-[-\033[4mHired\033[24m-]-\n";
+                        for (int i = 0; i < e->Jobs[x]->hiredEmployees; i++) {
+                            cout << i + 1 << ". "
+                                << e->Jobs[x]->getHired(i).get_first_name() << " "
+                                << e->Jobs[x]->getHired(i).get_last_name() << "\t(@"
+                                << e->Jobs[x]->getHired(i).get_username() << ")";
+                        }
+                        cout << endl << endl;
+
                         flag.clear();
                         flag.resize(e->Jobs[x]->num_applicants);
 
