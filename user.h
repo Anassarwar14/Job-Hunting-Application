@@ -1246,7 +1246,7 @@ public:
     //setters
     void set_first_name(string fname) { first_name = fname; }
     void set_last_name(string lname) { last_name = lname; }
-    void set_acc_status(string status) { Account_Status = status; if (status == "Premium") { payment_to_admin += 99; } }
+    void set_acc_status(string status) { Account_Status = status; if (status == "Premium") { payment_to_admin = 99; } }
     void set_email(string em) { email = em; }
     void set_age(int a) { age = a; }
     void set_phone_number(string ph) { phone_number = ph; }
@@ -1787,7 +1787,7 @@ public:
 
         return false;
     }
-    void Screening_test(user* u) {
+    bool Screening_test(user* u) {
         bool pass = false;
         int premium_tries = 3;
     
@@ -1797,6 +1797,8 @@ public:
             if (pass) {
                 SetColor(10); cout << "Congratulations! You passed the test\n You are Hired!"; SetColor(5);
                 addHired(*u);
+                updateRecord();
+                return true;
             }
             else if (!pass && u->Account_Status == "Premium" && --premium_tries != 0) {
                 SetColor(4); cout << "\n\nSorry! You Failed!\nStill have " << premium_tries << " tries left!"; SetColor(5);
@@ -1809,7 +1811,10 @@ public:
 
             _getch();
         } while (!pass && u->Account_Status == "Premium" && premium_tries != 0);
+
         updateRecord();
+
+        return false;
     }
 
 

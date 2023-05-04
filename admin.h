@@ -340,7 +340,7 @@ public:
     }
 
     void viewJobs(user * u) {
-        int m = 0, x = 0, y = 0, z = 0, index[25];
+        int m = 0, x = 0, y = 0, z = 0, hiredIndex, index[25];
         char choice;
         vector<bool> flag;
         system("cls");
@@ -377,7 +377,7 @@ public:
                 for (int j = 0; j < Jobs[i].hiredEmployees; j++) {
                     if (*u == Jobs[i].getHired(j)) {
                         SetColor(5); cout << "---Currently Employed As---\n\n"; SetColor(6); cout << "-->" << Jobs[i].Name << "\n   Collegues: " << Jobs[i].hiredEmployees - 1 << endl; SetColor(5);
-
+                        hiredIndex = i;
                     }
                 }
             }
@@ -394,7 +394,11 @@ public:
                     cin >> y;
 
                     if (y == 1) {
-                        Jobs[index[x]].Screening_test(u);
+                        if (Jobs[index[x]].Screening_test(u) == true) { //if test passed
+                            Jobs[hiredIndex].removeHired(*u);
+                            Jobs[hiredIndex].updateRecord();
+                        }
+                    
                         readJobRecord();
                         readEmployerRecord();
                     }
