@@ -14,7 +14,7 @@ interface where users can search for their desired Jobs and apply to those jobs 
 these applicants choosing to hire, interiview or ask them to pass a screening test.
 
 
-## Features
+## 🎯Features
 
 Key features of the application include,
 - User registration and login
@@ -22,7 +22,7 @@ Key features of the application include,
 - Job search and application submission
 - Applicant tracking and management
 
-## User Management:
+## 👤User Management:
 
 - User Signup | Login | Modify Profile
 - Viewing Jobs through Advanced search filters
@@ -31,7 +31,7 @@ Key features of the application include,
 - Job Application Status Tracking
 - Premium* Account Subscription 
 
-## Employer Management:
+## 👨‍💼Employer Management:
 
 - Employer Signup | Login | Modify Profile
 - Posting Jobs
@@ -42,7 +42,7 @@ Key features of the application include,
     - Selection based on a Screening test  
 - See All Employees 
 
-## Admin Management:
+## 🧑‍💻Admin Management:
 
 - Approve Applicant & Employer accounts verfiying important info
      - Applicant above a certain age, email and name format
